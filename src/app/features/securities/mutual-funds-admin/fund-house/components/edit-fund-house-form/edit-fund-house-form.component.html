@@ -1,0 +1,60 @@
+<div class="px-3">
+  <app-page-title> {{ sideNavTitle }} </app-page-title>
+</div>
+
+<div *ngIf="fundhinfoForm" class="flex flex-col w-full h-full px-3">
+  <form [formGroup]="fundhinfoForm" (ngSubmit)="bpInfoEntry()">
+    <div class="grid grid-cols-1 w-full">
+      <app-text-field
+        label="Symbol"
+        placeholder="Enter Symbol"
+        [control]="getFormControllers('symbol')"
+      >
+      </app-text-field>
+      <app-text-field
+        label="Fund House Name"
+        placeholder="Enter Fund House Name"
+        [control]="getFormControllers('name')"
+      >
+      </app-text-field>
+      <app-text-field
+        label="Short Name(FS)"
+        placeholder="Enter Short Name(FS)"
+        [control]="getFormControllers('sname')"
+      >
+      </app-text-field>
+      <app-text-field
+        label="BP Role"
+        placeholder="Enter BP Role"
+        [control]="getFormControllers('bpType')"
+      >
+      </app-text-field>
+    </div>
+    <div class="flex flex-row w-full justify-end gap-3 mt-[15px]">
+      <app-app-button
+        class="flex-1"
+        [expanded]="true"
+        btnClass="primary"
+        type="submit"
+      >
+        Submit
+      </app-app-button>
+      <app-app-button
+        class="flex-1"
+        [expanded]="true"
+        btnClass="secondary"
+        (click)="closeNav()"
+      >
+        Close
+      </app-app-button>
+      <app-app-button
+        *ngIf="formPayload && formPayload.payload !== undefined"
+        matTooltip="Delete"
+        btnClass="danger"
+        (click)="deleteRecord()"
+      >
+        <fa-icon [icon]="deleteIcon"></fa-icon>
+      </app-app-button>
+    </div>
+  </form>
+</div>

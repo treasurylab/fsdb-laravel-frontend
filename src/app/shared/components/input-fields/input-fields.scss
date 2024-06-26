@@ -1,0 +1,38 @@
+.fs-input-container {
+  --tw-bg-opacity: 1;
+  --tw-border-opacity: 1;
+  --tw-text-opacity: 1;
+  background-color: rgb(250 250 250 / var(--tw-bg-opacity));
+  border-width: 2px;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.25rem;
+}
+.fs-input-container:focus-within {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity));
+  --tw-border-opacity: 1;
+  border-color: rgb(99 102 241 / var(--tw-border-opacity));
+}
+.fs-input-field {
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 250 250 / var(--tw-bg-opacity));
+  width: 100%;
+}
+.fs-input-field:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.error-text {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+  margin-top: 0.125rem;
+}
+.label-text {
+  font-weight: 600;
+}

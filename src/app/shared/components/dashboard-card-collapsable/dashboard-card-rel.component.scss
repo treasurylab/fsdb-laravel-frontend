@@ -1,0 +1,26 @@
+.dashboard-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+}
+  
+.dashboard-card-content {
+  height: max-content;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 96px);
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: start;
+  color: #494F58;
+}
+
+fa-icon {
+  color: #494F58;
+}

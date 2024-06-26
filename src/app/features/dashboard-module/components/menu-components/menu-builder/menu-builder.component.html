@@ -1,0 +1,16 @@
+<!-- Single Tile  -->
+<app-menu-tile
+  [menuItem]="menuItem"
+  [isCollapsed]="isCollapsed"
+></app-menu-tile>
+<!-- Expansion Tile  -->
+<app-menu-expansion [menuItem]="menuItem" [isCollapsed]="isCollapsed">
+  @for (subMenus of menuItem.children; track $index) {
+
+  <app-menu-builder
+    [menuItem]="subMenus"
+    [isCollapsed]="isCollapsed"
+  ></app-menu-builder>
+
+  }
+</app-menu-expansion>

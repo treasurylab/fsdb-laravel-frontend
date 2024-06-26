@@ -1,0 +1,181 @@
+<h3 class="font-poppins font-bold text-gray-900 text-xl select-none pl-5">
+  Master Data
+</h3>
+
+<form
+  class="p-4 md:p-5 w-[90vh]"
+  [formGroup]="userMastForm"
+  (ngSubmit)="userInfoEntry()"
+>
+  <div class="grid gap-4 mb-4 grid-cols-2">
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >User Title</label
+      >
+      <select
+        placeholder="Select Fund House"
+        formControlName="title"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Select User Type"
+      >
+        <option *ngFor="let list of userType" [value]="list.value">
+          {{ list.value }}
+        </option>
+      </select>
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >User Code</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="code"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter User Code"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >First Name</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="first_name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter User Name"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Middle Name</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="middle_name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter User Name"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Last Name</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="last_name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter User Name"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >User Mobile</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="phone"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter User Mobile"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >User Email</label
+      >
+      <input
+        Enter="email"
+        name="name"
+        id="name"
+        formControlName="email"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter User Email"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Company Group</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="cgrp_id"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter Company Group"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Password</label
+      >
+      <input
+        Enter="text"
+        name="name"
+        id="name"
+        formControlName="password"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Enter Password"
+        required=""
+      />
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+      <label
+        for="landing menu"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Landing Menu</label
+      >
+      <select
+        placeholder="Select Fund House"
+        formControlName="landing_menu"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Select Landing Menu"
+      >
+        <option *ngFor="let list of lmList" [value]="list.route">
+          {{ list.code }} - {{ list.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
+    Save
+  </button>
+</form>

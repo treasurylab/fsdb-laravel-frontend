@@ -1,0 +1,237 @@
+<mat-dialog-content>
+  <div class="flex flex-col">
+    <div id="main-container" class="w-[700px] flex flex-col items-center">
+      <div class="flex flex-row w-full">
+        <div id="header" class="mt-10 flex flex-col w-full justify-center">
+          <span class="font-lato text-2xl text-black">View</span>
+          <span class="font-lato text-md py-2 text-gray-500"
+            >View MCLR Master Record</span
+          >
+        </div>
+        <mat-icon class="mt-10" (click)="closeMe()">close</mat-icon>
+      </div>
+    </div>
+
+    <div
+      *ngIf="!editFlag"
+      id="table"
+      class="w-full h-[45vh] pb-3 overflow-auto"
+    >
+      <table mat-table [dataSource]="fetchedData" class="w-full">
+        <!-- Position Column -->
+        <ng-container matColumnDef="No">
+          <th class="!text-center" mat-header-cell *matHeaderCellDef>No.</th>
+          <td
+            class="!text-center"
+            mat-cell
+            *matCellDef="let bank; let i = index"
+          >
+            {{ i + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Bank Code">
+          <th class="!text-center" mat-header-cell *matHeaderCellDef>
+            Bank Code
+          </th>
+          <td class="!text-center" mat-cell *matCellDef="let bank">
+            {{ bank.bank_code }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Bank Name">
+          <th class="!text-center" mat-header-cell *matHeaderCellDef>
+            Bank Name
+          </th>
+          <td class="!text-center" mat-cell *matCellDef="let bank">
+            {{ bank.bank_name }}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="URL">
+          <th class="!text-center" mat-header-cell *matHeaderCellDef>Url</th>
+          <td class="!text-center" mat-cell *matCellDef="let bank">
+            <a
+              class="text-blue-500"
+              target="_blank"
+              href="{{ bank.url_mclr_update }}"
+              >Url</a
+            >
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Effective Date">
+          <th class="!text-center" mat-header-cell *matHeaderCellDef>
+            Effective Date
+          </th>
+          <td class="!text-center" mat-cell *matCellDef="let bank">
+            {{ bank.effective_date }}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Action">
+          <th class="!text-center" mat-header-cell *matHeaderCellDef>Action</th>
+          <td class="!text-center" mat-cell *matCellDef="let bank">
+            <div class="flex flex-row w-[100px] justify-center">
+              <img
+                class="w-[20px]"
+                (click)="openEditDialog(bank)"
+                src="assets/icons/eye.png"
+                alt="view"
+              />
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+    <form
+      *ngIf="editFlag"
+      class="p-4 md:p-5 w-[90vh]"
+      [formGroup]="mclrEditRateForm"
+    >
+      <div
+        *ngIf="editFlag"
+        id="form"
+        class="w-full h-[45vh] pb-3 overflow-auto"
+      >
+        <div class="flex flex-col items-center h-full w-full overflow-y-auto">
+          <div id="formContainer" class="w-3/4">
+            <div class="grid grid-cols-8 w-full">
+              <div class="col-span-2 flex flex-col justify-center">
+                <span class="font-lato mt-2 me-4">Bank</span>
+              </div>
+              <div class="col-span-6 flex flex-col justify-center">
+                <input
+                  type="text"
+                  formControlName="bankCode"
+                  name="url"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-2 flex flex-col justify-center">
+                <span class="font-lato mt-2 me-4">Effective Date</span>
+              </div>
+              <div class="col-span-6 flex flex-col justify-center">
+                <input
+                  type="text"
+                  formControlName="effectiveDate"
+                  name="url"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-2 flex flex-col justify-center">
+                <span class="font-lato mt-2 me-4">URL</span>
+              </div>
+              <div class="col-span-6 flex flex-col justify-center">
+                <input
+                  type="text"
+                  formControlName="mclrUrl"
+                  name="url"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 w-full mt-2">
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">Overnight</span>
+                <input
+                  type="text"
+                  formControlName="overnight"
+                  name="overnight"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">1 Year</span>
+                <input
+                  type="text"
+                  formControlName="oneYear"
+                  name="oneYear"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">1 Month</span>
+                <input
+                  type="text"
+                  formControlName="oneMonth"
+                  name="oneMonth"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">2 Years</span>
+                <input
+                  type="text"
+                  formControlName="twoYear"
+                  name="twoYear"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">3 Months</span>
+                <input
+                  type="text"
+                  formControlName="threeMonth"
+                  name="threeMonth"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">3 Years</span>
+                <input
+                  type="text"
+                  formControlName="threeYear"
+                  name="threeYear"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">6 Months</span>
+                <input
+                  type="text"
+                  formControlName="sixMonth"
+                  name="sixMonth"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+
+              <div class="col-span-1 flex flex-col justify-center">
+                <span class="font-lato me-4">5 Years</span>
+                <input
+                  type="text"
+                  formControlName="fiveYear"
+                  name="fiveYear"
+                  class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+                />
+              </div>
+            </div>
+
+            <div class="flex flex-row items-center justify-end my-3">
+              <button class="btn-blue me-0" (click)="closeUpdate()">
+                Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>

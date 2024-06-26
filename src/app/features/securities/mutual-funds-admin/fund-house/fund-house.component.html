@@ -1,0 +1,255 @@
+<app-side-form #sideForm [isOpened]="false">
+  <app-page-container [noPad]="true" nav>
+    @switch (activeTab) { @case (tabs[2]) {
+    <ng-container *ngTemplateOutlet="monthlyFundHouseAAUMForm"></ng-container> }
+    @case (tabs[0]) {
+    <app-edit-fund-house-form
+      *ngIf="activeTab === tabs[0]"
+      [sideNavObj]="sideForm"
+      [sideNavTitle]="sideNavTitle"
+      [formPayload]="sideFormPayload"
+      (formCallback)="addEditFundHouseFormCallback()"
+    >
+    </app-edit-fund-house-form>
+    }}
+  </app-page-container>
+  <app-page-container navContent>
+    <app-page-title>Fund House</app-page-title>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChanged($event)">
+      <!-- Tab 1 -->
+      <div *ngIf="activeTab === tabs[0]">
+        <app-edit-fund-house
+          #addEditLoneSchemeView
+          [sideNavObj]="sideForm"
+          (sideFormController)="addEditFundHouseFormController($event)"
+        ></app-edit-fund-house>
+      </div>
+      <div *ngIf="activeTab === tabs[1]">
+        <app-content-card>
+          <form [formGroup]="AumParamForm" (submit)="uploadfundamu()">
+            <div class="flex flex-col items-center w-full gap-3">
+              <div class="flex flex-row w-1/2 justify-center items-end gap-3">
+                <app-select-field
+                  label="Select Year"
+                  class="flex-1"
+                  [control]="uploadAumFormControllers('year')"
+                >
+                  <option *ngFor="let fyyear of fyyears" [value]="fyyear.id">
+                    {{ fyyear.name }}
+                  </option>
+                </app-select-field>
+                <app-select-field
+                  label="Select Quarter"
+                  class="flex-1"
+                  [control]="uploadAumFormControllers('quarter')"
+                >
+                  <option
+                    *ngFor="let fyquarter of fyquarters"
+                    [value]="fyquarter.id"
+                  >
+                    {{ fyquarter.name }}
+                  </option>
+                </app-select-field>
+                <app-text-field
+                  class="flex-1"
+                  label="Select file"
+                  type="file"
+                  (onInputChanged)="onFileSelected($event)"
+                ></app-text-field>
+              </div>
+              <div class="flex flex-row gap-3 w-fit">
+                <app-app-button class="flex-1" type="submit">
+                  Upload
+                </app-app-button>
+                <app-app-button
+                  btnClass="secondary"
+                  class="flex-1"
+                  type="reset"
+                >
+                  Clear
+                </app-app-button>
+              </div>
+            </div>
+          </form>
+        </app-content-card>
+      </div>
+      <div *ngIf="activeTab === tabs[2]">
+        <div class="flex flex-row justify-end w-full mb-2">
+          <app-app-button
+            (click)="add_aum_monthly()"
+            btnClass="primary"
+            class="ml-2 mr-1 mt-1"
+          >
+            <div icon>
+              <fa-icon [icon]="addIcon"></fa-icon>
+            </div>
+            Add Monthly AAUM
+          </app-app-button>
+          <app-app-button
+            (click)="sideForm.toggleFormNav()"
+            btnClass="secondary"
+            class="mt-1"
+          >
+            <div icon>
+              <fa-icon [icon]="filterIcon"></fa-icon>
+            </div>
+            Filters
+          </app-app-button>
+        </div>
+
+        <table mat-table [dataSource]="dataSource2">
+          <ng-container matColumnDef="srno" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="id" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Fund House ID</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.id }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Fund House Name</th>
+            <td mat-cell *matCellDef="let element">
+              <a
+                class="scheme-a"
+                href="javascript:;"
+                (click)="editMonthlyAum(element)"
+              >
+                {{ element?.bp_name }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="aum_amount" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Monthly AAUM(cr)</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.aum_amount | number : "2." }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+        </table>
+        <mat-paginator
+          #paginator2
+          class="{{ dataSource2.data.length !== 0 ? '!block' : '!hidden' }}"
+          [pageSizeOptions]="[10, 20, 30]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+
+      <div *ngIf="activeTab === tabs[3]">
+        <app-content-card>
+          <div class="row d-flex">
+            <div class="row">
+              <h3>
+                Available Fund House :
+                <a class="scheme-a">
+                  {{ avaFundHouse.fundhouse }}
+                </a>
+              </h3>
+
+              <app-app-button
+                class="flex-1"
+                type="submit"
+                (click)="pullData('pullFund')"
+              >
+                <span *ngIf="!pullbtnimg">Get Fund House From AMFI</span>
+                <span *ngIf="pullbtnimg">Processing...</span>
+              </app-app-button>
+              <hr class="mt-5 mb-5" />
+              <h3>Create Fund House</h3>
+              <div class="flex flex-row">
+                <form
+                  id="cffrm"
+                  [formGroup]="addFundhouseForm"
+                  (ngSubmit)="addFundHouse()"
+                >
+                  <div class="flex flex-row">
+                    <app-text-field
+                      type="text"
+                      class="mr-2"
+                      label="Fund House Name"
+                      placeholder="Enter New Fund house"
+                      [control]="getFormControllers('fname')"
+                    >
+                    </app-text-field>
+                    <div class="flex flex-row">
+                      <app-app-button type="submit" class="mr-2 mt-3"
+                        >Save</app-app-button
+                      >
+                      <app-app-button
+                        btnClass="secondary"
+                        class="mt-3"
+                        type="reset"
+                        >Clear</app-app-button
+                      >
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </app-content-card>
+      </div>
+    </app-tab-view>
+  </app-page-container>
+</app-side-form>
+
+<ng-template #monthlyFundHouseAAUMForm>
+  <form [formGroup]="monthlyAumForm" (ngSubmit)="getMonthlyAum()">
+    <div class="flex flex-col w-full px-2">
+      <app-page-title>
+        <div class="flex flex-row items-center gap-2">
+          <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+          Filters
+        </div>
+      </app-page-title>
+      <div class="grid grid-cols-1 items-center md:items-end w-full">
+        <div class="col-span-1">
+          <app-select-field
+            label="Select Year"
+            [control]="monthlyAumControllers('finYear')"
+          >
+            <option *ngFor="let fyyear of fyyear1" [value]="fyyear.id">
+              {{ fyyear.name }}
+            </option>
+          </app-select-field>
+        </div>
+        <div class="col-span-1">
+          <app-select-field
+            label="Select Month"
+            [control]="monthlyAumControllers('month')"
+          >
+            <option *ngFor="let Month of allmonths" [value]="Month.id">
+              {{ Month.name }}
+            </option>
+          </app-select-field>
+        </div>
+        <div class="col-span-1">
+          <div class="flex flex-row gap-3 items-center mt-[15px]">
+            <app-app-button class="flex-1" type="submit" [expanded]="true">
+              <div icon>
+                <fa-icon [icon]="searchIcon"></fa-icon>
+              </div>
+              Search
+            </app-app-button>
+            <app-app-button
+              class="flex-1"
+              btnClass="secondary"
+              type="reset"
+              [expanded]="true"
+            >
+              <div icon>
+                <fa-icon [icon]="clearIcon"></fa-icon>
+              </div>
+              Clear
+            </app-app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

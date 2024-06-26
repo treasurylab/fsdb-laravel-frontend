@@ -1,0 +1,22 @@
+<app-page-title class="px-3 pt-3"> Update Bank URL </app-page-title>
+<hr />
+<form
+  [formGroup]="bankUrlForm"
+  (ngSubmit)="updatebankurl()"
+  class="flex flex-col w-full items-end"
+>
+  <div class="p-3 w-full">
+    <app-text-field
+      label="URL"
+      placeholder="Enter valid URL"
+      [control]="getFormControllers('url')"
+    ></app-text-field>
+  </div>
+  <hr class="w-full" />
+  <div class="flex flex-row gap-3 w-fit m-3">
+    <app-app-button class="flex-1" type="submit">Submit</app-app-button>
+    <app-app-button btnClass="secondary" class="flex-1" (onTap)="closeModal()">
+      Cancel
+    </app-app-button>
+  </div>
+</form>

@@ -1,0 +1,106 @@
+@import "../../styles/global-styles.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+$sidenavColor: #f0f3f4;
+$sidenavContentBackground: #f6f8fc;
+$borderColor: #d6dde1;
+$backgroundColor: F9FBFD;
+
+//Sidenav ScrollBar
+::ng-deep .mat-drawer-inner-container::-webkit-scrollbar {
+  width: 4px;
+  overflow-y: scroll;
+  background: transparent;
+  box-shadow: inset 0 0 4px white;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  overflow-y: scroll;
+  background: transparent;
+  box-shadow: inset 0 0 4px white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+}
+
+mat-sidenav-container {
+  background-color: $sidenavContentBackground;
+}
+
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+mat-sidenav-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  background-color: $backgroundColor;
+}
+
+mat-sidenav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100% - 74px);
+}
+
+.sticky-container {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.sticky-content {
+  padding: 16px;
+}
+
+//Collapse button
+#collapse-icon {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: -5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  border-color: rgb(229 231 235/1);
+  border-width: 1px;
+  background-color: white;
+  padding: 0.25rem;
+  top: 20px;
+  cursor: pointer;
+  z-index: 10;
+
+  &:hover {
+    background-color: #0866e4;
+    color: white;
+  }
+}
+
+.collapse-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+#hover-wrapper {
+  position: absolute;
+  right: -8px;
+  width: 8px;
+  height: 100%;
+  border-color: #0866e4;
+  border-width: 2px;
+  border-style: none;
+}

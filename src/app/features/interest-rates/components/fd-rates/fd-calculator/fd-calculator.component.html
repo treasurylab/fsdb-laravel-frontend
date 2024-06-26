@@ -1,0 +1,184 @@
+<app-page-container>
+  <app-page-container>
+    <app-page-title subHeading="Calculate return on investment in FDs"
+      >FD Rates Calculator
+    </app-page-title>
+    <div class="flex flex-col gap-3 w-full h-full">
+      <div class="flex flex-row items-stretch justify-center gap-3">
+        <app-content-card class="w-2/3" [noPad]="false">
+          <div class="flex w-full">
+            <div class="flex flex-col w-1/2">
+              <div class="flex justify-between mb-0 mt-3">
+                <label
+                  for="totinv"
+                  class="px-2 text-base font-poppins text-gray-600 mt-2"
+                  >Total Investment (₹.)</label
+                >
+                <div class="bg-[#F6F8FC] mr-2 border rounded-[5px]">
+                  <input
+                    type="number"
+                    id="totinv"
+                    [(ngModel)]="sv"
+                    (ngModelChange)="calculate()"
+                    class="p-2 !pl-0.5 w-24 text-base text-gray-600 font-bold bg-[#F6F8FC] focus:outline-none focus:border-none text-center"
+                  />
+                </div>
+              </div>
+              <div class="flex justify-between w-full mb-4 mt-1">
+                <mat-slider min="5000" max="1000000" step="1000">
+                  <input
+                    matSliderThumb
+                    [(ngModel)]="sv"
+                    (ngModelChange)="calculate()"
+                  />
+                </mat-slider>
+              </div>
+              <div class="flex justify-between mb-0 mt-3">
+                <label
+                  for="rate"
+                  class="px-2 text-base font-poppins text-gray-600 mt-2"
+                  >Rate of Interest (%)</label
+                >
+                <div class="bg-[#F6F8FC] mr-2 border rounded-[5px]">
+                  <input
+                    type="number"
+                    id="rate"
+                    maxlength="2"
+                    min="3"
+                    maxlength="20"
+                    [(ngModel)]="roi"
+                    (ngModelChange)="calculate()"
+                    class="p-2 !pl-0.5 w-24 text-base text-gray-600 font-bold bg-[#F6F8FC] focus:outline-none focus:border-none text-center"
+                  />
+                </div>
+              </div>
+              <div class="flex justify-stretch mb-4 mt-1">
+                <!-- <mat-slider min="3" max="20" step="0.1"  >
+              <input matSliderThumb class="w-full h-5 ml-3" [(ngModel)]="roi" />
+            </mat-slider> -->
+                <mat-slider min="3" max="20" step="0.1">
+                  <input
+                    matSliderThumb
+                    class="w-full h-5 ml-3"
+                    [(ngModel)]="roi"
+                    (ngModelChange)="calculate()"
+                  />
+                </mat-slider>
+              </div>
+              <div class="flex justify-between mb-0 mt-3">
+                <label
+                  for="time"
+                  class="px-2 text-base font-poppins text-gray-600 mt-2"
+                  >Time Period (Years)</label
+                >
+                <div class="bg-[#F6F8FC] mr-2 border rounded-[5px]">
+                  <input
+                    type="number"
+                    id="time"
+                    [(ngModel)]="dur"
+                    (ngModelChange)="calculate()"
+                    class="p-2 !pl-0.5 w-24 text-base text-gray-600 font-bold bg-[#F6F8FC] focus:outline-none focus:border-none text-center"
+                  />
+                </div>
+              </div>
+              <div class="flex justify-between mb-4 mt-1">
+                <mat-slider min="1" max="20" step="1">
+                  <input
+                    matSliderThumb
+                    class="w-full h-5 ml-3"
+                    [(ngModel)]="dur"
+                    (ngModelChange)="calculate()"
+                  />
+                </mat-slider>
+              </div>
+              <div class="flex justify-between mb-0 mt-3 items-center">
+                <label
+                  for="totinv"
+                  class="px-2 text-base font-poppins text-gray-500"
+                  >Invested Amount</label
+                >
+                <div class="mr-2 text-base font-poppin">
+                  {{ sv | currency : "INR" : "symbol" : "1.0-0" }}
+                </div>
+              </div>
+              <div class="flex justify-between mb-0 mt-3 items-center">
+                <label
+                  for="totinv"
+                  class="px-2 text-base font-poppins text-gray-500"
+                  >Est. Returns</label
+                >
+                <div class="mr-2 text-base font-poppin">
+                  {{ int | currency : "INR" : "symbol" : "1.0-0" }}
+                </div>
+              </div>
+              <div class="flex justify-between my-5 items-center">
+                <label
+                  for="totinv"
+                  class="px-2 text-base font-poppins text-gray-500"
+                  >Total Returns</label
+                >
+                <div class="mr-2">
+                  {{ amt | currency : "INR" : "symbol" : "1.0-0" }}
+                </div>
+              </div>
+            </div>
+            <div class="flex w-1/2 justify-center items-center">
+              <canvas
+                id="pieChart"
+                style="width: 300px; height: 300px; float: right"
+              ></canvas>
+            </div>
+          </div>
+        </app-content-card>
+        <app-content-card class="w-1/3 flex items-end" [noPad]="false">
+          <div class="flex flex-row justify-between items-center py-3 px-3">
+            <app-page-title [pageInfo]="pageInfo" [isCardTitle]="true">
+              FD Rates
+            </app-page-title>
+            <div class="flex justify-end items-start w-fit h-full">
+              <span class="text-sm font-poppins text-gray-500"
+                >As On: {{ latestDate | date }}</span
+              >
+            </div>
+
+            <!-- <div
+              id="optionsContainer"
+              class="flex flex-row space-x-2 items-center font-medium text-sm justify-center pb-3"
+            ></div> -->
+          </div>
+          <div class="custom-table-container">
+            <table mat-table [dataSource]="dataSource" class="custom-table">
+              <ng-container matColumnDef="bank_code">
+                <th mat-header-cell *matHeaderCellDef class="!text-center">
+                  Bank Name
+                </th>
+                <td mat-cell *matCellDef="let element" class="!text-center">
+                  {{ element.bank_code }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="max_value" class="column-15">
+                <th mat-header-cell class="!text-center" *matHeaderCellDef>
+                  Interest Rate
+                </th>
+                <td mat-cell class="!text-center" *matCellDef="let element">
+                  {{
+                    element.max_value.includes("%")
+                      ? element.max_value
+                      : element.max_value + "%"
+                  }}
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+              ></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        </app-content-card>
+      </div>
+    </div>
+  </app-page-container>
+</app-page-container>

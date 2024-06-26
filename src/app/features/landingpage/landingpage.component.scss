@@ -1,0 +1,18 @@
+#download {
+  // background-image: "assete/images/img14.png";
+  background-image: url("../../../assets/images/img14.png");
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.nav-button {
+  &:hover {
+    color: #160577;
+  }
+}
+
+.company-logo {
+  max-width: 200px;
+}

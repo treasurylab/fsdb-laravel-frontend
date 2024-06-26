@@ -1,0 +1,83 @@
+<app-page-container>
+  <div class="flex flex-row justify-between items-start">
+    <app-page-title
+      subHeading="{{
+        data['action'] === 'edit' ? 'Edit' : 'View'
+      }} MCLR Master Record"
+    >
+      {{ data["action"] === "edit" ? "Edit" : "View" }}
+    </app-page-title>
+    <button (click)="closeDialog()">
+      <fa-icon class="fa-xl" [icon]="closeIcon"></fa-icon>
+    </button>
+  </div>
+  <div class="w-full h-[45vh] pb-3 overflow-auto">
+    <table mat-table [dataSource]="dataSource" class="w-full">
+      <!-- Position Column -->
+      <ng-container matColumnDef="No">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td class="!text-center" mat-cell *matCellDef="let bank; let i = index">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="Bank Code">
+        <th mat-header-cell *matHeaderCellDef>Bank Code</th>
+        <td class="!text-center" mat-cell *matCellDef="let bank">
+          {{ bank.bank_code }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Bank Name">
+        <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+        <td class="!text-center" mat-cell *matCellDef="let bank">
+          {{ bank.name }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="URL">
+        <th mat-header-cell *matHeaderCellDef>Url</th>
+        <td class="!text-center" mat-cell *matCellDef="let bank">
+          <a
+            class="text-blue-500"
+            target="_blank"
+            href="{{ bank.url_mclr_update }}"
+            >Url</a
+          >
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Effective Date">
+        <th mat-header-cell *matHeaderCellDef>Effective Date</th>
+        <td class="!text-center" mat-cell *matCellDef="let bank">
+          {{ bank.effective_date }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td class="!text-center" mat-cell *matCellDef="let bank">
+          <div class="flex flex-row w-[100px] justify-center">
+            <img
+              class="w-[20px]"
+              (click)="openEditNav(bank)"
+              src=" {{
+                data['action'] === 'edit'
+                  ? 'assets/icons/pencil.png'
+                  : 'assets/icons/eye.png'
+              }} "
+              alt="edit"
+            />
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</app-page-container>

@@ -1,0 +1,80 @@
+@import "../../../../../styles/global-styles.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+.mat-mdc-header-cell {
+  color: $text-secondary;
+  font-size: small;
+  background: $row-focused !important;
+}
+
+.mdc-data-table__cell {
+  font-family: Poppins;
+  font-weight: 500;
+  line-height: 0.5in;
+}
+
+td.mat-mdc-cell.mdc-data-table__cell.cdk-cell {
+  font-size: 14px;
+  line-height: 15px;
+}
+
+th.mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell {
+  font-size: 12px;
+  padding: 8px;
+  margin: 0px;
+  text-align: center;
+}
+
+#table-container #table img {
+  max-width: 20px;
+  margin-right: 10px;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+#table-container #table img:hover {
+  opacity: 1;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: 1.25em;
+  background: #fff;
+}
+
+mat-dialog-content {
+  max-height: 500px !important;
+}
+
+mat-tab-group {
+  max-height: 460px !important;
+}
+
+.table-parent-container {
+  max-height: 95%;
+  overflow-y: auto;
+}
+
+table {
+  color: #000;
+}
+
+h4 {
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  color: #494f58 !important;
+}
+
+tbody {
+  overflow-x: hidden;
+}
+
+th {
+  background-color: #f7fafc;
+}
+
+tr:nth-child(even) {
+  background: #ededed;
+}

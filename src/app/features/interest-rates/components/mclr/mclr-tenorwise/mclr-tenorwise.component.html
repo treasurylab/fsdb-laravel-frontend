@@ -1,0 +1,179 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <form [formGroup]="tenorWiseForm" (submit)="getMclrTenorWiseRates()">
+      <div class="flex flex-col w-full px-2">
+        <app-page-title>
+          <div class="flex flex-row items-center gap-2">
+            <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+            Filters
+          </div>
+        </app-page-title>
+        <div class="grid grid-cols-1 items-end justify-between w-full gap-3">
+          <div class="col-span-1">
+            <app-select-field
+              label="Tenor"
+              [control]="getFormControllers('mfreq_code')"
+            >
+              <option *ngFor="let tenor of tenors" [value]="tenor.mfreq_code">
+                {{ tenor.viewValue }}
+              </option>
+            </app-select-field>
+          </div>
+          <div class="col-span-1">
+            <app-text-field
+              type="date"
+              label="From date"
+              [control]="getFormControllers('keydate')"
+            >
+            </app-text-field>
+          </div>
+          <div class="col-span-1">
+            <mat-checkbox id="bestrate" formControlName="bestrate" [checked]>
+              Best Rate
+            </mat-checkbox>
+          </div>
+          <div class="col-span-1">
+            <div class="flex flex-row gap-3 items-center mt-[15px]">
+              <app-app-button class="flex-1" type="submit" [expanded]="true">
+                <div icon>
+                  <fa-icon [icon]="searchIcon"></fa-icon>
+                </div>
+                Search
+              </app-app-button>
+              <app-app-button
+                class="flex-1"
+                btnClass="secondary"
+                type="reset"
+                [expanded]="true"
+              >
+                <div icon>
+                  <fa-icon [icon]="clearIcon"></fa-icon>
+                </div>
+                Clear
+              </app-app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </app-page-container>
+  <app-page-container navContent>
+    <app-page-title>MCLR Tenor Wise</app-page-title>
+    <!-- Table Header -->
+    <div class="flex flex-row mb-3">
+      <app-app-button
+        (click)="ngOnInit()"
+        type="button"
+        btnClass="secondary"
+        class="mt-3"
+      >
+        <div icon>
+          <fa-icon [icon]="refreshIcon"></fa-icon>
+        </div>
+      </app-app-button>
+
+      <div class="mr-auto mt-4 ml-2">
+        <app-table-chips [dataArray]="tableChips"></app-table-chips>
+      </div>
+      <div class="flex flex-row ml-auto gap-2">
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-3"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <!-- Export Button -->
+        <app-app-button
+          *ngIf="tenorWisetRates"
+          (click)="exportToCsv(tenorWisetRates.data, 'MCLR Tenor Wise Rates')"
+          btnClass="tertiary"
+          class="mt-3"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+    </div>
+    <!-- Table -->
+
+    <table mat-table [dataSource]="tenorWisetRates">
+      <ng-container matColumnDef="srno">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="bank_code">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Bank Code
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-align: center">
+          {{ element.bank_code }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="bank_name">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Bank Name
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: left">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="mclr_aum">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Asset Size (In Crores)
+          <button (click)="sortTotalAsset('asc')">
+            &#9650;
+            <!-- Upward arrow symbol -->
+          </button>
+          <button (click)="sortTotalAsset('desc')">
+            &#9660;
+            <!-- Downward arrow symbol -->
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.total_asset | number : "1.2-2" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="mclr_rate">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Rate
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.mclr_rate }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="effective_date">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Effective Date
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.effective_date }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row center" *matNoDataRow>
+        <td class="mat-cell !py-5" colspan="9">No Data Found</td>
+      </tr>
+    </table>
+    <mat-paginator
+      class="{{ tenorWisetRates.data.length !== 0 ? '!block' : '!hidden' }}"
+      [pageSizeOptions]="[10, 20, 30]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </app-page-container>
+</app-side-form>

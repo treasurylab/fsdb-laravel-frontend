@@ -1,0 +1,50 @@
+<div class="mb-3">
+  <app-app-button btnClass="tertiary" (click)="exportToCsv()">
+    <fa-icon [icon]="exportIcon"></fa-icon>
+    Export
+  </app-app-button>
+</div>
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="srno" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="bankname">
+    <th mat-header-cell *matHeaderCellDef class="px-8">Bank Name</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.bank_name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="refno" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Ref No.</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.ref }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="rate" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Rate</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.rate }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="effectivedate" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Effective Date</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.effective_date }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr class="mat-row center" *matNoDataRow>
+    <td class="mat-cell py-5" [attr.colspan]="displayedColumns.length">
+      No Data Found
+    </td>
+  </tr>
+</table>
+<mat-paginator
+  [pageSizeOptions]="[10, 20, 30]"
+  showFirstLastButtons
+></mat-paginator>

@@ -1,0 +1,130 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-tabbed-date-form
+      [formGroup]="corporatActionformData"
+      (onFormSubmitted)="getCorporateActionData()"
+    ></app-tabbed-date-form>
+  </app-page-container>
+  <app-page-container navContent>
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="Corporate Action"
+        tooltip="The rate at which banks borrow unsecured funds from one another in the interbank market"
+        [pageInfo]="corporateInfo"
+      >
+        Corporate Action
+      </app-page-title>
+      <span class="select-none">
+        <a
+          href="https://www.nseindia.com/companies-listing/corporate-filings-actions"
+          target="_blank"
+        >
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">End of day</span>
+      </span>
+    </div>
+    <div class="flex flex-col">
+      <div class="table-comp-header">
+        <div class="mr-auto">
+          <app-table-chips [dataArray]="tableChips"></app-table-chips>
+        </div>
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-1 mr-2"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <app-app-button
+          *ngIf="exportCorporateAction"
+          (click)="exportToCsv(corporateActionRateList, 'Corporate Action')"
+          type="button"
+          btnClass="tertiary"
+          class="mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+
+      <div class="w-full overflow-x-auto">
+        <table mat-table [dataSource]="corporateActionRateList">
+          <ng-container matColumnDef="date" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let item">{{ item.sdate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="symbol" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Symbol</th>
+            <td mat-cell *matCellDef="let item">{{ item.symbol }}</td>
+          </ng-container>
+          <ng-container matColumnDef="company_name">
+            <th mat-header-cell *matHeaderCellDef>Company Name</th>
+            <td mat-cell *matCellDef="let item" style="text-align: left">
+              {{ item.company_name }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="series">
+            <th mat-header-cell *matHeaderCellDef>Series</th>
+            <td mat-cell *matCellDef="let item">{{ item.series }}</td>
+          </ng-container>
+          <ng-container matColumnDef="facevalue" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Face Value</th>
+            <td mat-cell *matCellDef="let item">{{ item.face_value }}</td>
+          </ng-container>
+          <ng-container matColumnDef="purpose" class="!w-[100px]">
+            <th mat-header-cell *matHeaderCellDef>Purpose</th>
+            <td mat-cell *matCellDef="let item" style="text-align: left">
+              {{ item.purpose }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="exdate">
+            <th mat-header-cell *matHeaderCellDef>Ex-Date</th>
+            <td mat-cell *matCellDef="let item">
+              {{ item.ex_date | date : "dd.MM.yyyy" }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="newshare" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>New Share</th>
+            <td mat-cell *matCellDef="let item">{{ item.new_share }}</td>
+          </ng-container>
+          <ng-container matColumnDef="oldshare">
+            <th mat-header-cell *matHeaderCellDef>Old Share</th>
+            <td mat-cell *matCellDef="let item">{{ item.old_share }}</td>
+          </ng-container>
+          <ng-container matColumnDef="dividend">
+            <th mat-header-cell *matHeaderCellDef>Dividend</th>
+            <td mat-cell *matCellDef="let item">{{ item.div_val }}</td>
+          </ng-container>
+          <ng-container matColumnDef="premium">
+            <th mat-header-cell *matHeaderCellDef>Premium</th>
+            <td mat-cell *matCellDef="let item">{{ item.premium }}</td>
+          </ng-container>
+          <ng-container matColumnDef="prev_fv">
+            <th mat-header-cell *matHeaderCellDef>Prev Face Value</th>
+            <td mat-cell *matCellDef="let item">{{ item.pre_fv }}</td>
+          </ng-container>
+          <ng-container matColumnDef="next_fv">
+            <th mat-header-cell *matHeaderCellDef>Next Face Value</th>
+            <td mat-cell *matCellDef="let item">{{ item.next_fv }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+      <mat-paginator
+        class="{{
+          corporateActionRateList.data.length !== 0 ? '!block' : '!hidden'
+        }}"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </app-page-container>
+</app-side-form>

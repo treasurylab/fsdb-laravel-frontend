@@ -1,0 +1,267 @@
+<div #mainContainer class="flex flex-col bg-[#fafafa] h-full w-full px-3 py-3">
+  <!-- Main Components  -->
+  <div class="flex flex-row gap-3">
+    <div class="flex flex-col gap-3">
+      <!--Buttons-->
+      <app-content-card class="h-fit">
+        <app-page-title
+          subHeading="These are the buttons"
+          [pageInfo]="buttonInfo"
+        >
+          Buttons
+        </app-page-title>
+        <hr />
+        <div class="flex flex-row gap-3 m-3">
+          <app-app-button (click)="({})" type="button">Primary</app-app-button>
+          <app-app-button (click)="({})" btnClass="secondary"
+            >Secondary</app-app-button
+          >
+          <app-app-button (click)="({})" btnClass="tertiary"
+            >Tertiary</app-app-button
+          >
+          <app-app-button (click)="({})" btnClass="primary" [disabled]="true"
+            >Disabled</app-app-button
+          >
+        </div>
+        <div class="flex flex-row gap-3 m-3">
+          <app-app-button (click)="({})" type="button" btnClass="secondary">
+            <div icon>
+              <fa-icon [icon]="viewIcon"></fa-icon>
+            </div>
+            View
+          </app-app-button>
+          <app-app-button (click)="({})" type="button" btnClass="secondary">
+            <div icon>
+              <fa-icon [icon]="editIcon"></fa-icon>
+            </div>
+            Edit
+          </app-app-button>
+          <app-app-button (click)="({})" type="button" btnClass="danger">
+            <div icon>
+              <fa-icon [icon]="deleteIcon"></fa-icon>
+            </div>
+            Delete
+          </app-app-button>
+        </div>
+        <div class="flex flex-row gap-3 m-3">
+          <app-app-button (click)="({})" type="submit" btnClass="primary">
+            <div icon>
+              <fa-icon [icon]="searchIcon"></fa-icon>
+            </div>
+            Search
+          </app-app-button>
+          <app-app-button (click)="({})" type="reset" btnClass="secondary">
+            <div icon>
+              <fa-icon [icon]="clearIcon"></fa-icon>
+            </div>
+            Clear
+          </app-app-button>
+          <app-app-button (click)="({})" type="button" btnClass="tertiary">
+            <div icon>
+              <fa-icon [icon]="exportIcon"></fa-icon>
+            </div>
+            Export
+          </app-app-button>
+        </div>
+        <div class="flex flex-row gap-3 m-3">
+          <app-app-button (click)="({})" type="button" btnClass="secondary">
+            <div icon>
+              <fa-icon [icon]="viewIcon"></fa-icon>
+            </div>
+          </app-app-button>
+          <app-app-button (click)="({})" type="button" btnClass="secondary">
+            <div icon>
+              <fa-icon [icon]="editIcon"></fa-icon>
+            </div>
+          </app-app-button>
+          <app-app-button (click)="({})" type="button" btnClass="danger">
+            <div icon>
+              <fa-icon [icon]="deleteIcon"></fa-icon>
+            </div>
+          </app-app-button>
+          <app-app-button (click)="({})" type="button" btnClass="secondary">
+            <div icon>
+              <fa-icon [icon]="refreshIcon"></fa-icon>
+            </div>
+          </app-app-button>
+        </div>
+        <app-tenor-chips
+          [buttonNameList]="['1M', '3M', '6M', '1Y', '2Y', '5Y']"
+          selectedTenor="6M"
+        ></app-tenor-chips>
+      </app-content-card>
+
+      <!-- Titling Components  -->
+      <app-content-card class="h-fit">
+        <app-page-title>Titling Components</app-page-title>
+        <hr />
+        <app-page-title
+          matTooltip="<app-page-title>"
+          subHeading="This is a subheading"
+          [pageInfo]="buttonInfo"
+          >\ This is a Heading
+        </app-page-title>
+        <app-page-title-small
+          class="mt-4"
+          matTooltip="<app-page-title-small>"
+          matTooltipPositionAtOrigin="true"
+        >
+          This is a small page heading
+        </app-page-title-small>
+      </app-content-card>
+    </div>
+
+    <!--Input Fields-->
+    <app-content-card class="h-fit">
+      <app-page-title subHeading="These are the input fields">
+        Input Fields
+      </app-page-title>
+      <hr class="mb-2" />
+      <div class="flex flex-col gap-3">
+        <div class="flex flex-row w-full gap-3">
+          <app-text-field
+            matTooltip="<app-text-field>"
+            class="flex-1"
+            label="Text Input Field"
+            type="text"
+            placeholder="Enter some text..."
+          ></app-text-field>
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="Text Field Disabled"
+            type="text"
+            placeholder="You can't edit this..."
+            [disabled]="true"
+          ></app-text-field>
+        </div>
+        <div class="flex flex-row w-full gap-3">
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="Username/Email"
+            type="email"
+            placeholder="Enter your email"
+          ></app-text-field>
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+          ></app-text-field>
+        </div>
+        <div class="flex flex-row gap-3">
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="Range"
+            type="range"
+          ></app-text-field>
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="File Upload"
+            type="file"
+          ></app-text-field>
+        </div>
+        <div class="flex flex-row gap-3">
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="Date"
+            type="date"
+          ></app-text-field>
+          <app-text-field
+            mattooltip="<app-text-field>"
+            class="flex-1"
+            label="Date and Time"
+            type="datetime-local"
+          ></app-text-field>
+        </div>
+        <div class="flex flex-row gap-3 items-end">
+          <app-text-field
+            matTooltip="<app-text-field>"
+            class="flex-1"
+            label="Default Search"
+            type="search"
+            placeholder="Enter keyword..."
+          >
+          </app-text-field>
+        </div>
+
+        <app-select-field label="Select field">
+          <option *ngFor="let option of selectOptions" [value]="option.id">
+            {{ option.name }}
+          </option>
+        </app-select-field>
+      </div>
+
+      <div class="flex flex-row gap-3 m-3">
+        <div #RadioButtons></div>
+        <div #RadioButtonsDisabled></div>
+        <div #Checkbox></div>
+        <div #CheckboxDisabled></div>
+      </div>
+    </app-content-card>
+
+    <!-- Content Components  -->
+    <app-content-card class="h-fit">
+      <app-page-title> Content Components </app-page-title>
+      <hr />
+      <app-page-title-small class="my-2">
+        Value Container
+      </app-page-title-small>
+      <div class="flex flex-col items-start justify-start w-fit gap-3">
+        <app-value-content
+          class="mr-4 flex-1"
+          icon="show_chart"
+          title="REPO RATE"
+          date="2024-03-15"
+          value="10"
+          bgColor="#1C326B"
+        ></app-value-content>
+        <app-value-content
+          class="mr-4 flex-1"
+          icon="show_chart"
+          title="SOFR RATE"
+          date="2024-03-15"
+          value="10"
+          bgColor="#0096c7"
+        ></app-value-content>
+        <app-value-content
+          class="mr-4 flex-1"
+          icon="show_chart"
+          title="MIBOR"
+          date="2024-03-15"
+          value="10"
+          bgColor="#48cae4"
+        ></app-value-content>
+      </div>
+      <app-page-title-small class="my-2 mt-4">
+        Info Content Container
+      </app-page-title-small>
+      <div id="info-container-1" class="flex-1 mr-2">
+        <app-block-content
+          title="Mclr Rates"
+          body="Access monthly MCLR rates from 54 banks on FSDB for easy
+        comparisons and to choose the best rate"
+          learnMoreRouterLink="/app/interest-rates/mclr/dashboard"
+        ></app-block-content>
+      </div>
+    </app-content-card>
+  </div>
+
+  <div class="flex flex-row gap-3">
+    <!-- Table Component  -->
+    <app-content-card matTooltip="<app-table>" class="flex-1 mt-3 h-fit">
+      <app-table> </app-table>
+    </app-content-card>
+    <app-content-card class="flex-1 mt-3 h-fit">
+      <app-line-graph
+        class="h-[400px]"
+        [chartOptions]="chartOptions"
+      ></app-line-graph>
+    </app-content-card>
+  </div>
+</div>

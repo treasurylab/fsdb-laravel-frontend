@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "source": "^/fsdbapp/(.*)$",
+      "target": "$1",
+      "destination": "fsdbapp"
+    }
+  ]
+}

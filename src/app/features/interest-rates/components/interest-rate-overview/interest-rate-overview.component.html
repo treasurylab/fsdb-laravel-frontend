@@ -1,0 +1,408 @@
+<app-page-container>
+  <div class="mainContainer">
+    <div>
+      <app-page-title-small
+        heading="Interest Rates Overview"
+      ></app-page-title-small>
+    </div>
+
+    <div
+      id="blocks-container"
+      class="bg-white lg:bg-transparent lg:!shadow-none summary-card flex flex-row w-full h-1/2 py-2 lg:py-0 lg:rounded-none"
+    >
+      <app-value-content
+        class="mr-4"
+        icon="show_chart"
+        title="REPO RATE"
+        date="{{ rbiDate | date : 'dd.MM.yyyy' }}"
+        [value]="repo"
+        bgColor="#1C326B"
+        valueSymbol="%"
+      ></app-value-content>
+
+      <app-value-content
+        class="mr-4"
+        icon="graphic_eq"
+        title="REVERSE REPO RATE"
+        date="{{ rbiDate | date : 'dd.MM.yyyy' }}"
+        [value]="revrepo"
+        valueSymbol="%"
+        bgColor="#0466C8"
+      ></app-value-content>
+
+      <app-value-content
+        icon="bar_chart"
+        title="SOFR"
+        [date]="sofrdate"
+        [value]="sofr"
+        valueSymbol="%"
+        bgColor="#37C2CE"
+      ></app-value-content>
+    </div>
+  </div>
+
+  <div id="info-container" class="flex flex-row w-full mt-4">
+    <div id="info-container-1" class="flex-1 mr-2">
+      <app-block-content
+        title="MCLR Rates"
+        body="Access monthly MCLR rates from 54 banks on FSDB for easy
+      comparisons and to choose the best rate"
+        learnMoreRouterLink="/app/interest-rates/mclr/dashboard"
+      ></app-block-content>
+    </div>
+    <div id="info-container-2" class="flex-1 mr-2">
+      <app-block-content
+        title="Interest Payments"
+        body="Calculate interest payments for Loans, Swaps, and other derivatives
+        using MIBOR rates from FBIL"
+        learnMoreRouterLink="/app/interest-rates/benchmark-rates/in/mibor-data"
+      ></app-block-content>
+    </div>
+    <div id="info-container-3" class="flex-1 mr-2">
+      <app-block-content
+        title="FBIL Rates"
+        body="Value your investment portfolios with T-Bill and CD curve rates
+        from FBIL"
+        learnMoreRouterLink="/app/interest-rates/benchmark-rates/in/tbill-tenor-rate"
+      ></app-block-content>
+    </div>
+    <div id="info-container-4" class="flex-1 mr-2">
+      <app-block-content
+        title="SOFR rates"
+        body="Stay updated on the latest SOFR rates from the New York Fed for
+        your ECB deals"
+        learnMoreRouterLink="/app/interest-rates/benchmark-rates/global/sofr"
+      ></app-block-content>
+    </div>
+  </div>
+
+  <div
+    id="graph-container"
+    class="w-fit sm:w-full h-[575px] md:h-full flex flex-col md:flex-row gap-2 my-4"
+  >
+    <!-- PAST 6M MCLR COMPARISON DIV -->
+    <div
+      id="mclr-comparisons"
+      class="bg-white border-2 border-gray-200 rounded-lg flex-1"
+    >
+      <div
+        id="header"
+        class="flex flex-col md:flex-row justify-between items-start md:items-center py-3 px-5"
+      >
+        <div id="name" class="font-inter text-lg font-semibold">
+          Past 6M MCLR Comparison
+        </div>
+        <app-tenor-chips
+          [buttonNameList]="buttonNameList"
+          (clickedButton)="getMclrChartInfo($event)"
+          [selectedTenor]="selectedTenor"
+        ></app-tenor-chips>
+      </div>
+      <hr class="mb-4" />
+      <div #statContainer class="flex flex-row justify-between px-6">
+        <div #statContainer1 class="flex flex-col justify-start">
+          <span class="w-fit text-2xl font-bold font-poppins text-black">{{
+            bestMclrBank
+          }}</span>
+          <div class="flex flex-row items-center">
+            <span class="dot mr-2"></span
+            ><span class="font-poppins text-sm text-gray-500"
+              >Best Bank ({{ tenor6M }})
+            </span>
+          </div>
+        </div>
+        <div #statContainer2 class="w-fit h-full flex flex-col justify-end">
+          <div class="w-full flex flex-row justify-end">
+            <span class="w-fit text-2xl font-bold font-poppins text-black"
+              >{{ bestMclrRate }}%</span
+            >
+          </div>
+          <div class="flex flex-row items-center">
+            <span class="dot mr-2"></span
+            ><span class="font-poppins text-sm text-gray-500"
+              >Lowest Rate
+            </span>
+          </div>
+        </div>
+      </div>
+      <div #graphContainer class="p-5 h-full">
+        <!-- GRAPH FOR MCLR-TOP 5 BANKS MCLR RATE PAST 6 MONTHS -->
+        <div id="chart-container" class="block w-full h-full">
+          <canvas
+            #mclrChart
+            style="width: 100%; max-width: 700px; height: 400px"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+    <div
+      id="tbillgraph"
+      class="bg-white border-2 rounded-lg border-gray-200 w-fit sm:w-full h-[575px] md:h-full flex flex-col md:flex-row md:justify-between flex-1 mr-2"
+    >
+      <div class="w-full h-[575px] mx-0 overflow-hidden">
+        <div
+          id="header"
+          class="flex flex-col md:flex-row justify-between items-start md:items-center py-3 px-5"
+        >
+          <div id="name" class="font-inter text-lg font-semibold">
+            T-Bill Curve
+          </div>
+          <div id="date-container">
+            <span class="font-poppins text-gray-600 text-sm"
+              >As On: {{ currentDate }}</span
+            >
+          </div>
+        </div>
+        <hr />
+        <div #graphContainer class="p-5">
+          <div id="chart-container" class="block w-full">
+            <canvas
+              #tbillChart
+              style="width: 100%; max-width: 700px; height: 400px"
+            ></canvas>
+          </div>
+
+          <div class="flex flex-row justify-between items-center mt-7">
+            <table
+              class="border-separate border-spacing-0 font-poppins text-sm border border-gray-300 w-[45%]"
+            >
+              <thead>
+                <tr>
+                  <th
+                    class="bg-gray-400 px-4 border !rounded-tl-lg border-gray-300"
+                  >
+                    Tenor
+                  </th>
+                  <th
+                    class="bg-gray-400 px-4 border !rounded-tr-lg border-gray-300"
+                  >
+                    Rate
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    7 Days
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ d7 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    14 Days
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ d14 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    1 Month
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m1 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    2 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m2 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    3 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m3 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    4 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m4 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    5 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m4 }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table
+              class="border-separate border-spacing-0 font-poppins border border-gray-300 text-sm w-[45%]"
+            >
+              <thead>
+                <tr>
+                  <th
+                    class="bg-gray-400 border border-gray-300 !rounded-tl-lg px-4"
+                  >
+                    Tenor
+                  </th>
+                  <th
+                    class="bg-gray-400 border border-gray-300 !rounded-tr-lg px-4"
+                  >
+                    Rate
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    6 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m6 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    7 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m7 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    8 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m8 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    9 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m9 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    10 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m10 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    11 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m11 }}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    12 Months
+                  </td>
+                  <td
+                    class="px-4 border border-gray-300"
+                    style="text-align: center"
+                  >
+                    {{ m12 }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-page-container>

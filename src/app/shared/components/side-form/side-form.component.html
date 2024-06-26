@@ -1,0 +1,8 @@
+<mat-drawer-container class="h-full">
+  <mat-drawer #formNav class="!w-[320px] h-full" position="end" mode="side">
+    <ng-content select="[nav]"></ng-content>
+  </mat-drawer>
+  <mat-drawer-content class="h-full" [ngClass]="{ 'px-3': enablePadding }">
+    <ng-content select="[navContent]"></ng-content>
+  </mat-drawer-content>
+</mat-drawer-container>

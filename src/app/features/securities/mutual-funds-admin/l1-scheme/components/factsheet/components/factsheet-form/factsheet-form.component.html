@@ -1,0 +1,67 @@
+<div class="px-3">
+  <app-page-title>
+    <div class="flex flex-row items-center gap-2 px-2">
+      <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+      Filters
+    </div>
+  </app-page-title>
+  <form [formGroup]="factsheet" (ngSubmit)="submitForm()">
+    <div class="grid grid-cols-1 w-full">
+      <app-select-field
+        label="Select year"
+        placeHolder="Select"
+        [control]="getFormControllers('year')"
+      >
+        <option *ngFor="let fyyear of fyyears" [value]="fyyear.id">
+          {{ fyyear.id }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="Select month"
+        placeHolder="Select"
+        [control]="getFormControllers('month')"
+      >
+        <option *ngFor="let month of allmonths" [value]="month.id">
+          {{ month.name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="Select fund house"
+        placeHolder="Select"
+        [control]="getFormControllers('fmList')"
+      >
+        <option *ngFor="let list of fundHouseList" [value]="list.id">
+          {{ list.name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="Select category"
+        placeHolder="Select"
+        [control]="getFormControllers('category')"
+      >
+        <option *ngFor="let catg of categoryList" [value]="catg.id">
+          {{ catg.value }}
+        </option>
+      </app-select-field>
+      <div class="flex flex-row gap-3 w-full mt-[15px]">
+        <app-app-button class="flex-1" [expanded]="true" type="submit">
+          <div icon>
+            <fa-icon [icon]="searchIcon"></fa-icon>
+          </div>
+          Search
+        </app-app-button>
+        <app-app-button
+          class="flex-1"
+          [expanded]="true"
+          btnClass="secondary"
+          (onTap)="closeNav()"
+        >
+          <div icon>
+            <fa-icon [icon]="closeIcon"></fa-icon>
+          </div>
+          Close
+        </app-app-button>
+      </div>
+    </div>
+  </form>
+</div>

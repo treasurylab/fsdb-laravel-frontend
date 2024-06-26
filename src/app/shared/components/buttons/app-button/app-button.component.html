@@ -1,0 +1,15 @@
+<button
+  class="{{
+    buttonColorScheme
+  }} focus:ring-3 font-medium rounded-lg text-sm px-5 py-2.5 block {{
+    expanded ? 'w-full' : ''
+  }}"
+  type="{{ type }}"
+  (click)="onClickHandler()"
+  [disabled]="disabled"
+>
+  <div class="flex flex-row gap-3 items-center justify-center w-full">
+    <ng-content select="[icon]"></ng-content>
+    <ng-content></ng-content>
+  </div>
+</button>

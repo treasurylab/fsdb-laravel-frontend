@@ -1,0 +1,151 @@
+<app-page-container>
+  <app-page-title>MCLR Latest Rates</app-page-title>
+  <div class="flex flex-row mb-3">
+    <app-text-field
+      type="search"
+      (keyup)="applyFilter($event)"
+      placeholder="Search for a Bank..."
+    ></app-text-field>
+    <app-app-button
+      (click)="ngOnInit()"
+      type="button"
+      btnClass="secondary"
+      class="mt-3 ml-3"
+    >
+      <div icon>
+        <fa-icon [icon]="refreshIcon"></fa-icon>
+      </div>
+    </app-app-button>
+
+    <!-- Export Button -->
+    <app-app-button
+      (click)="exportToCsv(dataSource.data, 'MCLR Latest Rates')"
+      btnClass="tertiary"
+      class="mt-3 ml-auto mr-3"
+    >
+      <div icon>
+        <fa-icon [icon]="exportIcon"></fa-icon>
+      </div>
+      Export
+    </app-app-button>
+  </div>
+
+  <div class="w-full overflow-x-auto">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let bank; let i = index">{{ i + 1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Bank Code">
+        <th mat-header-cell *matHeaderCellDef>Bank Code</th>
+        <td mat-cell *matCellDef="let bank">{{ bank.bankCode }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Bank Name">
+        <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+        <td mat-cell *matCellDef="let bank">
+          <a href="{{ bank.url }}" target="_blank" class="scheme-a">{{
+            bank.bankName
+          }}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Mclr AUM">
+        <th mat-header-cell *matHeaderCellDef>
+          Asset Size <br />
+          (In Cr.)
+          <button (click)="sortAum('asc')">&#9650;</button>
+          <button (click)="sortAum('desc')">&#9660;</button>
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.aum | number : "1.2-2" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Overnight">
+        <th mat-header-cell *matHeaderCellDef>Overnight</th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.overnight ? bank.overnight : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="1 Month">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          1 Month
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.oneMonth ? bank.oneMonth : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="3 Months">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          3 Months
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.threeMonth ? bank.threeMonth : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="6 Months">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          6 Months
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.sixMonth ? bank.sixMonth : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="1 Year">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          1 Year
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.oneYear ? bank.oneYear : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="2 Years">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          2 Years
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.twoYear ? bank.twoYear : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="3 Years">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          3 Years
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.threeYear ? bank.threeYear : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="5 Years">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          5 Years
+        </th>
+        <td mat-cell *matCellDef="let bank">
+          {{ bank.fiveYear ? bank.fiveYear : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Effective Date">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef>
+          Effective Date
+        </th>
+        <td mat-cell *matCellDef="let bank">{{ bank.effectiveDate }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+  </div>
+</app-page-container>

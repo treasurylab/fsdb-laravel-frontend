@@ -1,0 +1,192 @@
+<app-page-container>
+  <app-page-title>MTM : Class ID Mapping</app-page-title>
+  <div class="flex flex-row">
+    <div class="w-[30%]">
+      <app-text-field
+        [control]="getFormControllers('id')"
+        placeholder="Search GSEC by ISIN..."
+      ></app-text-field>
+    </div>
+    <div class="m-3">
+      <app-app-button
+        (click)="searchGSecInfo()"
+        type="submit"
+        btnClass="primary"
+      >
+        <div icon>
+          <fa-icon [icon]="searchIcon"></fa-icon>
+        </div>
+        Search
+      </app-app-button>
+    </div>
+  </div>
+
+  <div class="flex flex-row">
+    <!-- Table with add class id button -->
+    <div class="w-full md:w-1/2 p-4">
+      <div *ngIf="schemeClassInfo.length > 0">
+        <!-- Content of the second card -->
+        <app-content-card [noPad]="true">
+          <app-app-button
+            class="p-4"
+            (click)="addClassForMtm('I')"
+            type="submit"
+            btnClass="primary"
+          >
+            <div icon>
+              <fa-icon [icon]="addIcon"></fa-icon>
+            </div>
+            Add Class Id
+          </app-app-button>
+          <div class="bg-[#efeff4]">
+            <table mat-table [dataSource]="schemeClassInfo">
+              <!-- Table Content -->
+              <ng-container matColumnDef="ci_no">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element; let i = index"
+                  style="text-align: center"
+                >
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="class_id">
+                <th mat-header-cell *matHeaderCellDef>Class ID</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  style="text-align: center"
+                >
+                  <button
+                    (click)="
+                      addClassForMtm('U', element.isin_no, element.class_id)
+                    "
+                    class="scheme-a"
+                  >
+                    {{ element.class_id }}
+                  </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="isin">
+                <th mat-header-cell *matHeaderCellDef>ISIN</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  style="text-align: center"
+                >
+                  {{ element.isin_no }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="date_on">
+                <th mat-header-cell *matHeaderCellDef>Dated On</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  style="text-align: center"
+                >
+                  {{ element.recdate }}
+                </td>
+              </ng-container>
+              <tr class="mat-row center" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No Data Found</td>
+              </tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+            </table>
+          </div>
+        </app-content-card>
+      </div>
+
+      <ng-template #noDataFound>
+        <div class="h-full w-full flex flex-row items-center no-data">
+          No Data Found
+        </div>
+      </ng-template>
+    </div>
+    <!-- </div> -->
+
+    <!-- Insert/Update ISIN in this card -->
+    <div class="w-full md:w-1/2 p-4">
+      <div *ngIf="showEditForm">
+        <!-- Update Form -->
+        <form [formGroup]="classForm" (ngSubmit)="addClassForMtm('U')">
+          <!-- Form Content -->
+
+          <app-content-card>
+            <app-page-title-small>Class ID Mapping</app-page-title-small>
+            <div class="flex flex-row p-2">
+              <app-text-field
+                class="mr-2"
+                label="Class Id:"
+                [control]="getClassFormControllers('class_id')"
+                placeholder="{{ classidread }}"
+              ></app-text-field>
+              <app-text-field
+                label="ISIN:"
+                [control]="getClassFormControllers('class_map_isin')"
+                placeholder="{{ isinread }}"
+                [disabled]="true"
+              ></app-text-field>
+            </div>
+            <div class="flex flex-row p-2">
+              <app-app-button
+                class="mr-2"
+                (click)="mapCompanyToBank('U')"
+                btnClass="tertiary"
+              >
+                Update
+              </app-app-button>
+              <app-app-button (click)="hideForm()" btnClass="secondary">
+                Back
+              </app-app-button>
+            </div>
+          </app-content-card>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Table -->
+  <div *ngIf="gsecData.length > 0" class="w-full p-4">
+    <!-- Content of the fourth card -->
+    <table mat-table [dataSource]="gsecData">
+      <!-- Table Content -->
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td
+          mat-cell
+          *matCellDef="let element; let i = index"
+          style="text-align: center"
+        >
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="isin">
+        <th mat-header-cell *matHeaderCellDef>ISIN</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          <a (click)="findMtmSchemeInfo(element.isin)" class="scheme-a">
+            {{ element.isin }}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="bpid">
+        <th mat-header-cell *matHeaderCellDef>BP ID</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.bp_id }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="issuer_name">
+        <th mat-header-cell *matHeaderCellDef>Issuer Name</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.name }}
+        </td>
+      </ng-container>
+      <tr class="mat-row center" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No Data Found</td>
+      </tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</app-page-container>

@@ -1,0 +1,34 @@
+@if(menuItem.children===undefined){
+<a
+  (mouseover)="showTooltip = true"
+  (mouseleave)="showTooltip = false"
+  class="rounded-md my-1 hover:bg-[#F5F5F5] w-fit overflow-visible"
+  mat-list-item
+  routerLink="{{ menuItem.route }}"
+  routerLinkActive="sub-active"
+  (click)="tileClicked()"
+>
+  <div #subMenuContainer class="flex flex-row items-center">
+    <span
+      class="material-symbols-outlined {{ isCollapsed ? '' : 'mr-2' }} text-xs"
+    >
+      {{
+        menuItem.menu_icon == null || menuItem.menu_icon == "NULL"
+          ? "radio_button_unchecked"
+          : "radio_button_unchecked"
+      }}
+    </span>
+    <!-- Use mene.icon here if need to add custom icons  -->
+    @if(!isCollapsed){<span
+      class="select-none font-poppins text-xs text-black"
+      >{{ menuItem.name }}</span
+    >}
+  </div>
+  <div id="hover-tooltip" *ngIf="isCollapsed && showTooltip">
+    <div id="bg" class="bg-white border-2 border-gray-200 rounded-lg p-2 w-fit">
+      {{ menuItem.name }}
+    </div>
+  </div></a
+>
+
+}

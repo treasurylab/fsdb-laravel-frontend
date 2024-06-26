@@ -1,0 +1,112 @@
+<span class="font-poppins text-2xl ml-4">List of Items: <sub> </sub></span>
+
+<div
+  class="flex flex-col md:flex-row md:justify-between py-2 justify-between items-start md:items-center px-4 w-[full]"
+>
+  <app-text-field
+    type="search"
+    placeholder="Search Here..."
+    class="w-[25%]"
+  ></app-text-field>
+  <div class="relative" (clickOutside)="closeDropdown($event)">
+    <app-app-button
+      (click)="toggleDropdown()"
+      type="button"
+      btnClass="secondary"
+    >
+      <select [(ngModel)]="selectedSortOption" (change)="applySorting()">
+        <option value="newest">Filter</option>
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+      </select>
+      <div icon>
+        <fa-icon [icon]="filterIcon"></fa-icon>
+      </div>
+    </app-app-button>
+  </div>
+</div>
+
+<div>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngStyle]="{
+          'text-align': isNumeric(element.position) ? 'right' : 'left'
+        }"
+      >
+        {{ element.position }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngStyle]="{ 'text-align': isNumeric(element.name) ? 'right' : 'left' }"
+      >
+        {{ element.name }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="weight">
+      <th mat-header-cell *matHeaderCellDef>Weight</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngStyle]="{
+          'text-align': isNumeric(element.weight) ? 'right' : 'left'
+        }"
+      >
+        {{ element.weight }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="symbol">
+      <th mat-header-cell *matHeaderCellDef>Symbol</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [ngStyle]="{
+          'text-align': isNumeric(element.symbol) ? 'right' : 'left'
+        }"
+      >
+        {{ element.symbol }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    *ngIf="showPaginator()"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>
+
+<!-- <div>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container *ngFor="let header of headers" [matColumnDef]="header">
+      <th mat-header-cell *matHeaderCellDef>{{ header }}</th>
+      <td mat-cell *matCellDef="let element">{{ element[header] }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="headers"></tr>
+    <tr mat-row *matRowDef="let row; columns: headers"></tr>
+  </table>
+
+  <mat-paginator
+    *ngIf="showPaginator"
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of data"
+  >
+  </mat-paginator>
+</div> -->

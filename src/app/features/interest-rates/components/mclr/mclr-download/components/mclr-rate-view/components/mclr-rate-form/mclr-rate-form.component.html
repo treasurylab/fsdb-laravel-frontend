@@ -1,0 +1,67 @@
+<div class="px-3">
+  <app-page-title>
+    <div class="flex flex-row items-center gap-2">
+      <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+      Filters
+    </div>
+  </app-page-title>
+  <form [formGroup]="mclrRateForm" (ngSubmit)="sendFormData()">
+    <div class="grid grid-cols-1">
+      <app-select-field
+        label="Select company"
+        placeHolder="Select company"
+        (selectionChanged)="getCompBank()"
+        [control]="getFormControllers('compInfo')"
+      >
+        <option *ngFor="let comp of allCompanies" [value]="comp.comp_code">
+          {{ comp.comp_code }} - {{ comp.comp_name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        *ngIf="bankList.length > 0"
+        label="Select bank"
+        placeHolder="Select bank"
+        [control]="getFormControllers('bankInfo')"
+      >
+        <option *ngFor="let bank of bankList" [value]="bank.bank_code">
+          {{ bank.bank_code }} - {{ bank.bank_name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="Select tenor"
+        placeHolder="Select tenor"
+        [control]="getFormControllers('tenor')"
+      >
+        <option *ngFor="let tenor of tenorList" [value]="tenor.mfreq_code">
+          {{ tenor.mfreq_code }} - {{ tenor.mfreq_type }}
+        </option>
+      </app-select-field>
+      <app-text-field
+        label="From date"
+        type="date"
+        [control]="getFormControllers('fromDate')"
+      ></app-text-field>
+      <app-text-field
+        label="To date"
+        type="date"
+        [control]="getFormControllers('toDate')"
+      ></app-text-field>
+      <div class="flex flex-row gap-2 mt-[15px]">
+        <app-app-button
+          class="flex-1"
+          btnClass="primary"
+          type="submit"
+          [expanded]="true"
+          >Search</app-app-button
+        >
+        <app-app-button
+          class="flex-1"
+          btnClass="secondary"
+          type="reset"
+          [expanded]="true"
+          >Clear</app-app-button
+        >
+      </div>
+    </div>
+  </form>
+</div>

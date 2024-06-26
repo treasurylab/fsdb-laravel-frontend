@@ -1,0 +1,21 @@
+@use "../input-fields.scss";
+
+.text-field-main {
+  position: relative;
+  margin-top: 15px;
+}
+
+.text-field-label {
+  position: absolute;
+  top: 0.62rem;
+  left: 0.85rem;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+  color: rgb(156, 163, 175);
+  &.label-up {
+    transform: translate(-0.85rem, -2rem);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgb(31, 41, 55);
+  }
+}

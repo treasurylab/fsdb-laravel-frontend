@@ -1,0 +1,29 @@
+export interface AppUser {
+  [key: string]: string | null | undefined;
+  id?: string | null;
+  code?: string | null;
+  title?: string | null;
+  first_name?: string | null;
+  middle_name?: string | null;
+  last_name?: string | null;
+  type?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  manager_name?: string | null;
+  valid_from?: string | null;
+  valid_to?: string | null;
+  url?: string | null;
+  cgrp_id?: string | null;
+  cgrp_name?: string | null;
+  rstatus?: string | null;
+  password?: string | null;
+  pwd_life?: string | null;
+  pwd_last_change?: string | null;
+  landing_menucode?: string | null;
+  app_code?: string | null;
+  created_id?: string | null;
+  created_dt?: string | null;
+  modified_id?: string | null;
+  modified_dt?: string | null;
+  useraccess?: string | null;
+}

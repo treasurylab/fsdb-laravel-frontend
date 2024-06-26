@@ -1,0 +1,728 @@
+<app-side-form #sideForm [isOpened]="false">
+  <app-page-container nav>
+    @switch (activeTab) { @case (tabs[4]) {
+    <ng-container *ngTemplateOutlet="schemeReportForm"></ng-container> } }
+  </app-page-container>
+  <app-page-container navContent>
+    <app-page-title>L2 Scheme</app-page-title>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChanged($event)">
+      <!-- Tab 1 : Available Scheme -->
+      <div *ngIf="activeTab === tabs[0]">
+        <p>Available Scheme:</p>
+        <app-app-button (click)="pullScheme()">
+          Get Schemes From AMFI
+        </app-app-button>
+        <hr class="mt-4 mb-4" />
+        <div class="flex space-x-4 mt-2 mb-2">
+          <button
+            [ngClass]="{ active: isActiveButton === 1 }"
+            (click)="setActiveButton(1)"
+            class="font-bold py-2 px-4 border rounded w-1/2"
+          >
+            Latest Pulled Schemes
+          </button>
+          <button
+            [ngClass]="{ active: isActiveButton === 2 }"
+            (click)="setActiveButton(2)"
+            class="font-bold py-2 px-4 border rounded w-1/2"
+          >
+            Recently Modified Schemes
+          </button>
+        </div>
+        <ng-container *ngIf="isActiveButton === 1" class="mt-2 mb-2">
+          <form
+            class="example-form mclrpading"
+            [formGroup]="latestScheme"
+            (submit)="getNewestSchemes()"
+          >
+            <div class="row">
+              <app-page-title-small>Latest Pulled Schemes</app-page-title-small>
+            </div>
+            <app-content-card
+              ><div class="row">
+                <div class="flex flex-row">
+                  <app-text-field
+                    class="mr-4 w-[20%]"
+                    type="date"
+                    label="From Date"
+                    [control]="getLatestSchemeFormControllers('fromdate')"
+                  >
+                  </app-text-field>
+                  <app-text-field
+                    class="mr-4 w-[20%]"
+                    type="date"
+                    label="To Date"
+                    [control]="getLatestSchemeFormControllers('todate')"
+                  >
+                  </app-text-field>
+
+                  <app-app-button class="mt-9 mr-4" type="submit"
+                    >Submit</app-app-button
+                  >
+                  <app-app-button class="mt-9" btnClass="secondary" type="reset"
+                    >Clear</app-app-button
+                  >
+                </div>
+              </div></app-content-card
+            >
+          </form>
+          <br />
+          <table mat-table [dataSource]="dataSource2">
+            <ng-container matColumnDef="amfi" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="isin" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>ISIN</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.isin_no }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="bpid" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>BP ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.fundhsg_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amficat" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Amfi Catg</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.amfi_catg }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="schemecat" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Scheme Catg</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_catg }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="symbol" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.symbol }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="link symbol" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Link Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.link_symbol }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="closing" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Closing</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.closed_flag }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="created" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Created Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.created_dt }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="scheme" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Scheme Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_name }}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnDW4"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnDW4"></tr>
+          </table>
+          <mat-paginator
+            #paginator1
+            class="{{ dataSource2.data.length !== 0 ? '!block' : '!hidden' }}"
+            [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </ng-container>
+        <ng-container *ngIf="isActiveButton === 2" class="mt-2 mb-2">
+          <form [formGroup]="recentScheme" (submit)="getRecentSchemes()">
+            <div class="row">
+              <app-page-title-small
+                >Recently Modified Schemes</app-page-title-small
+              >
+            </div>
+            <app-content-card
+              ><div class="row">
+                <div class="flex flex-row">
+                  <app-text-field
+                    class="mr-4 w-[20%]"
+                    type="date"
+                    label="From Date"
+                    [control]="getRecentSchemeFormControllers('fromdate')"
+                  >
+                  </app-text-field>
+                  <app-text-field
+                    class="mr-4 w-[20%]"
+                    type="date"
+                    label="To Date"
+                    [control]="getRecentSchemeFormControllers('todate')"
+                  >
+                  </app-text-field>
+
+                  <app-app-button class="mt-9 mr-4" type="submit"
+                    >Submit</app-app-button
+                  >
+                  <app-app-button class="mt-9" btnClass="secondary" type="reset"
+                    >Clear</app-app-button
+                  >
+                </div>
+              </div></app-content-card
+            >
+          </form>
+          <br />
+          <table mat-table [dataSource]="dataSource4">
+            <ng-container matColumnDef="amfi" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="isin" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>ISIN</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.isin_no }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="bpid" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>BP ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.fundhsg_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amficat" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Amfi Catg</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.amfi_catg }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="schemecat" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Scheme Catg</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_catg }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="symbol" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.symbol }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="link symbol" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Link Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.link_symbol }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="closing" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Closing</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.closed_flag }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="created" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Created Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.created_dt }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="scheme" class="px-8">
+              <th mat-header-cell *matHeaderCellDef>Scheme Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_name }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnDW4"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnDW4"></tr>
+          </table>
+          <mat-paginator
+            #paginator2
+            class="{{ dataSource4.data.length !== 0 ? '!block' : '!hidden' }}"
+            [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </ng-container>
+      </div>
+      <!-- Tab 2 : Edit Scheme -->
+      <div *ngIf="activeTab === tabs[1]">
+        <div class="mb-2">
+          <app-content-card>
+            <form [formGroup]="editSchemeForm">
+              <div class="relative mb-3">
+                <br />
+
+                <div class="flex flex-row">
+                  <app-text-field
+                    class="mr-4 w-[40%]"
+                    type="text"
+                    placeholder="Search Scheme By AMFI Code/Scheme ID/Scheme Name"
+                    [control]="editSchemeFormControllers('id')"
+                  >
+                  </app-text-field>
+
+                  <app-app-button
+                    class="mt-4 ml-4"
+                    type="submit"
+                    (click)="NavScheme()"
+                    (click)="showTable()"
+                    >Search</app-app-button
+                  >
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-3 mb-2">
+                <b>Note:</b> search by name showing 5 records. for get more
+                search with more words.
+              </p>
+            </form>
+          </app-content-card>
+        </div>
+
+        <div class="row" style="overflow-x: auto">
+          <table *ngIf="isTableVisible" mat-table [dataSource]="navSchemeData">
+            <ng-container matColumnDef="srno">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amfiid">
+              <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+              <td mat-cell *matCellDef="let element">
+                <a
+                  class="scheme-a"
+                  href="javascript:;"
+                  (click)="editLtwoSchemeModal(element)"
+                >
+                  {{ element?.id }}
+                </a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="isin">
+              <th mat-header-cell *matHeaderCellDef>ISIN</th>
+              <td mat-cell *matCellDef="let element">{{ element.isin }}</td>
+            </ng-container>
+            <ng-container matColumnDef="sebi">
+              <th mat-header-cell *matHeaderCellDef>SEBI Category</th>
+              <td mat-cell *matCellDef="let element">{{ element.sebi }}</td>
+            </ng-container>
+            <ng-container matColumnDef="scheme">
+              <th mat-header-cell *matHeaderCellDef>Scheme Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef>Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.linksymbol }}
+              </td>
+            </ng-container>
+            <tr class="mat-row center" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No Data Found</td>
+            </tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+      <!-- </div> -->
+      <!-- Tab 3 : Upload AUM of Schemes -->
+      <div *ngIf="activeTab === tabs[2]">
+        <app-content-card>
+          <form [formGroup]="AumParamForm" (submit)="uploadschemeaum()">
+            <div class="flex flex-col items-center w-full gap-3">
+              <div class="flex flex-row w-1/2 justify-center items-end gap-3">
+                <app-select-field
+                  label="Select Index"
+                  class="flex-1"
+                  [control]="uploadAumFormControllers('year')"
+                >
+                  <option *ngFor="let fyyear of fyyears" [value]="fyyear.id">
+                    {{ fyyear.name }}
+                  </option>
+                </app-select-field>
+                <app-select-field
+                  label="Select Index"
+                  class="flex-1"
+                  [control]="uploadAumFormControllers('quarter')"
+                >
+                  <option
+                    *ngFor="let fyquarter of fyquarters"
+                    [value]="fyquarter.id"
+                  >
+                    {{ fyquarter.name }}
+                  </option>
+                </app-select-field>
+                <app-text-field
+                  class="flex-1"
+                  label="Select file"
+                  type="file"
+                  (onInputChanged)="onFileSelected($event)"
+                ></app-text-field>
+              </div>
+              <div class="flex flex-row gap-3 w-fit">
+                <app-app-button class="flex-1" type="submit">
+                  Upload
+                </app-app-button>
+                <app-app-button
+                  btnClass="secondary"
+                  class="flex-1"
+                  type="reset"
+                >
+                  Clear
+                </app-app-button>
+              </div>
+            </div>
+          </form>
+        </app-content-card>
+      </div>
+      <!-- Tab 4 : Update Closure Date of Scheme -->
+      <div *ngIf="activeTab === tabs[3]">
+        <div class="pl-3 pr-3 pb-3">
+          <app-app-button type="submit" (click)="Updclosure()">
+            Update Closure Date
+          </app-app-button>
+          <table *ngIf="isTableVisible" mat-table [dataSource]="dataSource5">
+            <ng-container matColumnDef="srno">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amfiid">
+              <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="isin">
+              <th mat-header-cell *matHeaderCellDef>ISIN</th>
+              <td mat-cell *matCellDef="let element">{{ element.isin_no }}</td>
+            </ng-container>
+            <ng-container matColumnDef="bpid">
+              <th mat-header-cell *matHeaderCellDef>BP ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.fundhsg_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amficatg">
+              <th mat-header-cell *matHeaderCellDef>Amfi Catg</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.amfi_catg }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="achemecatg">
+              <th mat-header-cell *matHeaderCellDef>Scheme Catg</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_catg }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef>Symbol</th>
+              <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
+            </ng-container>
+            <ng-container matColumnDef="linksymbol">
+              <th mat-header-cell *matHeaderCellDef>Link Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.link_symbol }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="closing">
+              <th mat-header-cell *matHeaderCellDef>Closing</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.closed_flag }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="closingdt">
+              <th mat-header-cell *matHeaderCellDef>Closed Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.closure_date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Scheme Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.scheme_name }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+          </table>
+        </div>
+      </div>
+      <!-- Tab 5 : Scheme Reports -->
+      <div *ngIf="activeTab === tabs[4]">
+        <div class="flex flex-row mb-3">
+          <div class="flex flex-row ml-auto gap-2">
+            <app-app-button
+              (click)="sideForm.toggleFormNav()"
+              btnClass="secondary"
+              class="mt-3"
+            >
+              <div icon>
+                <fa-icon [icon]="filterIcon"></fa-icon>
+              </div>
+              Filters
+            </app-app-button>
+          </div>
+        </div>
+
+        <table mat-table [dataSource]="dataSource11" class="">
+          <ng-container matColumnDef="srno" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="amfiid" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.scheme_id }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="isin" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>ISIN</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.isin_no }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="bpid" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>BP ID</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.fundhsg_id }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="amficatg" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Amfi Catg</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.amfi_catg }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="schemecatg" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Scheme Catg</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.scheme_catg }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="symbol" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Symbol</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.symbol }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="linksymbol" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Link Symbol</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.link_symbol }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="closing" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Closing</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.closed_flag }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="launch Date" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Launch Date</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.launch_date }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="close Date" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Close Date</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.closure_date }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="scheme name" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Scheme Name</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.scheme_name }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns6"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns6"></tr>
+        </table>
+      </div>
+      <!-- Tab 6 : Update Link Symbols -->
+      <div *ngIf="activeTab === tabs[5]">
+        <div class="mb-2">
+          <app-content-card>
+            <form class="example-form" [formGroup]="editSchemeForm">
+              <div class="relative mb-3">
+                <br />
+
+                <div class="flex flex-row">
+                  <app-text-field
+                    class="mr-4 w-[40%]"
+                    type="text"
+                    placeholder="Search Scheme By AMFI Code"
+                    [control]="editSchemeFormControllers('id')"
+                  >
+                  </app-text-field>
+
+                  <app-app-button
+                    class="mt-4 ml-4"
+                    type="submit"
+                    (click)="NavScheme()"
+                    (click)="showTable3()"
+                    >Search</app-app-button
+                  >
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-3 mb-2">
+                <b>Note:</b> search by name showing 5 records. for get more
+                search with more words.
+              </p>
+            </form>
+          </app-content-card>
+        </div>
+
+        <table *ngIf="isTableVisible3" mat-table [dataSource]="schemefound">
+          <ng-container matColumnDef="srno">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amfiid">
+            <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+            <td mat-cell *matCellDef="let element">
+              <a
+                class="scheme-a"
+                href="javascript:;"
+                (click)="updateSymbolModal(element)"
+              >
+                {{ element.id }}
+              </a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="isin">
+            <th mat-header-cell *matHeaderCellDef>ISIN</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.isin }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="link symbol">
+            <th mat-header-cell *matHeaderCellDef>Link Symbol</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.linksymbol }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="sebi">
+            <th mat-header-cell *matHeaderCellDef>SEBI Category</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.sebi }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef>Symbol</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.symbol }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="scheme">
+            <th mat-header-cell *matHeaderCellDef>Scheme Name</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.name }}
+            </td>
+          </ng-container>
+
+          <tr class="mat-row center" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No Data Found</td>
+          </tr>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+        </table>
+      </div> </app-tab-view></app-page-container
+></app-side-form>
+
+<ng-template #schemeReportForm>
+  <form [formGroup]="schemeReport" (submit)="schemeSrchReoprt()">
+    <div class="flex flex-col w-full px-2">
+      <app-page-title>
+        <div class="flex flex-row items-center gap-2">
+          <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+          Filters
+        </div>
+      </app-page-title>
+      <div class="grid grid-cols-1 items-end justify-between w-full gap-3">
+        <div class="col-span-1">
+          <app-select-field
+            label="Select Report"
+            [control]="schemReportFormControllers('rpt')"
+          >
+            <option *ngFor="let list of reportList" [value]="list.id">
+              {{ list.value }}
+            </option>
+          </app-select-field>
+        </div>
+        <div class="col-span-1">
+          <app-select-field
+            label="Select Fund House"
+            [control]="schemReportFormControllers('fh')"
+          >
+            <option *ngFor="let list of listbp" [value]="list.id">
+              {{ list.name }}
+            </option>
+          </app-select-field>
+        </div>
+        <div class="col-span-1">
+          <app-select-field
+            label="SEBI Category"
+            [control]="schemReportFormControllers('sc')"
+          >
+            <option *ngFor="let list of allsebilist" [value]="list.code">
+              {{ list.tname }}
+            </option>
+          </app-select-field>
+        </div>
+
+        <div class="col-span-1">
+          <div class="flex flex-row gap-3 items-center mt-[15px]">
+            <app-app-button class="flex-1" type="submit" [expanded]="true">
+              <div icon>
+                <fa-icon [icon]="searchIcon"></fa-icon>
+              </div>
+              Search
+            </app-app-button>
+            <app-app-button
+              class="flex-1"
+              btnClass="secondary"
+              type="reset"
+              [expanded]="true"
+            >
+              <div icon>
+                <fa-icon [icon]="clearIcon"></fa-icon>
+              </div>
+              Clear
+            </app-app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

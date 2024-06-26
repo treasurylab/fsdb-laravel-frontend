@@ -1,0 +1,64 @@
+<app-page-container>
+  <app-page-title>MCLR Company Specific Bank</app-page-title>
+  <div class="flex flex-row items-end gap-3 mb-3">
+    <div class="mt-[15px] min-w-[12rem] max-w-[12rem]">
+      <label for="bank_code" class="font-semibold">Select Bank</label>
+      <mat-select
+        id="bank_code"
+        [formControl]="bankCodeController"
+        (openedChange)="onSelectionChanged($event)"
+        multiple
+        placeholder="Banks List"
+        [compareWith]="compareBanks"
+      >
+        <mat-option *ngFor="let bank of banksList" [value]="bank.bank_code">
+          {{ bank.bank_code }} - {{ bank.bank_name }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <app-text-field
+      type="search"
+      [control]="searchController"
+      (onKeyUp)="applyFilter()"
+      placeholder="Search for a Bank..."
+    ></app-text-field>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="sticky-header">
+    <ng-container matColumnDef="srno" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bankcode" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Bank Code</th>
+      <td mat-cell *matCellDef="let element">{{ element.bank_code }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bankname" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.bank_name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="lastupdate" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Last Update</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastupdate }}</td>
+    </ng-container>
+    <ng-container matColumnDef="cdt" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Created Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.created_dt }}</td>
+    </ng-container>
+    <ng-container matColumnDef="cid" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Created By</th>
+      <td mat-cell *matCellDef="let element">{{ element.created_id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="status" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let element">{{ element.rstatus }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+    [pageSizeOptions]="[10, 20, 30]"
+    showFirstLastButtons
+  ></mat-paginator>
+</app-page-container>

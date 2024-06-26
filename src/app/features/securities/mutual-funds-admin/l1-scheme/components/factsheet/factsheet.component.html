@@ -1,0 +1,96 @@
+<div class="flex flex-row justify-between mb-3">
+  <app-text-field
+    type="search"
+    (keyup)="applyFilter($event)"
+    placeholder="Search..."
+  ></app-text-field>
+  <app-app-button btnClass="secondary" (click)="filterController()">
+    <div icon>
+      <fa-icon [icon]="filterIcon"></fa-icon>
+    </div>
+    Filters
+  </app-app-button>
+</div>
+
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="srno">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Scheme id">
+    <th mat-header-cell *matHeaderCellDef>Scheme ID</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      <a (click)="editFactSheetModal(element)">{{ element.id }}</a>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Record Name">
+    <th mat-header-cell *matHeaderCellDef>Record Name</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ element.name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Portfolio AUM">
+    <th mat-header-cell *matHeaderCellDef>Portfolio AUM (Cr)</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-right">
+      {{ element.pf_amt }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Factsheet AUM">
+    <th mat-header-cell *matHeaderCellDef>Factsheet AUM (Cr)</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-right">
+      {{ element.month_aum }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Average Maturity">
+    <th mat-header-cell *matHeaderCellDef>Average Maturity (yrs)</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-right">
+      {{ element.avg_maturity }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Modified Duration">
+    <th mat-header-cell *matHeaderCellDef>Modified Duration (yrs)</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-right">
+      {{ element.mod_duration }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Gross YTM">
+    <th mat-header-cell *matHeaderCellDef>Gross YTM (%)</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-right">
+      {{ element.gross_ytm }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Expense Ratio">
+    <th mat-header-cell *matHeaderCellDef>Expense Ratio</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-right">
+      {{ element.exp_ratio }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Lock In Period">
+    <th mat-header-cell *matHeaderCellDef>Lock In Period</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ element.LOCKPER }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Exit Load">
+    <th mat-header-cell *matHeaderCellDef>Exit Load</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ element.EXITLOAD }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ element.reason_code }}
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator
+  #paginator4
+  class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+  [pageSizeOptions]="[10, 20, 30]"
+  showFirstLastButtons
+></mat-paginator>

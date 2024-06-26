@@ -1,0 +1,361 @@
+<!-- PAGE FOR FD RATES SUMMARY DASHBOARD -->
+<app-page-container>
+  <app-page-title
+    subHeading="Minimum Lending Rates published by Banks"
+    tooltip="MCLR is the minimum interest rate charged by the bank"
+    [pageInfo]="pageInfo"
+    >FD Rates Summary
+  </app-page-title>
+  <div class="flex flex-col gap-3 w-full h-full">
+    <div id="info-container" class="flex flex-row w-full">
+      <app-dashboard-block-container
+        heading="{{ shortestTenorRate }}%"
+        subHeading="Rate : 7 days to 14 days "
+        icon="trending_up"
+        class="flex-1 mr-2"
+        routerLink="../fd-display"
+        bgColor="#1C326B"
+      >
+      </app-dashboard-block-container>
+      <app-dashboard-block-container
+        routerLink="../../benchmark-rates/in/rbi-reporate"
+        class="flex-1 mr-2"
+        heading="{{ rbiRepoRate }}%"
+        subHeading="RBI Repo Rate"
+        icon="graphic_eq"
+        bgColor="#0466c8"
+      ></app-dashboard-block-container>
+      <app-dashboard-block-container
+        routerLink="../fd-comparison"
+        class="flex-1 mr-2"
+        heading="6"
+        subHeading="No Of Banks"
+        icon="account_balance"
+        bgColor="#37C2CE"
+      ></app-dashboard-block-container>
+      <app-dashboard-block-container
+        class="flex-1"
+        heading=" {{ latestDate | date : 'dd-MM-yyyy' }}"
+        subHeading="Last Updated"
+        icon="today"
+        bgColor="#64b5f6"
+      ></app-dashboard-block-container>
+    </div>
+
+    <div class="flex flex-row items-stretch justify-center gap-3">
+      <app-content-card class="w-1/2" [noPad]="true">
+        <!-- 6M Comparison: Card Header -->
+        <div
+          class="flex flex-row justify-between items-center py-3 px-3 h-[76px]"
+        >
+          <div id="name" class="card-heading">Past 3M Comparison</div>
+          <div
+            id="optionsContainer"
+            class="flex flex-row card-heading space-x-2 items-center font-semibold text-base"
+          >
+            {{ amt_range[amtId] }}
+          </div>
+        </div>
+        <hr class="mb-3" />
+        <!-- 6M Comparison: Graph Container -->
+        <div class="flex flex-row justify-between px-3">
+          <app-page-title
+            subHeading="Best Bank ({{
+              tenorMemory ? tenorMemory : 'Loading..'
+            }})"
+            >{{ bankMap[graphBank] ? bankMap[graphBank] : "Loading..." }}
+          </app-page-title>
+          <app-page-title subHeading="Maximum Interest Rate" position="end"
+            >{{ graphRate !== "" ? graphRate : "-.--" }}%
+          </app-page-title>
+        </div>
+        <!-- 3M Comparison: Graph -->
+        <div class="p-3 w-full min-h-[50vh]">
+          <app-line-graph
+            *ngIf="data3m"
+            [chartOptions]="data3m"
+          ></app-line-graph>
+        </div>
+      </app-content-card>
+      <app-content-card class="w-1/2" [noPad]="true">
+        <div class="flex flex-row justify-between items-center py-3 px-3">
+          <div class="card-heading py-3 px-3">Best FD Rate Tenor Wise</div>
+          <app-tenor-chips
+            [buttonNameList]="['0-2', '2-5', '5-10', '10-Above']"
+            [selectedTenor]="amtMemory"
+            (clickedButton)="getFdSummaryInfo($event)"
+          >
+          </app-tenor-chips>
+        </div>
+        <hr />
+        <div class="max-h-fit !h-[60vh] overflow-y-auto w-full">
+          <table mat-table [dataSource]="dataSource" class="table-auto">
+            <ng-container matColumnDef="bank_code">
+              <th mat-header-cell *matHeaderCellDef class="!text-left">
+                Bank Name
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.bank_code }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="std_tenor_desc" class="column-15">
+              <th mat-header-cell class="!text-center" *matHeaderCellDef>
+                Tenor
+              </th>
+              <td mat-cell class="!text-center" *matCellDef="let element">
+                <button
+                  (click)="generateGraphs(element, this.amtMemory)"
+                  [class.clicked]="
+                    clickedTenorStates[element.std_tenor_desc] ? true : false
+                  "
+                  class="custom-button"
+                  matTooltip="Click to generate graphs"
+                >
+                  {{ element.std_tenor_desc }}
+                </button>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="max_value" class="column-15">
+              <th mat-header-cell class="!text-right" *matHeaderCellDef>
+                Interest Rate
+              </th>
+              <td mat-cell class="!text-right" *matCellDef="let element">
+                {{
+                  element.max_value.includes("%")
+                    ? element.max_value
+                    : element.max_value + "%"
+                }}
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </app-content-card>
+    </div>
+    <app-content-card [noPad]="true">
+      <div class="min-h-[24rem]">
+        <div class="flex flex-row justify-between items-center py-3 px-3">
+          <div class="card-heading">Past 6M Comparison</div>
+          <div
+            id="optionsContainer"
+            class="flex flex-row items-center space-x-6"
+          >
+            <div class="flex flex-row items-center space-x-2">
+              <span class="font-medium font-poppins">Tenor: </span>
+              <span class="font-bold font-poppins">{{ tenorMemory }}</span>
+            </div>
+            <div class="flex flex-row items-center space-x-2">
+              <span class="font-medium font-poppins">Amount: </span>
+              <span class="font-bold font-poppins">{{ amt_range[amtId] }}</span>
+            </div>
+          </div>
+        </div>
+        <hr class="mb-3" />
+        <div class="min-h-[19rem] p-3">
+          <app-line-graph
+            *ngIf="data6m"
+            canvasHeight="19rem"
+            [chartOptions]="data6m"
+          ></app-line-graph>
+        </div>
+      </div>
+    </app-content-card>
+  </div>
+</app-page-container>
+<!-- <div id="container" class="flex flex-col w-full h-fit">
+  <div
+    id="second-row-container"
+    class="w-fit sm:w-full h-[50vh] md:h-[55vh] my-5 flex flex-col md:flex-row md:justify-between flex-1"
+  >
+    <div
+      id="mclr-comparisons"
+      class="round-elevated bg-white w-{100%} md:w-1/2 h-[50] md:h-[55vh] mb-2 md:mb-0 mx-0 md:mx-3"
+    >
+      <div
+        id="header"
+        class="flex flex-col md:flex-row justify-between items-start md:items-center pt-4 pb-[14.5px] px-5"
+      >
+        <div id="name" class="card-heading">Past 3M Bankwise Comparison :</div>
+        <div
+          id="optionsContainer"
+          class="flex flex-row card-heading items-center font-semibold text-base"
+        >
+          {{ amt_range[amtId] }}
+        </div>
+      </div>
+      <hr class="mb-5" />
+      <div #statContainer class="flex flex-row justify-between px-6">
+        <div #statContainer1 class="flex flex-col justify-start">
+          <span class="w-fit text-base font-semibold font-poppins text-black">{{
+            bankMap[graphBank]
+          }}</span>
+          <div class="flex flex-row items-center">
+            <span class="dot mr-2"></span
+            ><span class="font-poppins text-sm text-gray-500"
+              >Best Bank - {{ tenorMemory }}
+            </span>
+          </div>
+        </div>
+        <div #statContainer2 class="w-fit h-full flex flex-col justify-end">
+          <div class="w-full flex flex-row justify-end">
+            <span class="w-fit text-base font-semibold font-poppins text-black"
+              >{{ graphRate }}%</span
+            >
+          </div>
+          <div class="flex flex-row items-center">
+            <span class="dot mr-2"></span
+            ><span class="font-poppins text-sm text-gray-500"
+              >Maximum Interest Rate
+            </span>
+          </div>
+        </div>
+      </div>
+      <div #graphContainer class="p-3 w-full min-h-[19rem]">
+        <app-line-graph
+          *ngIf="data3m"
+          canvasHeight="19rem"
+          [chartOptions]="data3m"
+        ></app-line-graph>
+      </div>
+    </div>
+    <div
+      id="best-amount-wise-rates"
+      class="bg-white w-[100%] md:w-1/2 h-[50vh] md:h-[55vh] round-elevated mx-0 lg:mx-3 mt-4 sm:mt-0"
+    >
+      <div
+        id="header"
+        class="flex flex-row justify-between items-center py-3 px-5"
+      >
+        <div id="name" class="card-heading font-poppins">
+          Best FD Rate Amount Wise
+        </div>
+        <div id="optionsContainer" class="flex flex-row items-center space-x-2">
+          <button
+            class="font-poppins font-semibold boxy-button"
+            [class.clicked]="amtMemory == '0-2'"
+            (click)="getFdSummaryInfo('0-2')"
+          >
+            2Cr
+          </button>
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold boxy-button"
+            [class.clicked]="amtMemory == '2-5'"
+            (click)="getFdSummaryInfo('2-5')"
+          >
+            5Cr
+          </button>
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold boxy-button"
+            [class.clicked]="amtMemory == '5-10'"
+            (click)="getFdSummaryInfo('5-10')"
+          >
+            10Cr
+          </button>
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold boxy-button"
+            [class.clicked]="amtMemory == '10-Above'"
+            (click)="getFdSummaryInfo('10-Above')"
+          >
+            1000Cr
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="p-5 flex w-full">
+        <div class="max-w-full max-h-full !h-[40vh] overflow-y-auto w-full">
+          <table mat-table [dataSource]="dataSource" class="table-auto">
+            <ng-container matColumnDef="bank_code">
+              <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.bank_code }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="std_tenor_desc" class="column-15">
+              <th mat-header-cell class="!text-center" *matHeaderCellDef>
+                Tenor
+              </th>
+              <td mat-cell class="!text-center" *matCellDef="let element">
+                <button
+                  (click)="generateGraphs(element, this.amtMemory)"
+                  [class.clicked]="
+                    clickedTenorStates[element.std_tenor_desc] ? true : false
+                  "
+                  class="custom-button"
+                  matTooltip="Click to generate graphs"
+                >
+                  {{ element.std_tenor_desc }}
+                </button>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="max_value" class="column-15">
+              <th mat-header-cell class="!text-right" *matHeaderCellDef>
+                Interest Rate
+              </th>
+              <td mat-cell class="!text-right" *matCellDef="let element">
+                {{
+                  element.max_value.includes("%")
+                    ? element.max_value
+                    : element.max_value + "%"
+                }}
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    id="thirdRowContainer"
+    class="w-fit sm:w-full h-[800px] md:h-[850px] my-5 flex flex-col md:flex-row md:justify-between flex-1 mb-3"
+  >
+    <div
+      #mclrComp1Year
+      class="round-elevated bg-white w-full h-full mx-0 md:mx-3 mb-2 md:mb-0 mr-0 sm:mr-10"
+    >
+      <div
+        id="header"
+        class="flex flex-col md:flex-row justify-between items-start md:items-center py-3 px-5"
+      >
+        <div id="name" class="card-heading font-poppins">
+          Past 6M Bankwise Comparison:
+        </div>
+        <div id="optionsContainer" class="flex flex-row items-center space-x-6">
+          <div class="flex flex-row items-center space-x-2">
+            <span class="font-medium font-poppins">Tenor: </span>
+            <span class="font-bold font-poppins">{{ tenorMemory }}</span>
+          </div>
+          <div class="flex flex-row items-center space-x-2">
+            <span class="font-medium font-poppins">Amount: </span>
+            <span class="font-bold font-poppins">{{ amt_range[amtId] }}</span>
+          </div>
+        </div>
+      </div>
+      <hr class="mb-5" />
+      <div #graphContainer class="min-h-[19rem] p-3">
+        <app-line-graph
+          *ngIf="data6m"
+          [chartOptions]="data6m"
+          canvasHeight="19rem"
+        ></app-line-graph>
+      </div>
+    </div>
+  </div>
+</div> -->

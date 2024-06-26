@@ -1,0 +1,63 @@
+<app-app-button
+  [disabled]="sideNavObj.isOpened"
+  (click)="addCompMastData()"
+  btnClass="primary"
+>
+  <div icon>
+    <fa-icon [icon]="addIcon"></fa-icon>
+  </div>
+  ADD
+</app-app-button>
+<!-- Table -->
+<table mat-table [dataSource]="compBankList" class="mt-3">
+  <ng-container matColumnDef="comp_name" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Company</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.comp_code }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="bank_name" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.bank_name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="ref_no" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Ref No.</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.bank_erpref }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="tenors" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Tenors</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.mfreq_codes }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="action" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+      <div
+        class="flex flex-row items-center justify-center gap-3 text-gray-700"
+      >
+        <button (click)="openFormNav('view', element)">
+          <fa-icon class="fa-xl" [icon]="viewIcon"></fa-icon>
+        </button>
+        <button (click)="openFormNav('edit', element)">
+          <fa-icon class="fa-xl" [icon]="editIcon"></fa-icon>
+        </button>
+        <button (click)="deleteCompBank(element)">
+          <fa-icon class="fa-xl" [icon]="deleteIcon"></fa-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator
+  class="{{ compBankList.data.length !== 0 ? '!block' : '!hidden' }}"
+  [pageSizeOptions]="[10, 20, 30]"
+  showFirstLastButtons
+></mat-paginator>

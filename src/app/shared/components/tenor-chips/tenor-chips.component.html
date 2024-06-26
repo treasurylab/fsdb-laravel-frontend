@@ -1,0 +1,34 @@
+<div class="flex flex-row">
+  <!-- For the starter div  -->
+  @for (button of buttonNameList; track $index) { @if ($index==0) {
+  <!-- First Option  -->
+  <div
+    id="firstDiv"
+    (click)="sendClickToParent(button)"
+    class="chip border-l-2 rounded-l-lg"
+    [ngClass]="{ selected: button === selectedTenor }"
+  >
+    {{ button }}
+  </div>
+
+  }@else if ($index==buttonNameList.length-1) {
+  <!-- Last Option  -->
+  <div
+    id="lastDiv"
+    (click)="sendClickToParent(button)"
+    class="chip rounded-r-lg"
+    [ngClass]="{ selected: button === selectedTenor }"
+  >
+    {{ button }}
+  </div>
+  }@else {
+  <!-- The Options In Between  -->
+  <div
+    (click)="sendClickToParent(button)"
+    class="chip"
+    [ngClass]="{ selected: button === selectedTenor }"
+  >
+    {{ button }}
+  </div>
+  } }
+</div>

@@ -1,0 +1,163 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-page-title>
+      <div class="flex flex-row items-center gap-2">
+        <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+        Filters
+      </div>
+    </app-page-title>
+    <form [formGroup]="uliprate" (submit)="getUlipRatesList()">
+      <app-text-field
+        type="date"
+        label="Key date"
+        [control]="getFormControllers('sdate')"
+      >
+      </app-text-field>
+      <div class="flex flex-row gap-3 items-center mt-[15px]">
+        <app-app-button class="flex-1" type="submit" [expanded]="true">
+          <div icon>
+            <fa-icon [icon]="searchIcon"></fa-icon>
+          </div>
+          Search
+        </app-app-button>
+        <app-app-button
+          class="flex-1"
+          btnClass="secondary"
+          type="reset"
+          [expanded]="true"
+        >
+          <div icon>
+            <fa-icon [icon]="clearIcon"></fa-icon>
+          </div>
+          Clear
+        </app-app-button>
+      </div>
+    </form>
+  </app-page-container>
+  <app-page-container navContent>
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="Daily NAV of Unit Linked Funds"
+        tooltip="ULIP"
+        [pageInfo]="pageInfo"
+      >
+        ULIP
+      </app-page-title>
+      <div class="flex flex-row gap-2 items-center">
+        <span class="select-none border-r-2 border-gray-400 pr-2">
+          <a
+            href="https://www.iciciprulife.com/fund-performance/all-products-fund-performance-details.html"
+            target="_blank"
+          >
+            <fa-icon [icon]="linkIcon"></fa-icon>
+          </a>
+          <span class="text-md ml-1">ICICIPRULIFE</span>
+        </span>
+        <span class="select-none border-r-2 border-gray-400 pr-2">
+          <a href="https://www.hdfclife.com/fund-performance" target="_blank">
+            <fa-icon [icon]="linkIcon"></fa-icon>
+          </a>
+          <span class="text-md ml-1">HDFC Life</span>
+        </span>
+        <span class="select-none">
+          <span class="text-md ml-1">End of Day NAV</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="flex flex-row justify-between items-center w-full mb-2">
+      <app-text-field
+        type="search"
+        class="mb-1"
+        [control]="searchInput"
+        placeholder="Search a Scheme..."
+      ></app-text-field>
+      <div class="mr-auto ml-2 font-poppins">(As On: {{ recordDate }})</div>
+      <div class="table-comp-header !mb-0">
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <app-app-button
+          (click)="exportToCsv(ulipRateList, 'ULIP_RATES')"
+          btnClass="tertiary"
+          class="ml-2 mr-1 mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+    </div>
+
+    <div class="mr-auto mb-2">
+      <app-table-chips [dataArray]="tableChips"></app-table-chips>
+    </div>
+    <table mat-table [dataSource]="filterUlipRateList()">
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- ISIN Column -->
+      <ng-container matColumnDef="isin">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          SFIN
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-align: center">
+          {{ element.isin_no }}
+        </td>
+      </ng-container>
+
+      <!-- Type Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Type
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-align: center">
+          {{ element.prod_code }}
+        </td>
+      </ng-container>
+
+      <!-- Fund House Column -->
+      <ng-container matColumnDef="fundhouse">
+        <th mat-header-cell *matHeaderCellDef class="text-align: left">
+          Fund House
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-align: left">
+          {{ element.bp_name }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="text-align: left">Name</th>
+        <td mat-cell *matCellDef="let element" class="text-align: left">
+          {{ element.scheme_name }}
+        </td>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Price
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-align: center">
+          {{ element.mtm_rate }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumnDW2"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnDW2"></tr>
+    </table>
+  </app-page-container>
+</app-side-form>

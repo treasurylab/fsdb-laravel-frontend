@@ -1,0 +1,88 @@
+<div
+  class="w-full h-full mx-auto"
+  (mouseenter)="showResultPanel = true; isInPanel = true"
+  (mouseleave)="setTimeOutClose(); isInPanel = false"
+>
+  <div
+    class="relative flex items-center w-full h-full rounded-lg overflow-hidden bg-[#F1F5F9]"
+  >
+    <div class="grid place-items-center h-full w-12 text-gray-300 bg-[#F1F5F9]">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-full max-h-5 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        />
+      </svg>
+    </div>
+
+    <input
+      [(ngModel)]="searchString"
+      (keyup)="updateMenus()"
+      class="peer h-full w-full outline-none text-xs text-gray-700 bg-[#F1F5F9] pr-2 font-poppins"
+      type="text"
+      id="search"
+      placeholder="Search..."
+      #searchField
+    />
+
+    @if(searchString.length>0){<span
+      (click)="searchString = ''"
+      class="material-symbols-outlined bg-green mr-3 text-gray-400 hover:text-gray-600 text-xs cursor-pointer"
+    >
+      close </span
+    >}@else{
+    <div
+      id="tooltip"
+      class="w-[70px mr-2 flex items-center justify-center cursor-pointer"
+      matTooltip="Hold down {{
+        isMac ? '⌘' : 'ctrl'
+      }} and K to jump to the Search Bar!"
+    >
+      <!-- shortcut keys-->
+      <div class="flex flex-row items-center">
+        <span
+          class="font-poppins text-xs text-gray-500 border-[1px] border-gray-300 p-1 rounded-lg min-w-[25px] flex flex-col items-center"
+          >{{ isMac ? "⌘" : "ctrl" }}</span
+        >
+        <span class="font-poppins text-xs text-gray-500 p-1">+</span>
+
+        <span
+          class="font-poppins text-xs text-gray-500 border-[1px] border-gray-300 p-1 rounded-lg min-w-[25px] flex flex-col items-center"
+          >K</span
+        >
+      </div>
+    </div>
+    }
+  </div>
+</div>
+@if(searchString.length > 0){
+<div
+  id="result-panel"
+  class="shadow-lg"
+  (mouseenter)="isInPanel = true"
+  (mouseleave)="setTimeOutClose(); isInPanel = false"
+>
+  @if (filterList.length>0) { @for (item of filterList; track $index) {
+  <div
+    class="action-tile hover:bg-gray-100 hover:opacity-75 transition duration-300 ease-in-out"
+    (click)="searchString = ''"
+    [routerLink]="item.route"
+    id="tile-{{ $index }}"
+  >
+    <span class="material-symbols-outlined mx-1"> chevron_right </span>
+    <span class="font-poppins text-sm">{{ item.name }}</span>
+    <hr />
+  </div>
+  } } @else {
+  <div class="font-poppins py-2 px-3">No Menus Found!</div>
+  }
+</div>
+}

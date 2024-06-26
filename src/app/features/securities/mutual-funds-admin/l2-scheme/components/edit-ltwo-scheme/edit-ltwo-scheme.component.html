@@ -1,0 +1,153 @@
+<app-page-title>
+  <div class="flex flex-row items-center gap-2 px-3 pt-3">
+    <fa-icon class="fa-xs" [icon]="editIcon"></fa-icon>
+    AMFI Master Data
+  </div>
+</app-page-title>
+<hr />
+<app-page-container>
+  <form [formGroup]="schemeinfoform" (ngSubmit)="schemeInfoUpdate()">
+    <p class="font-poppins font-light text-gray-600 text-sm mt-1 select-none">
+      Note* : Please select Scheme Category, Fund Name and Scheme SType before
+      Save.
+    </p>
+    <div class="grid grid-cols-3 w-full gap-3">
+      <div class="col-span-1 mt-[15px]">
+        <app-select-field
+          label="Scheme Type"
+          placeholder="Select"
+          [control]="getFormControllers('schemetype')"
+        >
+          <option *ngFor="let schtype of schemeTypeList" [value]="schtype.name">
+            {{ schtype.name }}
+          </option>
+        </app-select-field>
+      </div>
+      <div class="col-span-1 mt-[15px]">
+        <app-select-field
+          label="Fund House"
+          placeholder="Select"
+          [control]="getFormControllers('fundhouse')"
+        >
+          <option *ngFor="let fh of listFund" [value]="fh.id">
+            {{ fh.name }}
+          </option></app-select-field
+        >
+      </div>
+      <div class="col-span-1 mt-[35px]">
+        <app-text-field
+          label="SEBI Category"
+          placeholder="Enter SEBI Category"
+          [control]="getFormControllers('sebi_name')"
+        ></app-text-field>
+      </div>
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Customized Link Symbol"
+          placeholder="Enter Customized Link Symbol"
+          [control]="getFormControllers('link_symbol')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Scheme Name"
+          placeholder="Enter Scheme Name"
+          [control]="getFormControllers('name')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Scheme Code"
+          placeholder="Enter Scheme Code"
+          [control]="getFormControllers('id')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="ISIN Div Payout/ ISIN Growth"
+          placeholder="Enter ISIN Div Payout/ ISIN Growth"
+          [control]="getFormControllers('isin1')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="ISIN Div Reinvestment"
+          placeholder="Enter ISIN Div Reinvestment"
+          [control]="getFormControllers('isin2')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Symbol"
+          placeholder="Enter Symbol"
+          [control]="getFormControllers('symbol')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Short Name (FS)"
+          placeholder="Enter Short Name (FS)"
+          [control]="getFormControllers('sname')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Closed Flag"
+          placeholder="Enter Closed Flag"
+          [control]="getFormControllers('closed_flag')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Launch Date"
+          placeholder="Enter Launch Date"
+          [control]="getFormControllers('launch_date')"
+        ></app-text-field>
+      </div>
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Closure Date"
+          placeholder="Enter Closure Date"
+          [control]="getFormControllers('closure_date')"
+        ></app-text-field>
+      </div>
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Amfi Category"
+          placeholder="Enter Amfi Category"
+          [control]="getFormControllers('amfi_catg')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-2">
+        <div class="flex flex-row gap-3 mt-[15px]">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            <div icon>
+              <fa-icon [icon]="saveIcon"></fa-icon>
+            </div>
+            Save
+          </app-app-button>
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            [expanded]="true"
+            (onTap)="closeModal()"
+          >
+            <div icon>
+              <fa-icon [icon]="closeIcon"></fa-icon>
+            </div>
+            Close
+          </app-app-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-page-container>

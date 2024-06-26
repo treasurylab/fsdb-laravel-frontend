@@ -1,0 +1,185 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-page-title>
+      <div class="flex flex-row items-center gap-2">
+        <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+        Filters
+      </div>
+    </app-page-title>
+    <form [formGroup]="navInfoForm" (submit)="navDataView(false)">
+      <app-text-field
+        type="date"
+        label="Date"
+        [control]="getFormControllers('sdate')"
+      >
+      </app-text-field>
+      <app-select-field
+        label="Fund House"
+        [control]="getFormControllers('fhlist')"
+      >
+        <option *ngFor="let option of fundHousesData" [value]="option.id">
+          {{ option.id === "All" ? "All" : option.id + " : " + option.name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="AMFI Type"
+        [control]="getFormControllers('amfitype')"
+      >
+        <option *ngFor="let cat1 of sebicatgList" [value]="cat1.code">
+          {{ cat1.name === "All" ? "All" : cat1.name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="SEBI Category"
+        [control]="getFormControllers('sebilist')"
+      >
+        <option *ngFor="let option of sebiList" [value]="option.code">
+          {{ option.code === "All" ? "All" : option.tname }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="Scheme Type"
+        [control]="getFormControllers('schemetype')"
+      >
+        <option *ngFor="let cat2 of categoryList2" [value]="cat2.id">
+          {{ cat2.value }}
+        </option>
+      </app-select-field>
+      <div class="flex flex-row gap-3 items-center mt-[15px]">
+        <app-app-button class="flex-1" type="submit" [expanded]="true">
+          <div icon>
+            <fa-icon [icon]="searchIcon"></fa-icon>
+          </div>
+          Search
+        </app-app-button>
+        <app-app-button
+          class="flex-1"
+          btnClass="secondary"
+          type="reset"
+          [expanded]="true"
+        >
+          <div icon>
+            <fa-icon [icon]="clearIcon"></fa-icon>
+          </div>
+          Clear
+        </app-app-button>
+      </div>
+    </form>
+  </app-page-container>
+  <app-page-container navContent>
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="End of Day NAV prices published by AMFI"
+        tooltip="NAV published by AMFI as on the end of the day"
+        [pageInfo]="pageInfo"
+      >
+        NAV
+      </app-page-title>
+      <span class="select-none">
+        <a href="https://www.amfiindia.com/net-asset-value" target="_blank">
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">End of Day NAV</span>
+      </span>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="table-comp-header">
+        <app-text-field
+          type="search"
+          #filterField
+          (keyup)="applyFilter($event)"
+          placeholder="Search ..."
+        ></app-text-field>
+        <app-app-button
+          (click)="ngOnInit()"
+          type="button"
+          btnClass="secondary"
+          class="mt-3 ml-3"
+        >
+          <div icon>
+            <fa-icon [icon]="refreshIcon"></fa-icon>
+          </div>
+        </app-app-button>
+        <div class="flex flex-row gap-2 ml-auto">
+          <app-app-button
+            (click)="sideForm.toggleFormNav()"
+            btnClass="secondary"
+            class="mt-3"
+          >
+            <div icon>
+              <fa-icon [icon]="filterIcon"></fa-icon>
+            </div>
+            Filters
+          </app-app-button>
+          <app-app-button
+            (click)="navDataView(true)"
+            type="button"
+            btnClass="tertiary"
+            class="mt-3"
+          >
+            <div icon>
+              <fa-icon [icon]="exportIcon"></fa-icon>
+            </div>
+            Export
+          </app-app-button>
+        </div>
+      </div>
+      <div class="mr-auto mb-2">
+        <app-table-chips [dataArray]="tableChips"></app-table-chips>
+      </div>
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="record_date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.record_date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="scheme_id">
+          <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.scheme_id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="scheme_name">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center">
+            Scheme Name
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: left">
+            {{ element.scheme_name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nav">
+          <th mat-header-cell *matHeaderCellDef>NAV</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.net_asset_value }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="AUM">
+          <th mat-header-cell *matHeaderCellDef>
+            AUM <br />(In Crores)
+            <button (click)="sortAUM('asc')">&#9650;</button>
+            <button (click)="sortAUM('desc')">&#9660;</button>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.factsheet_AUM }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+
+        <tr class="mat-row center" *matNoDataRow>
+          <td class="mat-cell !py-5" colspan="9">No Data Found</td>
+        </tr>
+      </table>
+      <mat-paginator
+        class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </app-page-container>
+</app-side-form>

@@ -1,0 +1,62 @@
+@import "../../../../../styles/global-styles.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+::ng-deep .mat-mdc-table {
+  min-width: max-content !important;
+}
+section,
+.mat-mdc-table {
+  display: table;
+}
+.cta-button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+.cta-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.mdc-button--raised {
+  margin: 0 5px 0 5px;
+}
+
+.center {
+  text-align: center;
+}
+
+.mat-mdc-header-cell {
+  color: $text-secondary;
+  font-size: small;
+  background: #f0f0f5 !important;
+  // border-color: #bde0fe !important;
+}
+
+// ::ng-deep .mdc-data-table__cell {
+//   font-family: Poppins;
+//   font-weight: 100;
+//   line-height: 0.2in !important;
+// }
+
+td.mat-mdc-cell.mdc-data-table__cell.cdk-cell {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+#filterField {
+  font-size: 12px;
+}
+
+#table {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  max-width: none;
+}
+@media (min-width: 768px) {
+  #month-start-date {
+    width: 25%;
+  }
+}

@@ -1,0 +1,54 @@
+@import "../../../../styles/global-styles.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+.pull-right {
+  float: right;
+}
+
+.basicTable {
+  table,
+  th,
+  td {
+    border: 0.5px solid rgb(189, 204, 232);
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 2px;
+  }
+}
+#hdatatable {
+  border-collapse: collapse;
+  width: auto;
+  margin-left: 20px;
+}
+
+#hdatatable td,
+#hdatatable th {
+  border: 1px solid #ddd;
+}
+
+#hdatatable tr:nth-child(even) {
+  background-color: #ededed;
+}
+
+#hdatatable tr:hover {
+  background-color: #f9f9f9;
+}
+
+#hdatatable th {
+  text-align: left !important;
+  margin-left: 5px !important;
+  background-color: #f7fafc;
+  width: 200px;
+}
+
+#hdatatable td {
+  width: 200px;
+  margin-left: 5px !important;
+}
+
+.example-form {
+  width: 500px;
+}

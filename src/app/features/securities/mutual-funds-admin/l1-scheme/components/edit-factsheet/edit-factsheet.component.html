@@ -1,0 +1,128 @@
+<app-page-title>
+  <div class="flex flex-row items-center gap-2 px-2">
+    <fa-icon class="fa-xs" [icon]="editIcon"></fa-icon>
+    Edit Factsheet Data
+  </div>
+</app-page-title>
+<hr />
+<app-page-container>
+  <form [formGroup]="factsheetform" (ngSubmit)="factsheetInfoUpdate()">
+    <p class="font-poppins font-light text-gray-600 text-sm mt-1 select-none">
+      Note* : Please select Status before Save.
+    </p>
+    <div class="grid grid-cols-2 w-full gap-3">
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Scheme ID"
+          placeholder="Enter ID"
+          [control]="getFormControllers('id')"
+        ></app-text-field>
+      </div>
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Record Name"
+          placeholder="Enter name"
+          [control]="getFormControllers('name')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Portfolio AUM (Cr)"
+          placeholder="Enter amount"
+          [control]="getFormControllers('pf_amt')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Factsheet AUM (Cr)"
+          placeholder="Enter amount"
+          [control]="getFormControllers('month_aum')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Average Maturity (yrs)"
+          placeholder="Enter maturity"
+          [control]="getFormControllers('avg_maturity')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Modified Duration (yrs)"
+          placeholder="Enter duration"
+          [control]="getFormControllers('mod_duration')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Gross YTM (%)"
+          placeholder="Enter percent"
+          [control]="getFormControllers('gross_ytm')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Expense Ratio"
+          placeholder="Enter ratio"
+          [control]="getFormControllers('exp_ratio')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Lock In Period"
+          placeholder="Enter period"
+          [control]="getFormControllers('lock_prd')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Exit Load"
+          placeholder="Enter load"
+          [control]="getFormControllers('exit_load')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-2">
+        <app-select-field
+          label="Exit Load"
+          placeholder="Select"
+          [control]="getFormControllers('reason_code')"
+        >
+          <option *ngFor="let status of statusList" [value]="status.code">
+            {{ status.name }}
+          </option>
+        </app-select-field>
+      </div>
+
+      <div class="col-span-2">
+        <div class="flex flex-row gap-3 mt-[15px]">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            <div icon>
+              <fa-icon [icon]="saveIcon"></fa-icon>
+            </div>
+            Save
+          </app-app-button>
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            [expanded]="true"
+            (onTap)="closeModal()"
+          >
+            <div icon>
+              <fa-icon [icon]="closeIcon"></fa-icon>
+            </div>
+            Close
+          </app-app-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-page-container>

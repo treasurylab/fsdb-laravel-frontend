@@ -1,0 +1,240 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-page-title>
+      <div class="flex flex-row items-center gap-2 px-2">
+        <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+        Filters
+      </div>
+    </app-page-title>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChange($event)">
+      <form
+        [formGroup]="queryForm"
+        (submit)="
+          cgrpId !== '28' ? getMtmHistRates() : getBseClosingPriceList()
+        "
+      >
+        <div
+          class="grid grid-cols-1 items-end justify-between w-full gap-3 px-2"
+        >
+          <div class="col-span-1">
+            <app-text-field
+              type="date"
+              label="{{ activeTab === tabs[0] ? 'Key date' : 'From date' }}"
+              [control]="getFormControllers('fromDate')"
+            >
+            </app-text-field>
+          </div>
+          <div *ngIf="activeTab === tabs[1]" class="col-span-1">
+            <app-text-field
+              type="date"
+              label="To date"
+              [control]="getFormControllers('toDate')"
+            >
+            </app-text-field>
+          </div>
+
+          <div class="col-span-1">
+            <app-select-field
+              label="Index"
+              [control]="getFormControllers('sensexOption')"
+            >
+              <option *ngFor="let option of sensexOption" [value]="option.id">
+                {{ option.value }}
+              </option>
+            </app-select-field>
+          </div>
+
+          <div *ngIf="activeTab === tabs[1]" class="col-span-1">
+            <app-select-field
+              label="Company Search"
+              [control]="getFormControllers('company')"
+            >
+              <option
+                *ngFor="let option of dropDownCompanies"
+                [value]="option.symbol === 'All' ? 'All' : option.isin_no"
+              >
+                {{ option.symbol === "All" ? "All" : option.company_name }}
+              </option>
+            </app-select-field>
+          </div>
+
+          <div class="col-span-1">
+            <div class="flex flex-row gap-3 items-center mt-[15px]">
+              <app-app-button class="flex-1" type="submit" [expanded]="true">
+                <div icon>
+                  <fa-icon [icon]="searchIcon"></fa-icon>
+                </div>
+                Search
+              </app-app-button>
+              <app-app-button
+                class="flex-1"
+                btnClass="secondary"
+                type="reset"
+                [expanded]="true"
+              >
+                <div icon>
+                  <fa-icon [icon]="clearIcon"></fa-icon>
+                </div>
+                Clear
+              </app-app-button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </app-tab-view>
+  </app-page-container>
+  <app-page-container navContent>
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="End of Day Equity Closing Prices across Companies."
+        tooltip="Equity end of day closing prices from BSE"
+        [pageInfo]="bseInfo"
+      >
+        Equity Closing Prices (BSE)
+      </app-page-title>
+      <span class="select-none">
+        <a
+          href="https://www.bseindia.com/markets/MarketInfo/BhavCopy.aspx"
+          target="_blank"
+        >
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">End of Day Prices</span>
+      </span>
+    </div>
+    <div class="flex flex-col">
+      <div class="table-comp-header">
+        <app-text-field
+          type="search"
+          #filterField
+          (keyup)="applyFilter($event)"
+          placeholder="Search for an ISIN..."
+        ></app-text-field>
+        <app-app-button
+          (click)="ngOnInit()"
+          type="button"
+          btnClass="secondary"
+          class="mt-3 ml-3"
+        >
+          <div icon>
+            <fa-icon [icon]="refreshIcon"></fa-icon>
+          </div>
+        </app-app-button>
+        <span *ngIf="showLastDate" class="mt-4 ml-3 mr-3 text-md font-poppins"
+          >(As On:
+          {{
+            currentDate !== undefined
+              ? (currentDate | date : "dd.MM.yyyy")
+              : "No Date Available"
+          }})</span
+        >
+        <div class="flex flex-row gap-2 ml-auto">
+          <app-app-button
+            (click)="sideForm.toggleFormNav()"
+            btnClass="secondary"
+            class="mt-3"
+          >
+            <div icon>
+              <fa-icon [icon]="filterIcon"></fa-icon>
+            </div>
+            Filters
+          </app-app-button>
+          <app-app-button
+            *ngIf="mtmHistRates.data.length > 0"
+            (click)="exportToCsv(mtmHistRates.data, 'BSE_EQUITY_PRICES')"
+            type="button"
+            btnClass="tertiary"
+            class="mt-3"
+          >
+            <div icon>
+              <fa-icon [icon]="exportIcon"></fa-icon>
+            </div>
+            Export
+          </app-app-button>
+        </div>
+      </div>
+      <div class="mr-auto mb-2">
+        <app-table-chips [dataArray]="tableChips"></app-table-chips>
+      </div>
+      <table mat-table [dataSource]="mtmHistRates">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef class="text-align: left">
+            Record Date
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-align: left">
+            {{ element.record_date | date : "dd.MM.yyyy" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef class="text-align: left">
+            Company
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-align: left">
+            {{ element.company_name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isin_no">
+          <th mat-header-cell *matHeaderCellDef class="text-align: left">
+            ISIN
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: left">
+            {{ element.isin_no }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="open">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            Open
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.open | number : "1.2-2" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="high">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            High
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.high | number : "1.2-2" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="low">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            Low
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.low | number : "1.2-2" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="close">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            Close
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.close | number : "1.2-2" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="prevclose">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            Previous Close
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.prevclose | number : "1.2-2" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row center" *matNoDataRow>
+          <td class="mat-cell !py-5" colspan="9">No Data Found</td>
+        </tr>
+      </table>
+      <mat-paginator
+        class="{{ mtmHistRates.data.length !== 0 ? '!block' : '!hidden' }}"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </app-page-container>
+</app-side-form>

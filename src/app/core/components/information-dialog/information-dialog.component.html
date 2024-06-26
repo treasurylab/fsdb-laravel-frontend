@@ -1,0 +1,14 @@
+<mat-dialog-content>
+  <div #mainContainer class="h-fit w-fit py-2">
+    <div
+      id="header-container"
+      class="w-full h-fit flex flex-row justify-between items-center"
+    >
+      <span>Message</span>
+      <mat-icon (click)="closeMe()">close</mat-icon>
+    </div>
+    <div #messageContainer class="py-4">
+      <span>{{ message }}</span>
+    </div>
+  </div>
+</mat-dialog-content>

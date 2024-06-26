@@ -1,0 +1,217 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <form [formGroup]="fdRateHistoryForm" (submit)="searchFDRatesHistory()">
+      <div class="flex flex-col w-full px-2">
+        <app-page-title>
+          <div class="flex flex-row items-center gap-2">
+            <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+            Filters
+          </div>
+        </app-page-title>
+        <div class="grid grid-cols-1 items-end justify-between w-full gap-3">
+          <div class="col-span-1">
+            <!-- <app-select-field
+              label="Select Month"
+              (selectionChanged)="getFormControllers('month')"
+            >
+              <option *ngFor="let month of monthIndexArr" [value]="month">
+                {{ monthDic[month] }}
+              </option>
+            </app-select-field> -->
+            <div class="mt-[15px]">
+              <label for="bank_code" class="font-semibold">
+                Select Month
+              </label>
+              <mat-select
+                formControlName="month"
+                placeholder="Month"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                required
+              >
+                <mat-option *ngFor="let month of monthIndexArr" [value]="month">
+                  {{ monthDic[month] }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="col-span-1">
+            <div class="mt-[15px]">
+              <label for="bank_code" class="font-semibold"> Select Year </label>
+              <mat-select
+                formControlName="year"
+                placeholder="Year"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                required
+              >
+                <mat-option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </mat-option>
+              </mat-select>
+            </div>
+            <!-- <app-select-field
+              label="Select Year"
+              (selectionChanged)="getFormControllers('year')"
+            >
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </app-select-field> -->
+          </div>
+          <div class="col-span-1">
+            <div class="mt-[15px]">
+              <label for="bank_code" class="font-semibold"> Select Bank </label>
+              <mat-select
+                formControlName="bank_code"
+                placeholder="Bank Name"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                required
+              >
+                <mat-option *ngFor="let bank of bankCodes" [value]="bank">
+                  {{ bankMap[bank] }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div class="col-span-1">
+            <div class="flex flex-row gap-3 items-center mt-[15px]">
+              <app-app-button class="flex-1" type="submit" [expanded]="true">
+                <div icon>
+                  <fa-icon [icon]="searchIcon"></fa-icon>
+                </div>
+                Search
+              </app-app-button>
+              <app-app-button
+                class="flex-1"
+                btnClass="secondary"
+                type="reset"
+                [expanded]="true"
+              >
+                <div icon>
+                  <fa-icon [icon]="clearIcon"></fa-icon>
+                </div>
+                Clear
+              </app-app-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </app-page-container>
+  <app-page-container navContent>
+    <app-page-title>FD Rates History</app-page-title>
+    <div class="flex flex-row mb-3">
+      <app-app-button
+        (click)="resetScreen()"
+        type="button"
+        btnClass="secondary"
+        class="mt-3"
+      >
+        <div icon>
+          <fa-icon [icon]="refreshIcon"></fa-icon>
+        </div>
+      </app-app-button>
+      <div class="flex flex-row ml-auto gap-2">
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <app-app-button
+          (click)="exportToCsv(fdRateHistoryTable.data)"
+          btnClass="tertiary"
+          class="ml-2 mr-1 mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+    </div>
+    <div class="mr-auto mb-2">
+      <app-table-chips [dataArray]="tableChips"></app-table-chips>
+    </div>
+    <div>
+      <table mat-table [dataSource]="fdRateHistoryTable">
+        <ng-container matColumnDef="bank_code">
+          <th mat-header-cell *matHeaderCellDef class="!text-left">
+            Bank Code
+          </th>
+          <td mat-cell *matCellDef="let element" class="!text-left">
+            {{ element.bank_code }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="record_date">
+          <th mat-header-cell *matHeaderCellDef class="!text-center">
+            Issue Date
+          </th>
+          <td mat-cell *matCellDef="let element" class="!text-center">
+            {{ element.record_date | date : "dd-MM-yyyy" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="std_tenor_desc">
+          <th mat-header-cell *matHeaderCellDef class="!text-center">
+            Tenor Description
+          </th>
+          <td mat-cell *matCellDef="let element" class="!text-center">
+            {{ element.std_tenor_desc }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="from_amt">
+          <th mat-header-cell *matHeaderCellDef class="!text-center">
+            From Amount
+          </th>
+          <td mat-cell *matCellDef="let element" class="!text-center">
+            {{ element.from_amt === "-" ? "0 Cr" : element.from_amt + " Cr" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="to_amt">
+          <th mat-header-cell *matHeaderCellDef class="!text-center">
+            To Amount
+          </th>
+          <td mat-cell *matCellDef="let element" class="!text-center">
+            {{
+              element.to_amt === "-" || element.to_amt === "Above"
+                ? "10 Cr (Above)"
+                : element.to_amt + " Cr"
+            }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="max_value">
+          <th mat-header-cell *matHeaderCellDef class="!text-right">
+            Interest Rate
+          </th>
+          <td mat-cell *matCellDef="let element" class="!text-right">
+            {{ element.max_value + "%" }}
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          class="sticky"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="mat-row center" *matNoDataRow>
+          <td class="mat-cell" colspan="9">No Data Found</td>
+        </tr>
+      </table>
+      <hr />
+      <mat-paginator
+        [pageSizeOptions]="[10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </app-page-container>
+</app-side-form>

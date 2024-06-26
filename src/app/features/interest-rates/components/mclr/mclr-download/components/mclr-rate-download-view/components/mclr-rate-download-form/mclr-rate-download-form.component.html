@@ -1,0 +1,60 @@
+<app-page-title>
+  <div class="flex flex-row items-center gap-2 px-2">
+    <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+    Filters
+  </div>
+</app-page-title>
+<app-tab-view [tabs]="tabs" (tabSelected)="onTabChange($event)">
+  <form [formGroup]="mclrDownloadForm" (submit)="submitFormData()">
+    <div class="grid grid-cols-1 items-end justify-between w-full gap-3 px-2">
+      <div class="col-span-1">
+        <app-select-field
+          [control]="getFormControllers('compcode')"
+          label="Select company"
+          placeHolder="Select company"
+        >
+          <option *ngFor="let comp of allCompanies" [value]="comp.comp_code">
+            {{ comp.comp_code }} - {{ comp.comp_name }}
+          </option>
+        </app-select-field>
+      </div>
+      <div class="col-span-1">
+        <app-text-field
+          type="date"
+          label="{{ activeTab === tabs[0] ? 'Key date' : 'From date' }}"
+          [control]="getFormControllers('fromdate')"
+        >
+        </app-text-field>
+      </div>
+      <div *ngIf="activeTab === tabs[1]" class="col-span-1">
+        <app-text-field
+          type="date"
+          label="To date"
+          [control]="getFormControllers('todate')"
+        >
+        </app-text-field>
+      </div>
+      <div class="col-span-1">
+        <div class="flex flex-row gap-3 items-center mt-[15px]">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            <div icon>
+              <fa-icon [icon]="searchIcon"></fa-icon>
+            </div>
+            Search
+          </app-app-button>
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            type="reset"
+            [expanded]="true"
+          >
+            <div icon>
+              <fa-icon [icon]="clearIcon"></fa-icon>
+            </div>
+            Clear
+          </app-app-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-tab-view>

@@ -1,0 +1,64 @@
+<div class="px-3">
+  <app-page-title> {{ sideNavTitle }} </app-page-title>
+</div>
+<form class="px-3" [formGroup]="mclrCompBank" (ngSubmit)="mapCompanyToBank()">
+  <div class="grid grid-cols-1 w-full">
+    <app-text-field
+      label="SAP Ref. No. (BP)"
+      placeholder="SAP Ref. No."
+      [control]="getFormControllers('referenceID')"
+    >
+    </app-text-field>
+    <app-select-field
+      label="Select company"
+      placeHolder="Select company"
+      [control]="getFormControllers('compInfo')"
+    >
+      <option *ngFor="let comp of allCompanies" [value]="comp">
+        {{ comp.comp_code }} - {{ comp.comp_name }}
+      </option>
+    </app-select-field>
+    <app-select-field
+      label="Select bank"
+      placeHolder="Select bank"
+      [control]="getFormControllers('bankInfo')"
+    >
+      <option *ngFor="let bank of mclrBankList" [value]="bank">
+        {{ bank.bank_code }} - {{ bank.bank_name }}
+      </option>
+    </app-select-field>
+    <div class="mt-[15px]">
+      <label for="tenor_type" class="font-semibold">Tenor type</label>
+      <mat-select
+        id="bank_code"
+        formControlName="tenorList"
+        multiple
+        placeholder="Select tenors"
+      >
+        <mat-option *ngFor="let tenor of tenorList" [value]="tenor.mfreq_type">
+          {{ tenor.mfreq_code }} - {{ tenor.mfreq_type }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div class="flex flex-row items-center gap-3 mt-[15px]">
+      <app-app-button
+        class="flex-1"
+        type="submit"
+        btnClass="primary"
+        [expanded]="true"
+        *ngIf="sideNavAction !== 'view'"
+      >
+        Submit
+      </app-app-button>
+      <app-app-button
+        class="flex-1"
+        type="button"
+        btnClass="secondary"
+        [expanded]="true"
+        (click)="hideForm()"
+      >
+        Close
+      </app-app-button>
+    </div>
+  </div>
+</form>

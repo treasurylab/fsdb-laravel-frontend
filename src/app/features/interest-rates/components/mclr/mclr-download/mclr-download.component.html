@@ -1,0 +1,56 @@
+<app-side-form #sideForm [isOpened]="false" [enablePadding]="false">
+  <div nav>
+    <app-mclr-comp-mast-form
+      *ngIf="activeTab === tabs[1]"
+      [allCompanies]="allCompaniesList"
+      [tenorList]="tenorList"
+      [sideNavObj]="sideForm"
+      [formPayload]="sideFormPayload"
+      sideNavTitle="{{ sideNavTitle }}"
+      sideNavAction="{{ sideNavAction }}"
+      (formDataOut)="compMastFormResultCallback($event)"
+    >
+    </app-mclr-comp-mast-form>
+    <app-mclr-rate-form
+      *ngIf="activeTab === tabs[2]"
+      [allCompanies]="allCompaniesList"
+      [tenorList]="tenorList"
+      (formDataOut)="mclrRateFormCallback($event)"
+    >
+    </app-mclr-rate-form>
+    <app-mclr-rate-download-form
+      *ngIf="activeTab === tabs[3]"
+      [allCompanies]="allCompaniesList"
+      (formDataProbe)="mclrRateDownloadFormCallback($event)"
+    ></app-mclr-rate-download-form>
+  </div>
+  <div navContent>
+    <div class="px-3">
+      <app-page-title>MCLR Rate Download</app-page-title>
+    </div>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChange($event)">
+      <div class="px-3">
+        <app-mclr-tenor-view
+          *ngIf="activeTab === tabs[0]"
+          [tenorList]="tenorList"
+        ></app-mclr-tenor-view>
+        <app-mclr-comp-master-data-view
+          #compMastDataView
+          *ngIf="activeTab === tabs[1]"
+          [tenorList]="tenorList"
+          [allCompanies]="allCompaniesList"
+          [sideNavObj]="sideForm"
+          (navController)="compMastFormController($event)"
+        ></app-mclr-comp-master-data-view>
+        <app-mclr-rate-view
+          #mclrRateView
+          *ngIf="activeTab === tabs[2]"
+        ></app-mclr-rate-view>
+        <app-mclr-rate-download-view
+          #mclrRateDownloadView
+          *ngIf="activeTab === tabs[3]"
+        ></app-mclr-rate-download-view>
+      </div>
+    </app-tab-view>
+  </div>
+</app-side-form>

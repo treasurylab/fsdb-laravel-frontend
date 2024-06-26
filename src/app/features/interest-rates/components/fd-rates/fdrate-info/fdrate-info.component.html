@@ -1,0 +1,45 @@
+<div
+  class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]"
+>
+  <div
+    class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
+  >
+    <h3 class="font-bold text-gray-800 dark:text-white">FD Rates</h3>
+    <button
+      type="button"
+      class="flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+      data-hs-overlay="#hs-basic-modal"
+    >
+      <span (click)="closeMe()" class="sr-only">Close</span>
+      <svg
+        (click)="closeMe()"
+        class="flex-shrink-0 w-4 h-4"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
+  </div>
+  <div class="p-4 overflow-y-auto">
+    <p class="mt-1 text-gray-800 dark:text-gray-400">
+      A fixed deposit or an FD is an investment instrument that banks and
+      non-banking financial companies (NBFC) offer their customers. Through an
+      FD, people invest a certain sum of money for a fixed period at a
+      predetermined rate of interest in an FD. The rate of interest varies from
+      one financial institution to another, although it is usually higher than
+      the interest offered on savings accounts. Fixed deposits are available for
+      different periods, ranging from very short-term tenures of 7-14 days to
+      long tenures of 10 years. A fixed deposit is sometimes known as a term
+      deposit.
+    </p>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="text-field-main w-full">
+  <!-- Label -->
+  <label
+    [ngClass]="{
+      'text-field-label': typingFields.includes(type),
+      'label-text': !typingFields.includes(type),
+      'label-up': hasFocus || !(control.value === null || control.value === '')
+    }"
+    for="{{ fieldId }}"
+    >{{ label }}</label
+  >
+  <!-- Field -->
+  <div class="flex flex-row fs-input-container gap-1 w-full !h-10">
+    <fa-icon
+      *ngIf="type === 'search' && buttonIcon"
+      [ngClass]="{
+        'mr-2 text-[#9ca3af]': control.value === null || control.value === ''
+      }"
+      [icon]="buttonIcon"
+    ></fa-icon>
+    <input
+      #inputField
+      id="{{ fieldId }}"
+      class="fs-input-field"
+      type="{{ type }}"
+      placeholder="{{
+        label === '' ||
+        ((control.value === null || control.value === '') && hasFocus)
+          ? placeholder
+          : ''
+      }}"
+      [formControl]="control"
+      (focus)="onFocus()"
+      (blur)="onBlur()"
+      (keyup)="onKeyUpCallback()"
+      (change)="onChange($event)"
+    />
+    <button
+      id="password-btn"
+      *ngIf="type === 'password' && buttonIcon"
+      (click)="onPasswordEyeClicked()"
+    >
+      <fa-icon [icon]="buttonIcon"></fa-icon>
+    </button>
+  </div>
+  <!-- Errors -->
+  <div class="error-text" *ngIf="control && control.touched && control.errors">
+    <div *ngIf="control.errors['required']">
+      <small>This field is required</small>
+    </div>
+    <div *ngIf="control.errors['email']">
+      <small>Invalid email address</small>
+    </div>
+    <div *ngIf="control.errors['minlength']">
+      <small>Too short</small>
+    </div>
+    <div *ngIf="control.errors['maxlength']">
+      <small>Too long</small>
+    </div>
+  </div>
+</div>

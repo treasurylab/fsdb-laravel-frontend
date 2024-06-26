@@ -1,0 +1,130 @@
+@import "../../../styles/global-styles.scss";
+@import "../../../styles/media-queries.scss";
+
+$block-width: fit;
+$block-corners: 10px;
+$top10mf-width: fit;
+
+//blocks colors
+$blockColor1: #259ca6;
+$blockColor2: #d25b4e;
+$blockColor3: #4f86b5;
+$blockColor4: #259ca6;
+
+#firstRowContainer {
+  #block1 {
+    border-radius: $block-corners;
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $block-width;
+    }
+    #block1value {
+      color: #{$blockColor1};
+    }
+    #block1bar {
+      --mdc-linear-progress-active-indicator-color: #{$blockColor1};
+    }
+  }
+  #block2 {
+    border-radius: $block-corners;
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $block-width;
+    }
+    #block2value {
+      color: #{$blockColor2};
+    }
+    #block2bar {
+      --mdc-linear-progress-active-indicator-color: #{$blockColor2};
+    }
+  }
+  #block3 {
+    border-radius: $block-corners;
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $block-width;
+    }
+    #block3value {
+      color: #{$blockColor3};
+    }
+    #block3bar {
+      --mdc-linear-progress-active-indicator-color: #{$blockColor3};
+    }
+  }
+  #block4 {
+    border-radius: $block-corners;
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $block-width;
+    }
+    #block4value {
+      color: #{$blockColor4};
+    }
+    #block4bar {
+      --mdc-linear-progress-active-indicator-color: #{$blockColor4};
+    }
+  }
+}
+
+#thirdRowContainer {
+  #top10Mf1 {
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $top10mf-width;
+    }
+  }
+  #top10Mf2 {
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $top10mf-width;
+    }
+  }
+  #top10Mf3 {
+    width: 100%;
+    margin-bottom: 10px;
+    @include gt-xs {
+      width: $top10mf-width;
+    }
+  }
+}
+
+.mat-mdc-header-cell {
+  color: $text-secondary;
+  font-size: small;
+  background: #f0f0f5 !important;
+  // border-color: #bde0fe !important;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+#table {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background-color: #f0f0f5;
+  z-index: 2;
+}

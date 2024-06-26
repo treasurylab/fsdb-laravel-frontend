@@ -1,0 +1,259 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-tabbed-date-form
+      *ngIf="activeTab === tabs[0]"
+      [formGroup]="tBillRateForm"
+      (onFormSubmitted)="getTbillDownload()"
+    ></app-tabbed-date-form>
+    <div *ngIf="activeTab === tabs[1]" class="flex flex-col px-2">
+      <app-page-title>
+        <div class="flex flex-row items-center gap-2">
+          <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+          Filters
+        </div>
+      </app-page-title>
+      <form [formGroup]="tBillGraphForm" (submit)="tbillGraphData()">
+        <app-text-field
+          type="date"
+          label="Key date"
+          [control]="getFormControllers('fromdate')"
+        >
+        </app-text-field>
+        <div class="flex flex-row gap-3 items-center mt-[15px]">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            <div icon>
+              <fa-icon [icon]="searchIcon"></fa-icon>
+            </div>
+            Search
+          </app-app-button>
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            type="reset"
+            [expanded]="true"
+          >
+            <div icon>
+              <fa-icon [icon]="clearIcon"></fa-icon>
+            </div>
+            Clear
+          </app-app-button>
+        </div>
+      </form>
+    </div>
+  </app-page-container>
+  <app-page-container navContent>
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="Benchmark Rate for Treasury Bills"
+        tooltip="Interest rate on short term government debt securities"
+        [pageInfo]="pageInfo"
+      >
+        T-Bill Curve
+      </app-page-title>
+      <span class="select-none">
+        <a href="https://www.fbil.org.in/#/home" target="_blank">
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">Lag of 7 Days</span>
+      </span>
+    </div>
+
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChanged($event)">
+      <div *ngIf="activeTab === tabs[0]" class="flex flex-col">
+        <div class="table-comp-header">
+          <div class="mr-auto">
+            <app-table-chips [dataArray]="tableChips"></app-table-chips>
+          </div>
+          <app-app-button
+            (click)="sideForm.toggleFormNav()"
+            btnClass="secondary"
+            class="mt-1"
+          >
+            <div icon>
+              <fa-icon [icon]="filterIcon"></fa-icon>
+            </div>
+            Filters
+          </app-app-button>
+          <app-app-button
+            *ngIf="tBillRateList.data.length > 0"
+            (click)="exportToCsv()"
+            btnClass="tertiary"
+            class="ml-2 mr-1 mt-1"
+          >
+            <div icon>
+              <fa-icon [icon]="exportIcon"></fa-icon>
+            </div>
+            Export
+          </app-app-button>
+        </div>
+        <div class="w-full overflow-x-auto">
+          <table mat-table [dataSource]="tBillRateList">
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                Date
+              </th>
+              <td mat-cell *matCellDef="let item" class="text-align: center">
+                {{ item.record_date }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="days7">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                7 Days
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.d7 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="days14">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                14 Days
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.d14 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month1">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                1 Month
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m1 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month2">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                2 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m2 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month3">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                3 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m3 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month4">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                4 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m4 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month5">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                5 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m5 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month6">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                6 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m6 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month7">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                7 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m7 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month8">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                8 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m8 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month9">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                9 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m9 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month10">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                10 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m10 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month11">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                11 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m11 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month12">
+              <th mat-header-cell *matHeaderCellDef class="text-align: center">
+                12 Months
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.m12 }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <tr class="mat-row center" *matNoDataRow>
+              <td class="mat-cell !py-5" colspan="15">No Data Found</td>
+            </tr>
+          </table>
+          <mat-paginator
+            class="{{ tBillRateList.data.length !== 0 ? '!block' : '!hidden' }}"
+            [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </div>
+
+      <!-- Graph -->
+      <div *ngIf="activeTab === tabs[1]">
+        <app-content-card [noPad]="true">
+          <div class="flex flex-row justify-end w-full p-2">
+            <span class="text-gray-600 text-sm font-poppins font-semibold">
+              As On: {{ currentDate }}
+            </span>
+          </div>
+          <hr />
+          <app-line-graph
+            class="p-3 h-[400px]"
+            *ngIf="chartOptions !== undefined"
+            [chartOptions]="chartOptions"
+          ></app-line-graph>
+        </app-content-card>
+      </div>
+    </app-tab-view>
+  </app-page-container>
+</app-side-form>

@@ -1,0 +1,200 @@
+<app-side-form #sideForm [isOpened]="false">
+  <div class="h-[90vh] overflow-y-auto" nav>
+    <app-page-container>
+      <app-page-title [subHeading]="sideFormSubTitle">
+        {{ sideFormTitle }}
+      </app-page-title>
+      <form [formGroup]="mclrRateForm" (ngSubmit)="create()">
+        <div class="flex flex-col w-full justify-between">
+          <div class="grid grid-cols-2 w-full overflow-y-auto">
+            <div class="col-span-2">
+              <app-select-field
+                label="Bank"
+                placeHolder="Select bank"
+                [control]="getFormControllers('bankCode')"
+              >
+                <option
+                  *ngFor="let bank of dataSource.data"
+                  [value]="bank.bank_code"
+                >
+                  {{ bank.name }}
+                </option>
+              </app-select-field>
+            </div>
+            <div class="col-span-2">
+              <app-text-field
+                label="Effective date"
+                type="date"
+                [control]="getFormControllers('effectiveDate')"
+              >
+              </app-text-field>
+            </div>
+            <div class="col-span-2 mt-[15px]">
+              <app-text-field
+                label="URL"
+                placeholder="Enter valid url"
+                type="url"
+                [control]="getFormControllers('mclrUrl')"
+              >
+              </app-text-field>
+            </div>
+            <div class="col-span-2">
+              <app-text-field
+                label="File"
+                type="file"
+                [attr.disabled]="sideFormTitle !== 'Edit Record'"
+                (onInputChanged)="onFileSelected($event)"
+              >
+              </app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] mr-1.5">
+              <app-text-field
+                label="Overnight"
+                [control]="getFormControllers('overnight')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] ml-1.5">
+              <app-text-field
+                label="1 Year"
+                [control]="getFormControllers('oneYear')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] mr-1.5">
+              <app-text-field
+                label="1 Month"
+                [control]="getFormControllers('oneMonth')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] ml-1.5">
+              <app-text-field
+                label="2 Years"
+                [control]="getFormControllers('twoYear')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] mr-1.5">
+              <app-text-field
+                label="3 Months"
+                [control]="getFormControllers('threeMonth')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] ml-1.5">
+              <app-text-field
+                label="3 Years"
+                [control]="getFormControllers('threeYear')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] mr-1.5">
+              <app-text-field
+                label="6 Month"
+                [control]="getFormControllers('sixMonth')"
+              ></app-text-field>
+            </div>
+            <div class="col-span-1 mt-[15px] ml-1.5">
+              <app-text-field
+                label="5 Years"
+                [control]="getFormControllers('fiveYear')"
+              ></app-text-field>
+            </div>
+            <app-app-button
+              *ngIf="sideFormTitle !== 'View Record'"
+              class="col-span-1 mt-[15px] mr-1.5"
+              type="submit"
+              [expanded]="true"
+            >
+              {{ sideFormTitle === "Edit Record" ? "Update" : "Create" }}
+            </app-app-button>
+            <app-app-button
+              class="col-span-1 mt-[15px] ml-1.5"
+              btnClass="secondary"
+              [expanded]="true"
+              (onTap)="closeSideForm()"
+            >
+              {{ sideFormTitle !== "View Record" ? "Cancel" : "Close" }}
+            </app-app-button>
+          </div>
+        </div>
+      </form>
+    </app-page-container>
+  </div>
+  <div navContent>
+    <app-page-container>
+      <app-page-title>Mclr Bank Master List</app-page-title>
+      <div class="flex flex-row justify-end mb-3">
+        <app-app-button
+          btnClass="primary"
+          (click)="openAddRecord()"
+          [disabled]="sideForm.isOpened"
+        >
+          <div icon>
+            <fa-icon [icon]="addIcon"></fa-icon>
+          </div>
+          Add Record
+        </app-app-button>
+      </div>
+
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="No">
+          <th mat-header-cell *matHeaderCellDef>NO.</th>
+          <td mat-cell *matCellDef="let bank; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Bank Code">
+          <th mat-header-cell *matHeaderCellDef>BANK CODE</th>
+          <td mat-cell *matCellDef="let bank">{{ bank.bank_code }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Bank Name">
+          <th mat-header-cell *matHeaderCellDef>BANK NAME</th>
+          <td mat-cell *matCellDef="let bank">
+            {{ bank.name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Bank Group">
+          <th mat-header-cell *matHeaderCellDef>BANK GROUP</th>
+          <td mat-cell *matCellDef="let bank">{{ bank.bank_type }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Changed By">
+          <th mat-header-cell *matHeaderCellDef>CHANGED BY</th>
+          <td mat-cell *matCellDef="let bank">{{ bank.modified_id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Changed On">
+          <th mat-header-cell *matHeaderCellDef>CHANGED ON</th>
+          <td mat-cell *matCellDef="let bank">{{ bank.modified_dt }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Effective Date">
+          <th mat-header-cell *matHeaderCellDef>EFFECTIVE DATE</th>
+          <td mat-cell *matCellDef="let bank">{{ bank.effective_date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef>ACTION</th>
+          <td mat-cell *matCellDef="let bank">
+            <div class="flex flex-row w-full gap-3 justify-center">
+              <button (click)="goToActionPage(bank, 'edit')">
+                <fa-icon class="fa-lg" [icon]="editIcon"></fa-icon>
+              </button>
+              <button (click)="goToActionPage(bank, 'view')">
+                <fa-icon class="fa-lg" [icon]="viewIcon"></fa-icon>
+              </button>
+              <button (click)="goToActionPage(bank, 'delete')">
+                <fa-icon class="fa-lg" [icon]="deleteIcon"></fa-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </app-page-container>
+  </div>
+</app-side-form>

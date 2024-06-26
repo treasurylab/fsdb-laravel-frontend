@@ -1,0 +1,186 @@
+<app-page-container>
+  <div id="mainContainer">
+    <div
+      id="blocks-container"
+      class="bg-white lg:bg-transparent lg:!shadow-none summary-card flex flex-row w-full h-1/2 py-2 lg:py-0 lg:rounded-none"
+    >
+      <app-securities-overview-block-content
+        class="mr-4"
+        icon="show_chart"
+        title="MUTUAL FUND HOUSES"
+        [value]="schemeCount == 0 ? '--' : fundhouse.toString()"
+        bgColor="#1C326B"
+      ></app-securities-overview-block-content>
+      <app-securities-overview-block-content
+        class="mr-4"
+        icon="show_chart"
+        title="MUTUAL FUND SCHEMES"
+        [value]="schemeCount == 0 ? '--' : schemeCount.toString()"
+        bgColor="#528BFE"
+      ></app-securities-overview-block-content>
+      <app-securities-overview-block-content
+        class="mr-4"
+        icon="show_chart"
+        title="NIFTY 50 PREV. CLOSE"
+        [value]="nifty50 == 0 ? '--' : (nifty50 | number : '1.2-2')!.toString()"
+        bgColor="#37C2CE"
+      ></app-securities-overview-block-content>
+      <app-securities-overview-block-content
+        class="mr-4"
+        icon="show_chart"
+        title="SENSEX 50 PREV. CLOSE"
+        [value]="
+          sensex50 == 0 ? '--' : (sensex50 | number : '1.2-2')!.toString()
+        "
+        bgColor="#A7C7E7"
+      ></app-securities-overview-block-content>
+    </div>
+    <div id="info-container" class="flex flex-row w-full mt-4">
+      <div id="info-container-1" class="flex-1 mr-2">
+        <app-block-content
+          title="
+          Automated Portfolio"
+          body="Update End of Day closing prices & Corporate Action Data from NSE to value & update the Equity portfolio eliminating the hassle of obtaining the data manually"
+        ></app-block-content>
+      </div>
+      <div id="info-container-2" class="flex-1 mr-2">
+        <app-block-content
+          title="NAV & AUM"
+          body="NAV & AUM from various Fund houses aggregated to value your Mutual Fund portfolio"
+        ></app-block-content>
+      </div>
+      <div id="info-container-3" class="flex-1 mr-2">
+        <app-block-content
+          title="MTM Calculation"
+          body="Calculate MTM for your Debt Portfolio using G-Sec & T-Bill prices from CCIL"
+        ></app-block-content>
+      </div>
+      <div id="info-container-4" class="flex-1 mr-2">
+        <app-block-content
+          title="ULIP Prices"
+          body="Get prices for your investments in ULIPs to calculate daily MTM"
+        ></app-block-content>
+      </div>
+    </div>
+
+    <!-- Table Header -->
+
+    <div
+      class="mt-4 mat-elevation-z2 bg-white rounded-xl h-[45vh] mr-2 overflow-y-auto"
+    >
+      <div
+        id="table-header"
+        class="flex flex-col md:flex-row md:justify-between py-4 justify-between items-start md:items-center px-4"
+      >
+        <span class="font-poppins text-md"
+          >Top Performing Mutual Funds: Based on returns as per SEBI
+          Category</span
+        >
+
+        <div id="optionsContainer" class="flex flex-row items-center">
+          <button
+            class="font-poppins font-semibold text-gray-700 hover:text-blue-900 px-1"
+            (click)="getSebiTableData('all')"
+          >
+            All
+          </button>
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold text-gray-700 hover:text-blue-900 px-1"
+            (click)="getSebiTableData('debt')"
+          >
+            Debt
+          </button>
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold text-gray-700 hover:text-blue-900 px-1"
+            (click)="getSebiTableData('equity')"
+          >
+            Equity
+          </button>
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold text-gray-700 hover:text-blue-900 px-1"
+            (click)="getSebiTableData('hybrid')"
+          >
+            Hybrid
+          </button>
+          <!-- <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold text-gray-700 hover:text-blue-900 px-1"
+            (click)="getSebiTableData('solution')"
+          >
+            Solution Oriented
+          </button> -->
+          <div class="vertical"></div>
+          <button
+            class="font-poppins font-semibold text-gray-700 hover:text-blue-900 px-1"
+            (click)="getSebiTableData('others')"
+          >
+            Others
+          </button>
+        </div>
+        <!-- <div id="filterFieldContainer"
+          class="flex flex-row items-center w-4/5 md:w-1/4 h-fit bg-gray-200 rounded-xl p-2 mx-4 mt-2 md:mt-0">
+          <img src="assets/icons/search.png" alt="" style="max-block-size: 15px" class="px-2 mr-1" />
+          <input class="bg-transparent focus:outline-none font-poppins font-extralight text-sm" #filterField
+          [(ngModel)]="searchInput"  placeholder="Search a Scheme...   " />
+        </div> -->
+      </div>
+      <hr />
+
+      <div
+        id="table"
+        class="max-w-full max-h-full pb-1 rounded-br-xl rounded-bl-xl overflow-scroll lg:overflow-auto"
+      >
+        <table mat-table [dataSource]="topMfSebiDS" class="">
+          <ng-container matColumnDef="AmfiCategory">
+            <th mat-header-cell *matHeaderCellDef>Amfi Category</th>
+            <td mat-cell *matCellDef="let element" style="text-align: left">
+              {{ element.temp_amfi_catg_type }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="SebiCategory">
+            <th mat-header-cell *matHeaderCellDef>Sebi Category</th>
+            <td mat-cell *matCellDef="let element" style="text-align: left">
+              {{ element.sebicatg }}
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="Description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element" style="text-align: left;">
+              {{ element.sebi_desc }}
+            </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="CurrentNAV">
+            <th mat-header-cell *matHeaderCellDef>Current NAV</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              {{ element.current_nav }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="PrevNAV">
+            <th mat-header-cell *matHeaderCellDef>Previous Day NAV</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              {{ element.prev_nav }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Percentchange">
+            <th mat-header-cell *matHeaderCellDef>Percent Change</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              {{ element.change_per }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="topMfSebiColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: topMfSebiColumns"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+</app-page-container>

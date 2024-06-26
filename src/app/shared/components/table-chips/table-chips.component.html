@@ -1,0 +1,55 @@
+<!-- @if(dataArray.length>0){
+<app-content-card [noPad]="true">
+  <div id="main-container" class="w-full flex flex-row gap-2 items-center p-2">
+    @for (dataItem of dataArray; track $index) {
+    <span class="w-fit font-poppins text-md">{{ dataItem }}</span>
+    @if ($index!=dataArray.length-1) {
+    <span class="font-poppins text-md">●</span>
+    } }
+  </div>
+</app-content-card>
+
+} -->
+
+<!-- @if(dataArray.length>0){
+<div id="main-container" class="w-full flex flex-row items-center">
+  @for (dataItem of dataArray; track $index) {
+  <div class="rounded-full bg-white p-1 border-2 border-gray-300 mr-1">
+    <span class="w-fit font-poppins text-xs p-2">{{ dataItem }}</span>
+  </div>
+  }
+</div>
+
+} -->
+@if(dataArray.length>0){
+<div id="main-container" class="w-full flex flex-row items-center">
+  @for (dataItem of dataArray; track $index) {
+  <div
+    class="rounded-full bg-white p-1 border-2 border-gray-300 mx-1 !text-center"
+  >
+    <span
+      class="w-fit font-poppins text-xs !my-0 px-1 !text-center text-ellipsis"
+      >{{
+        dataItem.substring(0, 35) + (dataItem.length > 35 ? "..." : "")
+      }}</span
+    >
+  </div>
+  }
+</div>
+
+}
+
+<!-- @if(dataArray.length>0){
+<div id="main-container" class="w-full flex flex-row items-center">
+  @for (dataItem of dataArray; track $index) {
+  <div
+    class="rounded-full bg-white p-1 border-2 border-gray-300 mx-1 max-w-[35%]"
+  >
+    <p class="w-fit font-poppins text-xs !my-0 px-1 !text-center">
+      {{ dataItem }}
+    </p>
+  </div>
+  }
+</div>
+
+} -->

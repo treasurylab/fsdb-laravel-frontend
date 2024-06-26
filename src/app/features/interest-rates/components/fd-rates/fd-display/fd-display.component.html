@@ -1,0 +1,465 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <form [formGroup]="fdRatesForm" (submit)="searchFdRatesData()">
+      <div class="flex flex-col w-full px-2">
+        <div>
+          <app-page-title>
+            <div class="flex flex-row items-center gap-2">
+              <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+              Filters
+            </div>
+          </app-page-title>
+          <div class="item-center ml-auto">
+            <app-tab-view
+              [tabs]="tabList"
+              (tabSelected)="onTabChange($event)"
+            ></app-tab-view>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="selectedOption == 'Key Date'"
+        class="grid grid-cols-1 items-end justify-between w-full gap-3 max-h-[74vh] overflow-auto"
+      >
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold"> Select Bank </label>
+            <mat-select
+              formControlName="bank_code"
+              placeholder="Banks List"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              required
+            >
+              <mat-option
+                *ngFor="let bank of bankList"
+                [value]="bank.bank_code"
+              >
+                {{ bank.bank_name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold"> Select Tenor </label>
+            <mat-select
+              formControlName="tenor"
+              placeholder="Select Tenor"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              required
+            >
+              <mat-option *ngFor="let tenor of tenor_list" [value]="tenor">
+                {{ tenor }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <app-text-field
+            type="date"
+            label="Record Date"
+            [control]="getFormControllers('record_date')"
+            (onInputChanged)="onDateSelectionChange(selectedOption)"
+          >
+          </app-text-field>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold">
+              Select Rate Category
+            </label>
+            <mat-select
+              (selectionChange)="onRateCatgChange($event, selectedOption)"
+              formControlName="rate_catg"
+              placeholder="Rate Category"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option
+                *ngFor="let rateCat of rateCatList"
+                [value]="[rateCat.rate_catg, rateCat.from_amt, rateCat.to_amt]"
+              >
+                {{
+                  "From " +
+                    (rateCat.from_amt == "-" ? "0" : rateCat.from_amt) +
+                    " Crores" +
+                    (rateCat.to_amt &&
+                    rateCat.to_amt != "Above" &&
+                    rateCat.to_amt != "-"
+                      ? " to " + rateCat.to_amt + " Crores"
+                      : "") +
+                    "  -  " +
+                    rateCat.rate_catg
+                }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold">
+              Select Rate Type
+            </label>
+            <mat-select
+              formControlName="rate_type"
+              placeholder="Rate Type"
+              (selectionChange)="onRateTypeChange($event)"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option
+                *ngFor="let rateType of rateTypes"
+                [value]="rateType.rate_type"
+              >
+                {{ rateType.rate_type }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold">
+              Select Principal Amount
+            </label>
+            <mat-select
+              formControlName="int_type"
+              placeholder="Interest Type"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option *ngFor="let intType of intTypeList" [value]="intType">
+                {{ intTypesObject[intType][0] }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-select
+              formControlName="rate_type"
+              placeholder="Rate Type"
+              (selectionChange)="onRateTypeChange($event)"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option
+                *ngFor="let rateType of rateTypes"
+                [value]="rateType.rate_type"
+              >
+                {{ rateType.rate_type }}
+              </mat-option>
+            </mat-select> -->
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="flex flex-row gap-3 items-center mt-[15px]">
+            <app-app-button class="flex-1" type="submit" [expanded]="true">
+              <div icon>
+                <fa-icon [icon]="searchIcon"></fa-icon>
+              </div>
+              Search
+            </app-app-button>
+            <app-app-button
+              class="flex-1"
+              btnClass="secondary"
+              type="reset"
+              [expanded]="true"
+            >
+              <div icon>
+                <fa-icon [icon]="clearIcon"></fa-icon>
+              </div>
+              Clear
+            </app-app-button>
+          </div>
+        </div>
+      </div>
+      <!-- div for date range inputs -->
+      <div
+        *ngIf="selectedOption == 'Date Range'"
+        class="grid grid-cols-1 items-end justify-between w-full max-h-[74vh] gap-3 overflow-auto"
+      >
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold"> Select Bank </label>
+            <mat-select
+              formControlName="bank_code"
+              placeholder="Banks List"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              required
+            >
+              <mat-option
+                *ngFor="let bank of bankList"
+                [value]="bank.bank_code"
+              >
+                {{ bank.bank_name }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold"> Select Tenor </label>
+            <mat-select
+              formControlName="tenor"
+              placeholder="Select Tenor"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+              required
+            >
+              <mat-option *ngFor="let tenor of tenor_list" [value]="tenor">
+                {{ tenor }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <app-text-field
+            type="date"
+            label="Select Start Date"
+            [control]="getFormControllers('start_date')"
+          >
+          </app-text-field>
+        </div>
+        <div class="col-span-1">
+          <app-text-field
+            type="date"
+            label="Select End Date"
+            [control]="getFormControllers('end_date')"
+            (onInputChanged)="onDateSelectionChange(selectedOption)"
+          >
+          </app-text-field>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold">
+              Select Rate Category
+            </label>
+            <mat-select
+              (selectionChange)="onRateCatgChange($event, selectedOption)"
+              formControlName="rate_catg"
+              placeholder="Rate Category"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option
+                *ngFor="let rateCat of rateCatList"
+                [value]="[rateCat.rate_catg, rateCat.from_amt, rateCat.to_amt]"
+              >
+                {{
+                  "From " +
+                    (rateCat.from_amt == "-" ? "0" : rateCat.from_amt) +
+                    " Crores" +
+                    (rateCat.to_amt &&
+                    rateCat.to_amt != "Above" &&
+                    rateCat.to_amt != "-"
+                      ? " to " + rateCat.to_amt + " Crores"
+                      : "") +
+                    "  -  " +
+                    rateCat.rate_catg
+                }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold">
+              Select Rate Type
+            </label>
+            <mat-select
+              formControlName="rate_type"
+              placeholder="Rate Type"
+              (selectionChange)="onRateTypeChange($event)"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option
+                *ngFor="let rateType of rateTypes"
+                [value]="rateType.rate_type"
+              >
+                {{ rateType.rate_type }}
+              </mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="mt-[15px]">
+            <label for="bank_code" class="font-semibold">
+              Select Principal Amount
+            </label>
+            <mat-select
+              formControlName="int_type"
+              placeholder="Interest Type"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option *ngFor="let intType of intTypeList" [value]="intType">
+                {{ intTypesObject[intType][0] }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-select
+              formControlName="rate_type"
+              placeholder="Rate Type"
+              (selectionChange)="onRateTypeChange($event)"
+              class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 pl-2"
+            >
+              <mat-option
+                *ngFor="let rateType of rateTypes"
+                [value]="rateType.rate_type"
+              >
+                {{ rateType.rate_type }}
+              </mat-option>
+            </mat-select> -->
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div class="flex flex-row gap-3 items-center mt-[15px]">
+            <app-app-button class="flex-1" type="submit" [expanded]="true">
+              <div icon>
+                <fa-icon [icon]="searchIcon"></fa-icon>
+              </div>
+              Search
+            </app-app-button>
+            <app-app-button
+              class="flex-1"
+              btnClass="secondary"
+              type="reset"
+              [expanded]="true"
+            >
+              <div icon>
+                <fa-icon [icon]="clearIcon"></fa-icon>
+              </div>
+              Clear
+            </app-app-button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </app-page-container>
+  <app-page-container navContent>
+    <app-page-title
+      tooltip="A fixed deposit or FD is an investment product offerred by banks and Non-Banking Finance Companies (NBFCs)"
+      subHeading="Find specific FD Rates"
+    >
+      FD Rates Tenor Wise
+    </app-page-title>
+    <div class="flex flex-row mb-3">
+      <app-app-button
+        (click)="resetScreen()"
+        type="button"
+        btnClass="secondary"
+        class="mt-3"
+      >
+        <div icon>
+          <fa-icon [icon]="refreshIcon"></fa-icon>
+        </div>
+      </app-app-button>
+      <div class="flex flex-row ml-auto gap-2">
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <app-app-button
+          (click)="exportToCsv(fdRatesTable.data, 'Bank wise FD rates')"
+          btnClass="tertiary"
+          class="ml-2 mr-1 mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+    </div>
+    <div class="mr-auto mb-2">
+      <app-table-chips [dataArray]="tableChips"></app-table-chips>
+    </div>
+    <table mat-table [dataSource]="fdRatesTable">
+      <ng-container matColumnDef="srno">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bank_code">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Bank Code
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-align: center">
+          {{ element.bank_code }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="gc_interest_rate">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Interest Rate
+          <button (click)="sortInterestRate('asc')">
+            &#9650;
+            <!-- Upward arrow symbol -->
+          </button>
+          <button (click)="sortInterestRate('desc')">
+            &#9660;
+            <!-- Downward arrow symbol -->
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{
+            element[fdRatesForm.value.int_type || "defaultProperty"].includes(
+              "%"
+            )
+              ? element[fdRatesForm.value.int_type || "defaultProperty"]
+              : element[fdRatesForm.value.int_type || "defaultProperty"] + "%"
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="record_date">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Record Date
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.record_date | date : "dd-MM-yyyy" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="tenor_desc">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Tenor Description
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.tenor_desc }}
+        </td>
+      </ng-container>
+      <!-- <ng-container matColumnDef="rate_catg">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          Rate Category
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.rate_catg }}
+        </td>
+      </ng-container> -->
+      <ng-container matColumnDef="from_amt">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          From Amount
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{ element.from_amt === "-" ? "0 Cr" : element.from_amt + " Cr" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="to_amt">
+        <th mat-header-cell *matHeaderCellDef class="text-align: center">
+          To Amount
+        </th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          {{
+            element.to_amt === "-" || element.to_amt === "Above"
+              ? "10 Cr (Above)"
+              : element.to_amt + " Cr"
+          }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row center" *matNoDataRow>
+        <td class="mat-cell" colspan="9">
+          <span class="font-poppins text-md">No Data Found</span>
+        </td>
+      </tr>
+    </table>
+    <hr class="mb-5" />
+  </app-page-container>
+</app-side-form>

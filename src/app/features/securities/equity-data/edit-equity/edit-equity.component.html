@@ -1,0 +1,22 @@
+<app-side-form #sideForm [isOpened]="false">
+  <app-page-container navContent>
+    <app-page-title>Edit Equity List</app-page-title>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChanged($event)">
+      <!-- Tab 1 -->
+      <div *ngIf="activeTab === tabs[0]">
+        <app-edit-nseequity
+          #addEditNSEEquityView
+          [sideNavObj]="sideForm"
+        ></app-edit-nseequity>
+      </div>
+
+      <!-- Tab 2 -->
+      <div *ngIf="activeTab === tabs[1]">
+        <app-edit-bseequity
+          #addEditBSEEquityView
+          [sideNavObj]="sideForm"
+        ></app-edit-bseequity>
+      </div>
+    </app-tab-view>
+  </app-page-container>
+</app-side-form>

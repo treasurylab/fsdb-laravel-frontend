@@ -1,0 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+
+.summary-card {
+  // @include mat.elevation(5);
+  border-radius: 16px; /* 16px */
+}
+
+.mat-table .mat-header-row .mat-header-cell {
+  text-align: center !important;
+}
+
+// .mat-header-cell {
+//   text-align: center !important;
+// }
+
+//for mclr latest table
+.demo-table {
+  width: 100%;
+}
+
+.mat-column-demo-position {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.mat-column-demo-name {
+  padding-left: 16px;
+  font-size: 20px;
+}
+
+.mat-column-demo-weight {
+  font-style: italic;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.mat-mdc-table {
+  min-width: 100% !important;
+}
+
+section,
+.mat-mdc-table {
+  display: table;
+}
+.cta-button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+.cta-button-row .mat-mdc-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.mdc-button--raised {
+  margin: 0 5px 0 5px;
+}
+
+.center {
+  text-align: center;
+}
+
+.mat-mdc-header-cell {
+  color: #545d67;
+  font-size: small;
+  background: #f0f0f5 !important;
+  // border-color: #bde0fe !important;
+}
+
+.mdc-data-table__cell {
+  font-family: Poppins;
+  // font-weight: 500;
+  // line-height: 0.5in;
+}
+
+// td.mat-mdc-cell.mdc-data-table__cell.cdk-cell {
+//   font-size: 14px !important;
+//   font-weight: 400 !important;
+// }
+
+#filterField {
+  font-size: 12px;
+}
+
+#table {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.mat-mdc-table {
+  width: 100%;
+  max-width: none;
+}
+
+/* Add the following CSS to hide the browser's default scrollbar */
+::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+@media (min-width: 768px) {
+  #month-start-date {
+    width: 25%;
+  }
+}
+
+#table {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+// th, td {
+//   // padding: 8px;
+//   // text-align: center;
+// }
+
+// th {
+//   position: sticky;
+//   top: 0;
+//   background-color: #f0f0f5;
+//   z-index: 2;
+// }
+.custom-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #f0f0f0;
+  text-decoration: underline;
+}
+
+.custom-button.clicked {
+  background-color: #0647c8;
+  color: white;
+}
+
+.boxy-button {
+  padding: 5px 5px; /* Adjust padding to make the button look boxier */
+  /* Border color */
+  background-color: #ffffff; /* Background color */
+  border-radius: 5px; /* Slightly rounded corners */
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease;
+  cursor: pointer; /* Cursor on hover */
+}
+
+.boxy-button:hover {
+  background-color: #f0f0f0; /* Background color on hover */
+  color: #64b5f6; /* Text color on hover */
+}
+
+.boxy-button.clicked {
+  background-color: #64b5f6; /* Background color on focus */
+  outline: none; /* Remove outline */
+  color: white;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow on focus */
+}
+
+/* You can also add a transition for the border-radius to make it smooth */
+.boxy-button {
+  transition: border-radius 0.3s ease;
+}
+
+.boxy-button.clicked {
+  border-radius: 10px; /* Slightly increased border-radius on focus */
+}
+
+// #6MChart {
+//   display: block;
+//   width: 100%;
+// }

@@ -1,0 +1,134 @@
+<!-- <table class="table table-striped table-bordered caption-top mt-2 w-full">
+  <thead>
+    <tr>
+      <th class="border px-4 py-2 whitespace-nowrap text-center">Attribute</th>
+      <th class="border px-4 py-2 whitespace-nowrap text-center">
+        Description
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="border px-4 py-2">Scheme Code</td>
+      <td class="border px-4 py-2">{{ data.id }}</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Scheme Name</td>
+      <td class="border px-4 py-2">{{ data.name }}</td>
+    </tr>
+    <tr>
+      <td class="border px-4 py-2">Link Symbol</td>
+      <td class="border px-4 py-2">{{ data.linksymbol }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<body>
+  <mat-card tabindex="0" class="card-style">
+    <div id="main-container" class="flex flex-col w-full h-full">
+      <form
+        class="example-form"
+        [formGroup]="sebiinfoForm"
+        (ngSubmit)="updateSymbol()"
+      >
+        <div class="row d-flex">
+          <div class="row" id="table-header">
+            <span class="font-poppins px-5 font-bold text-gray-900 text-lg"
+              >Link symbol</span
+            >
+            <span class="pull-right">
+              <button
+                mat-raised-button
+                class="cta-button"
+                *ngIf="!sebiinfoedit && showListing"
+                (click)="editRec(id)"
+                title="Edit"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-raised-button
+                class="cta-button"
+                *ngIf="!showListing && sebiinfoedit"
+                type="submit"
+                title="Save"
+              >
+                <mat-icon>save</mat-icon>
+              </button>
+              &nbsp;&nbsp;
+            </span>
+          </div>
+        </div>
+        <div id="tableContainer" class="row d-flex" *ngIf="sebiinfoedit">
+          <table>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-label>{{ data.linksymbol }}</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="linksym"
+                    placeholder="Link Symbol"
+                  />
+                </mat-form-field>
+              </td>
+              &nbsp;&nbsp;
+            </tr>
+          </table>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <span class="pull-right">
+          <button mat-raised-button class="cta-button" (click)="closeMe()">
+            Close
+          </button>
+        </span>
+      </form>
+    </div>
+  </mat-card>
+</body> -->
+
+<app-page-title>
+  <div class="flex flex-row items-center gap-2 px-2">
+    <fa-icon class="fa-xs" [icon]="editIcon"></fa-icon>
+    Edit Link Symbol
+  </div>
+</app-page-title>
+<hr />
+<app-page-container>
+  <form [formGroup]="sebiinfoForm" (ngSubmit)="updateSymbol()">
+    <div class="grid grid-cols-2 w-full gap-3">
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Link Symbol"
+          placeholder="Enter Link Symbol"
+          [control]="getFormControllers('linksym')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-2">
+        <div class="flex flex-row gap-3 mt-[15px]">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            <div icon>
+              <fa-icon [icon]="saveIcon"></fa-icon>
+            </div>
+            Save
+          </app-app-button>
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            [expanded]="true"
+            (onTap)="closeModal()"
+          >
+            <div icon>
+              <fa-icon [icon]="closeIcon"></fa-icon>
+            </div>
+            Close
+          </app-app-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-page-container>

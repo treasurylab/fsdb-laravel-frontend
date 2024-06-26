@@ -1,0 +1,152 @@
+<app-page-title>
+  <div class="flex flex-row items-center gap-2 px-3 pt-3">
+    <fa-icon class="fa-xs"></fa-icon>
+    BSE ISIN Master Data
+  </div>
+</app-page-title>
+<hr />
+<app-page-container>
+  <form [formGroup]="bseisininfo" (ngSubmit)="bseEquityIsinEntry()">
+    <div class="grid grid-cols-3 w-full gap-3">
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="ISIN"
+          placeholder="Enter ISIN"
+          [control]="getFormControllers('isin_no')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Symbol"
+          placeholder="Enter Symbol"
+          [control]="getFormControllers('symbol')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Company Name"
+          placeholder="Enter Company Name"
+          [control]="getFormControllers('company_name')"
+        ></app-text-field>
+      </div>
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="BP ID"
+          placeholder="Enter BP ID"
+          [control]="getFormControllers('bp_id')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Listing Date"
+          placeholder="Enter Listing Date"
+          [control]="getFormControllers('listing_date')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Market Lot"
+          placeholder="Enter Market Lot"
+          [control]="getFormControllers('market_lot')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Paid Up Value"
+          placeholder="Enter Paid Up Value"
+          [control]="getFormControllers('paid_up_value')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Face Value"
+          placeholder="Enter Face Value"
+          [control]="getFormControllers('face_value')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Is Exchange"
+          placeholder="Enter Is Exchange"
+          [control]="getFormControllers('is_exchange')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="SENSEX50"
+          placeholder="Enter SENSEX 50"
+          [control]="getFormControllers('sensex50')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="SENSEX 200"
+          placeholder="Enter SENSEX200"
+          [control]="getFormControllers('sensex200')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="BSE Group"
+          placeholder="Enter BSE Group"
+          [control]="getFormControllers('bse_group')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Market Capitalization"
+          placeholder="Enter Market Capitalization"
+          [control]="getFormControllers('market_capitalization')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Short Description"
+          placeholder="Enter Short Description"
+          [control]="getFormControllers('short_description')"
+        ></app-text-field>
+      </div>
+
+      <div class="col-span-1 mt-[15px]">
+        <app-text-field
+          label="Short Industry"
+          placeholder="Enter Industry"
+          [control]="getFormControllers('industry')"
+        ></app-text-field>
+      </div>
+      <div class="col-span-2">
+        <div class="flex flex-row gap-3 mt-[15px]">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            <div icon>
+              <fa-icon [icon]="saveIcon"></fa-icon>
+            </div>
+            Save
+          </app-app-button>
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            [expanded]="true"
+            (onTap)="closeModal()"
+          >
+            <div icon>
+              <fa-icon [icon]="closeIcon"></fa-icon>
+            </div>
+            Close
+          </app-app-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-page-container>

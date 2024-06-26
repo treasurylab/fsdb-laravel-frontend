@@ -1,0 +1,99 @@
+<div class="flex flex-row items-center justify-between mb-3">
+  <app-text-field
+    type="search"
+    (keyup)="applyFilter($event)"
+    placeholder="Search..."
+  ></app-text-field>
+  <app-app-button
+    btnClass="primary"
+    (click)="addEditLoneSchemeModel('add')"
+    [disabled]="sideNavObj.isOpened"
+  >
+    <div icon>
+      <fa-icon [icon]="addIcon"></fa-icon>
+    </div>
+    Add L1 Scheme
+  </app-app-button>
+</div>
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="srno" style="width: 10%">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="L1 Scheme Name">
+    <th mat-header-cell *matHeaderCellDef class="text-align: left">
+      L1 Scheme Name
+    </th>
+    <td mat-cell *matCellDef="let element" style="text-align: left">
+      <a
+        class="scheme-a"
+        href="javascript:;"
+        (click)="addEditLoneSchemeModel('edit', element)"
+      >
+        {{ element?.l1scheme_name }}</a
+      >
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Link Symbol" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Link Symbol</th>
+    <td
+      mat-cell
+      *matCellDef="let element; let i = index"
+      style="text-align: left"
+    >
+      {{ element?.l1_symbol }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Category" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Category</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ element?.sebi_catg }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="BP ID" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>BP ID</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ element?.fundhsg_id }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Fund House" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Fund House</th>
+    <td
+      mat-cell
+      *matCellDef="let element; let i = index"
+      style="text-align: left"
+    >
+      {{ element?.bp_name }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Sebi Category" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Sebi Category</th>
+    <td
+      mat-cell
+      *matCellDef="let element; let i = index"
+      style="text-align: left"
+    >
+      {{ element?.sc_name }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+  <tr class="mat-row center" *matNoDataRow>
+    <td class="mat-cell !py-5" colspan="9">No Data Found</td>
+  </tr>
+</table>
+<mat-paginator
+  class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+  [pageSizeOptions]="[10, 20, 30]"
+  showFirstLastButtons
+></mat-paginator>

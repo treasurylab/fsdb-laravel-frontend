@@ -1,0 +1,64 @@
+<div class="flex flex-row justify-between items-end mb-3">
+  <app-text-field
+    type="search"
+    #filterField
+    (keyup)="applyFilter($event)"
+    placeholder="Search..."
+  ></app-text-field>
+  <div class="flex flex-row gap-3">
+    <app-app-button btnClass="secondary" (click)="filterController()">
+      <div icon>
+        <fa-icon [icon]="filterIcon"></fa-icon>
+      </div>
+      Filters
+    </app-app-button>
+    <app-app-button btnClass="primary" (click)="addFundMngDetailModal()">
+      <div icon>
+        <fa-icon [icon]="addIcon"></fa-icon>
+      </div>
+      Add Fund Manager Details
+    </app-app-button>
+  </div>
+</div>
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="srno">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Fund Manager">
+    <th mat-header-cell *matHeaderCellDef>Fund Manager</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      <a (click)="editFundMngDetailModal(element)">
+        {{ element.fundmng_name }}</a
+      >
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="L1 Scheme">
+    <th mat-header-cell *matHeaderCellDef>L1 Scheme</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ element?.l1scheme_name }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="Joining Date">
+    <th mat-header-cell *matHeaderCellDef>Joining Date</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ element.join_date }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="End Date">
+    <th mat-header-cell *matHeaderCellDef>End Date</th>
+    <td mat-cell *matCellDef="let element; let i = index" class="!text-center">
+      {{ element.close_date }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator
+  class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+  [pageSizeOptions]="[10, 20, 30]"
+  showFirstLastButtons
+></mat-paginator>

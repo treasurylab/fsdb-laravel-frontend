@@ -1,0 +1,104 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-tabbed-date-form
+      [formGroup]="soniaRateForm"
+      (onFormSubmitted)="getSoniaRate()"
+    ></app-tabbed-date-form>
+  </app-page-container>
+  <app-page-container navContent>
+    <!-- Title -->
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="Benchmark for Sterling Overnight Index Average Rates"
+        tooltip="Short-term lending rate for unsecured borrowings in the interbank market"
+        [pageInfo]="pageInfo"
+      >
+        SONIA
+      </app-page-title>
+      <span class="select-none">
+        <a
+          href="https://www.bankofengland.co.uk/boeapps/database/fromshowcolumns.asp?Travel=NIxSUx&FromSeries=1&ToSeries=50&DAT=RNG&FD=1&FM=Jan&FY=2023&TD=31&TM=Dec&TY=2023&FNY=&CSVF=TT&html.x=117&html.y=24&C=5JK&Filter=N#"
+          target="_blank"
+        >
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">End of Day Rates</span>
+      </span>
+    </div>
+    <div class="flex flex-col">
+      <div class="table-comp-header">
+        <div class="mr-auto">
+          <app-table-chips [dataArray]="tableChips"></app-table-chips>
+        </div>
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <app-app-button
+          (click)="exportToCsv(soniaRateList, 'SONIA_RATES')"
+          btnClass="tertiary"
+          class="ml-2 mr-1 mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="date">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            style="text-align: center; width: 20%"
+          >
+            Date
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            style="text-align: center; width: 20%"
+          >
+            {{ element.record_date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="avgrate">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            style="text-align: center; width: 20%"
+          >
+            Avg Rate (%)
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            style="text-align: center; width: 20%"
+          >
+            {{ element.avgrate ? element.avgrate : "-" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumn1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumn1"></tr>
+        <tr class="mat-row center" *matNoDataRow>
+          <td class="mat-cell !py-5" colspan="3">No Data Found</td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </app-page-container>
+</app-side-form>

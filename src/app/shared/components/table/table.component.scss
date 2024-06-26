@@ -1,0 +1,24 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px 10px 10px 10px;
+  overflow: hidden;
+}
+
+th {
+  background-color: #efeff4 !important;
+  font-family: "Poppins" !important;
+  color: #545d67;
+  font-size: small;
+  font-weight: 500;
+  font-size: small;
+}
+
+td {
+  background-color: #ffffff !important;
+  font-family: "Inter" !important;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500 !important;
+  line-height: 15px;
+}

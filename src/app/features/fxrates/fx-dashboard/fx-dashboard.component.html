@@ -1,0 +1,144 @@
+<app-page-container>
+  <div class="flex flex-row justify-between items-center w-full">
+    <app-page-title
+      subHeading="Exchange Rates published by RBI against the Rupee"
+      tooltip="FX Rate"
+      [pageInfo]="pageInfo"
+    >
+      FX Rate Dashboard
+    </app-page-title>
+    <div class="flex flex-row gap-2 items-center">
+      <span class="select-none border-r-2 border-gray-400 pr-2">
+        <a href="{{ srcUrl }}" target="_blank">
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">End of Day Rates</span>
+      </span>
+      <span class="select-none">
+        <span class="text-md ml-1"
+          >*As at 1.30pm of {{ currentData?.date | date : "dd-MMM-yyyy" }}
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Tiles -->
+  <div
+    class="flex flex-col md:flex-row items-center justify-center w-full gap-2 mb-2"
+  >
+    <div class="p-2 bg-[#1C326B] block-card" (click)="switchCurrency('USD')">
+      <div class="flex flex-row justify-between py-2">
+        <span id="block1value" style="color: white" class="text-xl font-poppins"
+          >1 USD = {{ currentData?.usd }} INR</span
+        >
+        <mat-icon style="color: white">trending_up</mat-icon>
+      </div>
+      <span class="font-poppins font-extrabold text-white">USD RATE</span>
+    </div>
+
+    <div class="p-2 bg-[#0466c8] block-card" (click)="switchCurrency('GBP')">
+      <div class="flex flex-row justify-between py-2">
+        <span id="block2value" style="color: white" class="text-xl font-poppins"
+          >1 GBP = {{ currentData?.gbp }} INR</span
+        >
+        <mat-icon style="color: white">trending_up</mat-icon>
+      </div>
+      <span class="font-poppins font-extrabold text-white">GBP RATE</span>
+    </div>
+
+    <div class="p-2 bg-[#37C2CE] block-card" (click)="switchCurrency('EURO')">
+      <div class="flex flex-row justify-between py-2">
+        <span id="block3value" style="color: white" class="text-xl font-poppins"
+          >1 EURO = {{ currentData?.euro }} INR</span
+        >
+        <mat-icon style="color: white">trending_up</mat-icon>
+      </div>
+      <span class="font-poppins font-extrabold text-white">EURO RATE</span>
+    </div>
+
+    <div class="p-2 bg-[#64b5f6] block-card" (click)="switchCurrency('YEN')">
+      <div class="flex flex-row justify-between py-2">
+        <span id="block4value" style="color: white" class="text-xl font-poppins"
+          >100 YEN = {{ currentData?.yen }} INR</span
+        >
+        <mat-icon style="color: white">trending_up</mat-icon>
+      </div>
+      <span class="font-poppins font-extrabold text-white">YEN RATE</span>
+    </div>
+  </div>
+
+  <!-- Graph -->
+  <app-content-card class="w-full">
+    <div class="flex flex-row justify-between w-full border-b-2 pb-2 mb-2">
+      <div class="flex flex-row items-center gap-3">
+        <h5 class="!font-inter !text-xl !font-bold !text-gray-900">
+          1 {{ selectedCurrency }} =
+          {{ currentData ? currentData[selectedCurrency.toLowerCase()] : "" }}
+          INR
+        </h5>
+        <p class="font-inter !text-sm !font-normal text-gray-500 ml-1">
+          (*As at 1.30pm of {{ currentData?.date | date : "dd-MMM-yyyy" }})
+        </p>
+      </div>
+      <app-tenor-chips
+        [buttonNameList]="buttonNameList"
+        (clickedButton)="updateChart($event)"
+        [selectedTenor]="selectedPeriod.toUpperCase()"
+      ></app-tenor-chips>
+    </div>
+
+    <div id="canvas-container">
+      <canvas id="canvas"></canvas>
+    </div>
+  </app-content-card>
+
+  <div class="h-table-container">
+    <div class="flex flex-col w-[75%]">
+      <div class="flex flex-row w-full justify-between">
+        <app-page-title> {{ selectedCurrency }} Rates </app-page-title>
+        <app-app-button btnClass="tertiary" (onTap)="exportToCsv()">
+          <fa-icon [icon]="exportIcon"></fa-icon>
+          Export
+        </app-app-button>
+      </div>
+      <div class="h-table">
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef class="!text-center !w-2/4">
+              Date
+            </th>
+            <td mat-cell *matCellDef="let element" class="!text-center !w-2/4">
+              {{ element.record_date }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef class="!text-center !w-2/4">
+              {{ selectedCurrency }} Rate
+            </th>
+            <td mat-cell *matCellDef="let element" class="!text-center !w-2/4">
+              {{ element.value }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="mat-row center" *matNoDataRow>
+            <td class="mat-cell" colspan="5">No Data Found</td>
+          </tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[10, 20, 30]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+    <app-content-card class="w-[25%] h-full" [noPad]="true">
+      <app-tabbed-date-form
+        [formGroup]="queryForm"
+        (onFormSubmitted)="getTableData()"
+      >
+      </app-tabbed-date-form>
+    </app-content-card>
+  </div>
+</app-page-container>

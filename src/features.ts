@@ -1,0 +1,21 @@
+export class FeatureList {
+  static auth = 'Auth';
+  static menu = 'Menu';
+  static mclr = 'Mclr';
+  static benchmark = 'Benchmark';
+  static fxrate = 'FxRate';
+  static ulip = 'UlipRates';
+  static equity = 'Equity';
+  static mf = 'MutualFund';
+  static fdrates = 'FdRates';
+  static company = 'Company';
+  static fbilmapping = 'FbilGsecSdl';
+  static adminUser = 'AdminUser';
+  static mfSebiCatg = 'MfSebiCategory';
+  static mfFundhouse = 'MfFundHouse';
+  static lOneScheme = 'LOneScheme';
+  static FundManagerDetails = 'FundManagerDetails';
+  static FundMappingDetail = 'FundMappingDetail';
+  static LTwoScheme = 'LTwoScheme';
+  static PortfolioManagement = 'PortfolioManagement';
+}

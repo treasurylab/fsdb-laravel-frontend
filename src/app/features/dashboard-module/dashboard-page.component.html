@@ -1,0 +1,107 @@
+<mat-sidenav-container autosize>
+  <mat-sidenav
+    mode="side"
+    opened
+    #sidenav
+    class="m-0 w-fit bg-white text-black align-center transition ease-in-out delay-150"
+  >
+    <div
+      class="flex flex-row h-full"
+      (mouseenter)="isInSidenav = true"
+      (mouseleave)="isInSidenav = false"
+    >
+      <div
+        (mouseenter)="handleCollapsing('enter')"
+        (mouseleave)="handleCollapsing('leave')"
+        id="sidenavContainer"
+        class="w-full h-full flex flex-col items-center overflow-visible"
+      >
+        <div
+          id="logoContainer"
+          class="min-h-[74px] w-full flex flex-col justify-center items-center"
+        >
+          <img
+            *ngIf="!isCollapsed"
+            routerLink="/"
+            class="{{ isCollapsed ? 'w-[20px] mx-2' : 'w-[160px]' }} "
+            src="assets/images/{{ isCollapsed ? 'FSlogo.png' : 'dblogo3.png' }}"
+          />
+        </div>
+        <!-- Navigation -->
+        <div
+          class="h-full w-full flex flex-col px-2 {{
+            isCollapsed ? 'items-center overflow-visible' : ' overflow-auto'
+          }}"
+        >
+          @if(!isCollapsed){ @for (parentMenu of menus; track $index) {
+          <!-- Menu Heading  -->
+          @if (!isCollapsed) {
+
+          <div class="flex flex-row items-center mb-2">
+            <hr class="w-2" />
+            <span class="font-poppins text-xs font-medium px-1">
+              {{ parentMenu.name.toUpperCase() }}</span
+            >
+            <hr class="flex-1" />
+          </div>
+          }
+
+          <!-- App Menu Builder  -->
+          @for (subMenus of parentMenu.children; track $index) {
+
+          <app-menu-builder
+            [menuItem]="subMenus"
+            (clickToggle)="clickToggle()"
+            [isCollapsed]="isCollapsed"
+          ></app-menu-builder>
+
+          } }}
+        </div>
+      </div>
+      <div class="collapse-wrapper">
+        <div
+          id="hover-wrapper"
+          (mouseenter)="handleShowIcon(true)"
+          (mouseleave)="handleShowIcon(false)"
+        >
+          <div
+            *ngIf="showCollapseIcon"
+            id="collapse-icon"
+            class="hover:bg-gray-400"
+            (click)="
+              isCollapsed = !isCollapsed;
+              handleSidenavCollapsing(!mainCollapsed)
+            "
+          >
+            <span class="material-symbols-outlined text-sm">
+              {{
+                mainCollapsed ? "keyboard_arrow_right" : "keyboard_arrow_left"
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div
+      id="toolbar"
+      class="bg-white min-h-[74px] border-b-2 border-gray-100 flex flex-row items-center justify-between sticky-container !z-20"
+    >
+      <div id="searchBar" class="w-[350px] h-[40px] ml-5">
+        <app-search-bar [menuData]="menus"></app-search-bar>
+      </div>
+      <!-- New Profile Container  -->
+      <app-user-profile
+        class="mr-5"
+        [userInitials]="userNameInitials"
+        [userName]="userName"
+        [company]="companyName"
+      ></app-user-profile>
+    </div>
+    <div id="content" class="w-full">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

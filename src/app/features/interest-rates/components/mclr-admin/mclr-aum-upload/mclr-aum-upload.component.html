@@ -1,0 +1,49 @@
+<app-page-container>
+  <div class="flex flex-row justify-between w-full">
+    <app-page-title> MCLR AUM </app-page-title>
+    <span class="select-none">
+      <a href="https://www.fbil.org.in/#/home" target="_blank">
+        <fa-icon [icon]="linkIcon"></fa-icon>
+      </a>
+      <span class="text-md ml-1">Monthly</span>
+    </span>
+  </div>
+  <app-content-card>
+    <form [formGroup]="mclraum" (submit)="uploadMclrAum()">
+      <div class="flex flex-col items-center w-full gap-3">
+        <div class="flex flex-row w-1/2 justify-center gap-3">
+          <app-select-field
+            class="flex-1"
+            label="Year"
+            placeHolder="Select year"
+            [control]="getFormControllers('year')"
+          >
+            <option *ngFor="let year of years" [value]="year">
+              {{ year }}
+            </option>
+          </app-select-field>
+          <app-text-field
+            class="flex-1"
+            label="Select file"
+            type="file"
+            (onInputChanged)="onFileSelected($event)"
+            [control]="getFormControllers('filename')"
+          ></app-text-field>
+        </div>
+        <div class="flex flex-row gap-3 w-fit">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            Submit
+          </app-app-button>
+          <app-app-button
+            btnClass="secondary"
+            class="flex-1"
+            type="reset"
+            [expanded]="true"
+          >
+            Clear
+          </app-app-button>
+        </div>
+      </div>
+    </form>
+  </app-content-card>
+</app-page-container>

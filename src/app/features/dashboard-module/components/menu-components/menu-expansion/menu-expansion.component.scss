@@ -1,0 +1,9 @@
+.collapsedTiles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+::ng-deep .mat-expansion-panel-content {
+  margin-left: 15px !important;
+}

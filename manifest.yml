@@ -1,0 +1,12 @@
+applications:
+  - name: fsdbapp
+    buildpacks:
+      - staticfile_buildpack
+    memory: 2048MB
+    disk_quota: 2048MB
+    instances: 1
+    env:
+      DESTINATIONS: '[{"name":"fsdbapp","url":"https://fsdbapp.cfapps.in30.hana.ondemand.com","forwardAuthToken":true}]'
+    services:
+    services:
+      - nodeuaa

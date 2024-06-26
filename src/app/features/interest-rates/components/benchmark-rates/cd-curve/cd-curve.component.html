@@ -1,0 +1,137 @@
+<app-side-form #sideForm>
+  <app-page-container nav>
+    <app-tabbed-date-form
+      [formGroup]="cdCurveRate"
+      (onFormSubmitted)="getCdrateDownload()"
+    ></app-tabbed-date-form>
+  </app-page-container>
+  <app-page-container navContent>
+    <div class="flex flex-row justify-between items-center w-full">
+      <app-page-title
+        subHeading="Benchmark Rate for Certificate of Deposits"
+        tooltip="The interest rate offerred on a certificate of deposit account"
+        [pageInfo]="pageInfo"
+      >
+        CD Curve
+      </app-page-title>
+      <span class="select-none">
+        <a href="https://www.fbil.org.in/#/home" target="_blank">
+          <fa-icon [icon]="linkIcon"></fa-icon>
+        </a>
+        <span class="text-md ml-1">Lag of 7 Days</span>
+      </span>
+    </div>
+    <div class="flex flex-col">
+      <div class="table-comp-header">
+        <div class="mr-auto">
+          <app-table-chips [dataArray]="tableChips"></app-table-chips>
+        </div>
+        <app-app-button
+          (click)="sideForm.toggleFormNav()"
+          btnClass="secondary"
+          class="mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="filterIcon"></fa-icon>
+          </div>
+          Filters
+        </app-app-button>
+        <app-app-button
+          *ngIf="miborrateList.data.length > 0"
+          (click)="exportToCsv(miborrateList, 'CD_RATES')"
+          btnClass="tertiary"
+          class="ml-2 mr-1 mt-1"
+        >
+          <div icon>
+            <fa-icon [icon]="exportIcon"></fa-icon>
+          </div>
+          Export
+        </app-app-button>
+      </div>
+      <table mat-table [dataSource]="miborrateList">
+        <ng-container matColumnDef="rdate">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            Date
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-align: center">
+            {{ element.record_date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="d14s">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            14 Days
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.d14s }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="r1m">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            1 Month
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.r1m }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="r2m">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            2 Months
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.r2m }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="r3m">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            3 Months
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.r3m }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="r6m">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            6 Months
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.r6m }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="r9m">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            9 Months
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.r9m }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="r1y">
+          <th mat-header-cell *matHeaderCellDef class="text-align: center">
+            12 Months
+          </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            {{ element.r1y }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnDW2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnDW2"></tr>
+        <tr class="mat-row center" *matNoDataRow>
+          <td class="mat-cell !py-5" colspan="8">No Data Found</td>
+        </tr>
+      </table>
+      <mat-paginator
+        class="{{ miborrateList.data.length !== 0 ? '!block' : '!hidden' }}"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </app-page-container>
+</app-side-form>

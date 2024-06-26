@@ -1,0 +1,44 @@
+@import "../../../../../../styles/global-styles.scss";
+@import "../../../../../../styles/media-queries.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+.pull-right {
+  float: right;
+}
+
+.basicTable {
+  table,
+  th,
+  td {
+    border: 0.5px solid rgb(189, 204, 232);
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 2px;
+  }
+}
+
+#bptablele {
+  border-collapse: collapse;
+  width: 100%;
+}
+#bptable td,
+#bptable th {
+  border: 1px solid #ddd;
+}
+#bptable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#bptable tr:hover {
+  background-color: #ddd;
+}
+#bptable th {
+  text-align: center !important;
+  background-color: #f7fafc;
+}
+
+.iconS1 {
+  font-size: 20px;
+}

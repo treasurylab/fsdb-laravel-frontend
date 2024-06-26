@@ -1,0 +1,478 @@
+<div
+  id="app-overlay"
+  class="h-full w-full flex flex-col items-center justify-center md:hidden bg-white"
+>
+  <div class="h-[500px]"><app-phone-slider></app-phone-slider></div>
+  <span class="font-poppins text-xl text-bold"
+    >Enhance your experience with our app!</span
+  >
+  <span class="font-poppins"
+    >Now available on the Play Store and App Store</span
+  >
+  <div class="flex lg:flex-row md:flex-col mt-10 gap-4">
+    <a
+      href="https://play.google.com/store/apps/details?id=com.fsdevlabs.fsdb_app&pcampaignid=web_share"
+      class="transition duration-300 hover:shadow-md hover:scale-110"
+    >
+      <img
+        loading="lazy"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1000px-Google_Play_Store_badge_EN.svg.png"
+        class="object-cover object-top w-[10rem] mx-auto"
+        alt=""
+      />
+    </a>
+    <a
+      href="https://apps.apple.com/in/app/fs-databridge/id6447354431"
+      class="transition duration-300 hover:shadow-md hover:scale-110"
+    >
+      <img
+        loading="lazy"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1000px-Download_on_the_App_Store_Badge.svg.png"
+        class="object-cover object-top w-[10rem] mx-auto"
+        alt=""
+      />
+    </a>
+  </div>
+</div>
+
+<div class="bg-white hidden md:block">
+  <!-- Navbar -->
+  <header class="text-gray-600 body-font">
+    <div
+      class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between"
+    >
+      <img
+        loading="lazy"
+        class="h-12"
+        src="assets/images/dblogo (1).webp"
+        alt=""
+      />
+      <!-- <nav
+        class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base gap-3 justify-center"
+      >
+        <button class="nav-button">Home</button>
+        <button (click)="Product()" class="nav-button">Products</button>
+        <button (click)="Product()" class="nav-button">About Us</button>
+        <button (click)="scrollToFooter()" class="nav-button">
+          Contact Us
+        </button>
+      </nav> -->
+
+      <button
+        [routerLink]="isAuthenticated() ? defaultPage : '/login'"
+        type="button"
+        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2"
+      >
+        {{ isAuthenticated() ? "Open Dashboard" : "Login" }}
+      </button>
+    </div>
+  </header>
+  <!-- Hero -->
+  <div id="hero-container" class="flex flex-row gap-6 items-center h-[720px]">
+    <div class="hero-image flex-1">
+      <img
+        width="160"
+        height="90"
+        loading="lazy"
+        ngSrc="assets/images/img1.webp"
+        class="object-cover object-right w-[100%] h-auto"
+        alt=""
+      />
+    </div>
+    <div class="hero-content flex-1">
+      <div class="mb-16 lg:pr-5 lg:max-w-lg lg:mb-0">
+        <div class="max-w-xl mb-6">
+          <h2
+            class="!max-w-lg !mb-6 !font-sans !text-5xl !font-bold !tracking-tight !text-gray-900 !sm:text-5xl !sm:leading-none"
+          >
+            Empowering Decisions with Data-Driven Insights
+          </h2>
+          <p class="!text-xl !text-gray-700 !md:text-lg">
+            It enables Treasury Managers to analyse Market Data and also
+            provides integration to enterprise applications like SAP for
+            Valuations & Mark-to-Market
+          </p>
+        </div>
+        <form>
+          <div class="flex items-center mt-4">
+            <button
+              (click)="scrollToFooter()"
+              type="button"
+              class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            >
+              Get Demo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <section
+    class="text-gray-600 body-font flex flex-col items-center px-32 bg-gray-100 justify-center h-screen"
+  >
+    <span
+      class="sm:text-3xl text-2xl font-medium font-poppins text-gray-800 mb-10"
+    >
+      We offer wide range of Market Data on a single platform
+    </span>
+    <div class="blocks-container h-[30rem] flex flex-row gap-4">
+      <div
+        id="block-1"
+        class="h-full border-2 border-gray-200 border-opacity-60 overflow-clip rounded-lg shadow-lg transform transition duration-500 hover:scale-105 flex-1 bg-white"
+      >
+        <div class="h-[250px] flex items-end">
+          <img
+            loading="lazy"
+            src="assets/images/interest-rates.webp"
+            alt="Interest Rates"
+          />
+        </div>
+        <div class="px-6">
+          <span class="font-poppins text-2xl font-medium text-gray-900">
+            Interest Rates
+          </span>
+          <div class="mt-2">
+            <span class="leading-relaxed">
+              Data for different Interest Rates ranging from MCLR, MIBOR to SOFR
+              rates from the official websites. Our platform offers MCLR rates
+              from 55 banks, providing you comparisons with rates from leading
+              financial institutions
+            </span>
+          </div>
+          <div class="flex items-center flex-wrap"></div>
+        </div>
+      </div>
+      <div
+        id="block-2"
+        class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 flex-1 1 bg-white"
+      >
+        <div class="h-[250px] flex items-end">
+          <img
+            loading="lazy"
+            src="assets/images/securities.webp"
+            alt="Security Prices"
+          />
+        </div>
+        <div class="px-6">
+          <span class="font-poppins text-2xl font-medium text-gray-900">
+            Security Prices
+          </span>
+          <div class="mt-2">
+            <span class="leading-relaxed mb-3">
+              Access Valuations and Mark-to-Market prices for Equities, Mutual
+              Funds and Government Securities. We offer data from 39+ Fund
+              Houses, spanning 2200+ schemes via AMFI. Stay up-to-date with
+              daily Equity and Government Security prices from the National
+              Stock Exchange and CCIL
+            </span>
+          </div>
+          <div class="flex items-center flex-wrap"></div>
+        </div>
+      </div>
+      <div
+        id="block-3"
+        class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 flex-1 1 bg-white"
+      >
+        <div class="h-[250px] flex items-end">
+          <img loading="lazy" src="assets/images/fxrate.webp" alt="blog" />
+        </div>
+        <div class="px-6">
+          <span class="font-poppins text-2xl font-medium text-gray-900">
+            FX Rates
+          </span>
+          <div class="mt-2">
+            <span class="leading-relaxed mb-3">
+              Daily Foreign Exchange Rates for different currencies sourced from
+              RBI
+            </span>
+          </div>
+          <div class="flex items-center flex-wrap"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients -->
+  <section class="py-10 my-6 flex flex-col items-center">
+    <span
+      class="text-2xl font-medium font-poppins mb-2 text-gray-900 text-center"
+    >
+      Trusted by the biggest companies
+    </span>
+    <div class="companies-container flex flex-row items-center gap-6 mt-10">
+      <img
+        loading="lazy"
+        class="company-logo"
+        src="assets/images/piramal_logo.webp"
+        alt="image"
+      />
+      <img
+        loading="lazy"
+        class="company-logo"
+        src="assets/images/lnt_logo.webp"
+        alt="image"
+      />
+      <img
+        loading="lazy"
+        class="company-logo"
+        src="assets/images/tata_steel_logo.webp"
+        alt="image"
+      />
+      <img
+        loading="lazy"
+        class="company-logo"
+        src="assets/images/toyota_logo.webp"
+        alt="image"
+      />
+
+      <img
+        loading="lazy"
+        class="company-logo"
+        src="assets/images/tata_capital_logo.webp"
+        alt="image"
+      />
+    </div>
+  </section>
+
+  <!-- Donwload App -->
+  <div class="divider" class="px-20 mb-[80px]"><hr /></div>
+
+  <div
+    id="download"
+    class="max-w-full mr-24 ml-24 mb-16 border border-gray-200 rounded-xl shadow-lg"
+  >
+    <section class="text-gray-600 body-font pr-16 pl-16">
+      <div
+        class="container mx-auto flex mt-1 md:flex-row flex-col items-center py-6"
+      >
+        <div
+          class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center"
+        >
+          <span class="font-poppins text-4xl mb-4 font-medium text-gray-900">
+            Work fast from anywhere
+          </span>
+          <p class="mb-8 text-lg leading-relaxed text-start">
+            Stay up to date and move work forward with FS Databridge on iOS &
+            Android. Download the app today.
+          </p>
+
+          <div class="flex lg:flex-row md:flex-col mt-10">
+            <a
+              href="https://apps.apple.com/in/app/fs-databridge/id6447354431"
+              class="mr-3 transition duration-300 hover:shadow-md hover:scale-110"
+            >
+              <img
+                loading="lazy"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1000px-Download_on_the_App_Store_Badge.svg.png"
+                class="object-cover object-top w-[10rem] mx-auto"
+                alt=""
+              />
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.fsdevlabs.fsdb_app&pcampaignid=web_share"
+              class="transition duration-300 hover:shadow-md hover:scale-110"
+            >
+              <img
+                loading="lazy"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1000px-Google_Play_Store_badge_EN.svg.png"
+                class="object-cover object-top w-[10rem] mx-auto"
+                alt=""
+              />
+            </a>
+          </div>
+        </div>
+        <app-phone-slider class="w-[25%]"></app-phone-slider>
+      </div>
+    </section>
+  </div>
+  <!-- Footer -->
+  <div id="targetDiv">
+    <div class="col-span-1: grid-column: span 1 / span 3; bg-black shadow-2xl">
+      <div
+        class="px-4 pt-8 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8"
+      >
+        <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="sm:col-span-2">
+            <!-- contact us here -->
+            <div id="contactus" class="flex flex-col items-start h-[15rem]">
+              <span
+                class="font-semibold mb-4 text-white"
+                style="font-family: 'Poppins', sans-serif"
+                >Get in touch with us by filling a simple form</span
+              >
+              <div id="nameContainers" class="flex flex-row w-full mb-3">
+                <div>
+                  <label
+                    for="fname"
+                    class="block text-sm text-white"
+                    style="font-family: 'Poppins', sans-serif"
+                    >First Name</label
+                  >
+                  <input
+                    type="text"
+                    id="fname"
+                    class="rounded-md h-[2rem] shadow-lg px-2"
+                  />
+                </div>
+                <div class="ml-2">
+                  <label
+                    for="fname"
+                    class="block text-sm text-white"
+                    style="font-family: 'Poppins', sans-serif"
+                    >Last Name</label
+                  >
+                  <input
+                    type="text"
+                    id="lname"
+                    class="rounded-md h-[2rem] shadow-lg px-2"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  for="compname"
+                  class="block text-sm text-white"
+                  style="font-family: 'Poppins', sans-serif"
+                  >Company Name</label
+                >
+                <input
+                  type="text"
+                  id="compname"
+                  class="rounded-md h-[2rem] w-[25rem] shadow-lg px-2 mb-3"
+                />
+              </div>
+              <div>
+                <label
+                  for="emailadd"
+                  class="block text-sm text-white"
+                  style="font-family: 'Poppins', sans-serif"
+                  >Email Address</label
+                >
+                <input
+                  type="text"
+                  id="emailadd"
+                  class="rounded-md w-[25rem] h-[2rem] shadow-lg px-2"
+                />
+              </div>
+              <button class="px-4 py-2 bg-white text-black rounded-md mt-3">
+                Submit
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-sm">
+            <p class="text-base font-bold tracking-wide text-white">India</p>
+            <div class="flex">
+              <a
+                style="font-family: 'Poppins', sans-serif"
+                href="tel:+91-22-4005 0723"
+                aria-label="Our phone"
+                title="Our phone"
+                class="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800 text-white"
+                >+91-22-4005 0723</a
+              >
+            </div>
+            <div class="flex">
+              <a
+                style="font-family: 'Poppins', sans-serif"
+                href="mailto:contact@fourthsignal.com"
+                aria-label="Our email"
+                title="Our email"
+                class="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800 text-white"
+                >contact&#64;fourthsignal.com</a
+              >
+            </div>
+            <div class="flex">
+              <a
+                style="font-family: 'Poppins', sans-serif"
+                href="https://www.google.com/maps/place/Fourth+Signal/@19.1137359,72.8586194,17z/data=!3m2!4b1!5s0x3be7b7c0b81724a1:0x5b901b769395ecf5!4m6!3m5!1s0x3be7c913de7090fd:0x3947594d1b91c328!8m2!3d19.1137308!4d72.8611943!16s%2Fg%2F11h198t1t?entry=ttu"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Our address"
+                title="Our address"
+                class="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800 text-white"
+              >
+                Fourth Signal (India) Pvt Ltd, 502,C Wing, Business
+                Square,Solitaire Corporate Park, Andheri Kurla Road, Andheri(E)
+                ,Mumbai 400093, India
+              </a>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-sm">
+            <p
+              style="font-family: 'Poppins', sans-serif text-white"
+              class="text-base font-bold tracking-wide text-white"
+            >
+              APAC
+            </p>
+            <div class="flex">
+              <a
+                style="font-family: 'Poppins', sans-serif"
+                href="tel:+65 6818 6372"
+                aria-label="Our phone"
+                title="Our phone"
+                class="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800 text-white"
+                >+65 6818 6372</a
+              >
+            </div>
+            <div class="flex">
+              <a
+                style="font-family: 'Poppins', sans-serif"
+                href="mailto:mani@fourthsignal.com"
+                aria-label="Our email"
+                title="Our email"
+                class="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800 text-white"
+                >mani&#64;fourthsignal.com</a
+              >
+            </div>
+            <div class="flex">
+              <a
+                style="font-family: 'Poppins', sans-serif"
+                href="https://www.google.com/maps/place/10+Marina+Blvd,+%232,+Singapore+018983/@1.2792517,103.8515372,17z/data=!3m1!4b1!4m6!3m5!1s0x31da19102f0905d1:0xe5731e0e29081221!8m2!3d1.2792463!4d103.8541121!16s%2Fg%2F11pvcvg6nh?entry=ttu"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Our address"
+                title="Our address"
+                class="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800 text-white"
+              >
+                Fourth Signal Pte Ltd Level 39, Marina Bay Financial Centre
+                Tower 2 10 Marina Boulevard, Singapore 018 983
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col-reverse justify-between pt-5 pb-4 lg:flex-row"
+        >
+          <p
+            style="font-family: 'Poppins', sans-serif"
+            class="text-sm text-white"
+          >
+            © Copyright 2023 by Fourth Signal. All rights reserved.
+          </p>
+          <ul
+            class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row"
+          >
+            <li>
+              <a
+                href="/"
+                class="text-sm text-white transition-colors duration-300 hover:text-deep-purple-accent-400"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="/"
+                class="text-sm text-white transition-colors duration-300 hover:text-deep-purple-accent-400"
+                >Terms &amp; Conditions</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<mat-dialog-content>
+  <div id="main-container" class="w-[700px] flex flex-col items-center">
+    <div class="flex flex-row w-5/6">
+      <div id="header" class="mt-10 flex flex-col w-full justify-center">
+        <span class="font-lato text-2xl text-black">Add Record</span>
+        <span class="font-lato text-md py-2 text-gray-500"
+          >Add a new MCLR Master Record</span
+        >
+      </div>
+      <mat-icon class="mt-10" (click)="closeMe()">close</mat-icon>
+    </div>
+
+    <form
+      class="p-4 md:p-5 w-[90vh]"
+      [formGroup]="mclrRateForm"
+      (ngSubmit)="create()"
+    >
+      <div class="flex flex-col items-center h-full w-full overflow-y-auto">
+        <div id="formContainer" class="w-3/4">
+          <div class="grid grid-cols-8 w-full">
+            <div class="col-span-2 flex flex-col justify-center">
+              <span class="font-lato mt-2 me-4">Bank</span>
+            </div>
+            <div class="col-span-6 flex flex-col justify-center">
+              <select
+                formControlName="bankCode"
+                name="selectBank"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              >
+                <option *ngFor="let bank of bankList" [value]="bank.bank_code">
+                  {{ bank.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-span-2 flex flex-col justify-center">
+              <span class="font-lato mt-2 me-4">Effective Date</span>
+            </div>
+            <div class="col-span-6 flex flex-col justify-center">
+              <input
+                type="date"
+                formControlName="effectiveDate"
+                name="effectiveDate"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-2 flex flex-col justify-center">
+              <span class="font-lato mt-2 me-4">URL</span>
+            </div>
+            <div class="col-span-6 flex flex-col justify-center">
+              <input
+                type="text"
+                formControlName="mclrUrl"
+                name="url"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-2 flex flex-col justify-center">
+              <span class="font-lato mt-2 me-4">File</span>
+            </div>
+            <div class="col-span-6 flex flex-col justify-center">
+              <input
+                type="file"
+                #fileInput
+                (change)="onFileSelected(fileInput.files)"
+                name="file"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 w-full mt-2">
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">Overnight</span>
+              <input
+                type="text"
+                formControlName="overnight"
+                name="overnight"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">1 Year</span>
+              <input
+                type="text"
+                formControlName="oneYear"
+                name="oneYear"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">1 Month</span>
+              <input
+                type="text"
+                formControlName="oneMonth"
+                name="oneMonth"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">2 Years</span>
+              <input
+                type="text"
+                formControlName="twoYear"
+                name="twoYear"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">3 Months</span>
+              <input
+                type="text"
+                formControlName="threeMonth"
+                name="threeMonth"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">3 Years</span>
+              <input
+                type="text"
+                formControlName="threeYear"
+                name="threeYear"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">6 Months</span>
+              <input
+                type="text"
+                formControlName="sixMonth"
+                name="sixMonth"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+
+            <div class="col-span-1 flex flex-col justify-center">
+              <span class="font-lato me-4">5 Years</span>
+              <input
+                type="text"
+                formControlName="fiveYear"
+                name="fiveYear"
+                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mt-2"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-row items-center justify-end my-3">
+            <button class="btn-secondary" (click)="closeMe()">Cancel</button>
+            <button type="submit" class="btn-primary">Create</button>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </form>
+  </div>
+</mat-dialog-content>

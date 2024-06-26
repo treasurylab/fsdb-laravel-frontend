@@ -1,0 +1,75 @@
+<div class="px-3">
+  <app-page-title> {{ sideNavTitle }} </app-page-title>
+</div>
+
+<div *ngIf="lOneSchemeForm" class="flex flex-col w-full h-full px-3">
+  <form [formGroup]="lOneSchemeForm" (ngSubmit)="loneInfoEntry()">
+    <div class="grid grid-cols-1 w-full">
+      <app-text-field
+        label="L1 Scheme Name"
+        placeholder="Enter Scheme Name"
+        [control]="getFormControllers('lOneName')"
+      >
+      </app-text-field>
+      <app-select-field
+        label="Fund House"
+        placeHolder="Select fund house"
+        [control]="getFormControllers('fundHouse')"
+      >
+        <option *ngFor="let flist of fundHouseList" [value]="flist.id">
+          {{ flist.name }}
+        </option>
+      </app-select-field>
+      <app-select-field
+        label="SEBI Category"
+        placeHolder="Select SEBI category"
+        [control]="getFormControllers('sebiCat')"
+      >
+        <option *ngFor="let sebiCatg of sebiCategories" [value]="sebiCatg.code">
+          {{ sebiCatg.code }}-{{ sebiCatg.tname }}
+        </option>
+      </app-select-field>
+      <app-text-field
+        *ngIf="formPayload && formPayload.payload !== undefined"
+        class="mt-[15px]"
+        label="Link Symbol"
+        [disabled]="true"
+        [control]="getFormControllers('linkSym')"
+      >
+      </app-text-field>
+      <app-text-field
+        class="mt-[15px]"
+        label="Extra Symbol"
+        placeholder="Enter extra symbol"
+        [control]="getFormControllers('lOneSym')"
+      >
+      </app-text-field>
+    </div>
+    <div class="flex flex-row w-full justify-end gap-3 mt-[15px]">
+      <app-app-button
+        class="flex-1"
+        [expanded]="true"
+        btnClass="primary"
+        type="submit"
+      >
+        Submit
+      </app-app-button>
+      <app-app-button
+        class="flex-1"
+        [expanded]="true"
+        btnClass="secondary"
+        (click)="closeNav()"
+      >
+        Close
+      </app-app-button>
+      <app-app-button
+        *ngIf="formPayload && formPayload.payload !== undefined"
+        matTooltip="Delete"
+        btnClass="danger"
+        (click)="deleteRecord()"
+      >
+        <fa-icon [icon]="deleteIcon"></fa-icon>
+      </app-app-button>
+    </div>
+  </form>
+</div>

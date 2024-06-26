@@ -1,0 +1,58 @@
+<app-page-container>
+  <div id="header" class="flex flex-row justify-between mb-4">
+    <app-page-title-small>Forex Rates Overview</app-page-title-small>
+    <div class="flex flex-row justify-end items-end">
+      <span class="material-symbols-outlined text-md"> today </span>
+      <div class="mx-2">
+        Last updated: *As at 1.30pm of
+        {{ currentDataRate.date | date : "dd-MMM-yyyy" }}
+      </div>
+    </div>
+  </div>
+
+  <div id="ratesContainer" class="flex flex-row h-[16rem] items-center">
+    <app-fx-rate-container
+      class="h-full mr-2"
+      fxRateTitle="USD RATE"
+      fxRate="1 USD = {{ currentDataRate.usd }} INR"
+      bgColor="#1C326B"
+      fxRateImageSrc="assets/flags/us-flag.jpg"
+    ></app-fx-rate-container>
+    <app-fx-rate-container
+      class="h-full mr-2"
+      fxRateTitle="GBP RATE"
+      fxRate="1 GBP = {{ currentDataRate.gbp }} INR"
+      fxRateImageSrc="assets/flags/uk-flag.jpg"
+      bgColor="#528BFE"
+    ></app-fx-rate-container>
+    <app-fx-rate-container
+      class="h-full mr-2"
+      fxRateTitle="EURO RATE"
+      fxRate="1 EURO = {{ currentDataRate.euro }} INR"
+      fxRateImageSrc="assets/flags/Flag_of_Europe.png"
+      bgColor="#37C2CE"
+    ></app-fx-rate-container>
+    <app-fx-rate-container
+      class="h-full mr-2"
+      fxRateTitle="YEN RATE"
+      fxRate="100 YEN = {{ currentDataRate.yen }} INR"
+      fxRateImageSrc="assets/flags/yen.png"
+      bgColor="#000000"
+    ></app-fx-rate-container>
+  </div>
+  <div id="info-container" class="flex flex-row mt-4">
+    <app-block-content
+      class="mr-2"
+      title="Exchange Rates"
+      body="FSDB provides Treasury Managers with dependable Exchange rates
+      directly from RBI to manage their multi-currency trades"
+      icon="request_quote"
+    ></app-block-content>
+    <app-block-content
+      class="mr-2"
+      title="API Support"
+      body="Employ these rates via APIs for seamless Interest and MTM calculations in Money Market and Derivative Instruments"
+      icon="webhook"
+    ></app-block-content>
+  </div>
+</app-page-container>

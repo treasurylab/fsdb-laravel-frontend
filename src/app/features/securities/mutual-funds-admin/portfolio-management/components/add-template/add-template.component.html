@@ -1,0 +1,48 @@
+<form
+  class="example-form"
+  [formGroup]="templateinfoForm"
+  (ngSubmit)="templateinfoentry()"
+>
+  <div class="flex flex-col gap-3">
+    <app-text-field
+      label="Value"
+      placeholder="Enter valid value"
+      type="text"
+      [control]="getFormControllers('value')"
+    >
+    </app-text-field>
+    <app-text-field
+      label="Description"
+      placeholder="Enter valid description"
+      type="text"
+      [control]="getFormControllers('des')"
+    >
+    </app-text-field>
+  </div>
+  <div id="action-buttons" class="flex flex-row gap-2 mt-4">
+    <app-app-button
+      class="flex-1"
+      btnClass="tertiary"
+      [expanded]="true"
+      type="submit"
+    >
+      Save
+    </app-app-button>
+    <app-app-button
+      class="flex-1"
+      btnClass="primary"
+      [expanded]="true"
+      type="reset"
+    >
+      Reset
+    </app-app-button>
+    <app-app-button
+      class="flex-1"
+      btnClass="secondary"
+      [expanded]="true"
+      (onTap)="closeMe()"
+    >
+      Close
+    </app-app-button>
+  </div>
+</form>

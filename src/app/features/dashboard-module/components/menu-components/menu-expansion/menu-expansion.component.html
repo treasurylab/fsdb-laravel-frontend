@@ -1,0 +1,22 @@
+@if(menuItem.children !== undefined){
+<mat-expansion-panel
+  class="rounded-sm"
+  [togglePosition]="'before'"
+  [ngClass]="{ collapsedTiles: isCollapsed }"
+>
+  <mat-expansion-panel-header>
+    <div #subMenuContainer class="flex flex-row items-center">
+      <!-- <span class="material-symbols-outlined mr-2 text-sm">
+        {{ menuItem.menu_icon == null ? "widgets" : menuItem.menu_icon }}
+      </span> -->
+      @if(!isCollapsed){<span
+        class="select-none font-poppins font-normal text-xs text-black"
+        >{{ menuItem.name }}</span
+      >}
+    </div>
+  </mat-expansion-panel-header>
+  <mat-nav-list class="pl-4">
+    <ng-content></ng-content>
+  </mat-nav-list>
+</mat-expansion-panel>
+}

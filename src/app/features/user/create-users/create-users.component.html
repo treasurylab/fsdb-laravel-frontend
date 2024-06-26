@@ -1,0 +1,111 @@
+<div class="px-3">
+  <app-page-title>User Master</app-page-title>
+  <div class="flex flex-row mb-3">
+    <app-text-field
+      type="search"
+      #filterField
+      placeholder="Search ..."
+    ></app-text-field>
+
+    <app-app-button
+      btnClass="primary"
+      (click)="adduserinfo()"
+      class="mt-3 ml-auto mr-3"
+    >
+      <div icon>
+        <fa-icon [icon]="addIcon"></fa-icon>
+      </div>
+      Add User
+    </app-app-button>
+  </div>
+
+  <div>
+    <table mat-table [dataSource]="dataSource" class="">
+      <ng-container matColumnDef="srno" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>#</th>
+        <td
+          style="text-align: center"
+          mat-cell
+          *matCellDef="let element; let i = index"
+        >
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="usercode" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          User Code
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.code }}</td>
+      </ng-container>
+      <ng-container matColumnDef="username" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          User Name
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.first_name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="useremail" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          User Email
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+      <ng-container matColumnDef="usermobile" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          User Mobile
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+      </ng-container>
+      <ng-container matColumnDef="cgrp" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Company Group
+        </th>
+        <td style="text-align: center" mat-cell *matCellDef="let element">
+          {{ element.cgrp_id }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="resetpwd" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Reset Password
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="flex flex-row w-[100px] items-center">
+            <a href="javascript:;" (click)="resetPassword(element.code)"
+              ><mat-icon>refresh</mat-icon></a
+            >
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="status" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Status
+        </th>
+        <td style="text-align: center" mat-cell *matCellDef="let element">
+          {{ element.rstatus }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Action
+        </th>
+        <td style="text-align: center" mat-cell *matCellDef="let element">
+          <div class="flex flex-row w-[100px]">
+            <a href="javascript:;" (click)="editUserInfo(element)"
+              ><mat-icon>edit</mat-icon></a
+            >&nbsp;
+            <a href="javascript:;" (click)="deleteUser(element.code)"
+              ><mat-icon>delete</mat-icon></a
+            >
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <div>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </div>
+  </div>
+</div>

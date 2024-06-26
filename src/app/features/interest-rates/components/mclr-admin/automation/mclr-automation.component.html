@@ -1,0 +1,98 @@
+<app-side-form [isOpened]="true">
+  <app-page-container nav>
+    <app-page-title>
+      <div class="flex flex-row items-center gap-2 px-2">
+        <fa-icon class="fa-xs" [icon]="filterIcon"></fa-icon>
+        Filters
+      </div>
+    </app-page-title>
+    <form [formGroup]="aumFundForm" (ngSubmit)="getMclrBankLinkList()">
+      <div class="grid grid-cols w-full">
+        <app-select-field
+          label="Select Year"
+          placeHolder="Select"
+          [control]="getFormControllers('finYear')"
+        >
+          <option *ngFor="let finYear of finYearOptions" [value]="finYear">
+            {{ finYear }}
+          </option>
+        </app-select-field>
+        <app-select-field
+          label="Select Month"
+          placeHolder="Select"
+          [control]="getFormControllers('month')"
+        >
+          <option *ngFor="let month of monthOptions" [value]="month.mrmid">
+            {{ month.name }}
+          </option>
+        </app-select-field>
+        <app-app-button [expanded]="true" type="submit" class="mt-[15px]">
+          <div icon>
+            <fa-icon [icon]="searchIcon"></fa-icon>
+          </div>
+          Search
+        </app-app-button>
+      </div>
+    </form>
+  </app-page-container>
+  <app-page-container navContent>
+    <app-page-container>
+      <app-page-title>MCLR Master</app-page-title>
+      <div class="card mt-6 min-h-[16px] max-h-[77vh]">
+        <table mat-table [dataSource]="dataSource" class="">
+          <ng-container matColumnDef="srno" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Bank Code" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Bank Code</th>
+            <td mat-cell *matCellDef="let element">{{ element.bank_code }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Bank Name" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="viewAction" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>URL</th>
+            <td mat-cell *matCellDef="let element" class="!text-left">
+              <button
+                class="text-blue-500"
+                (click)="openUrlDialog(element, 'edit')"
+              >
+                {{ element.url }}
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Effective Date" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Effective Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.effective_date }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Status" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">{{ element.rstatus }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Created By" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Created By</th>
+            <td mat-cell *matCellDef="let element">{{ element.cid }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Created Date" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Created Date</th>
+            <td mat-cell *matCellDef="let element">{{ element.cdt }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+          [pageSizeOptions]="[10, 20, 30]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </app-page-container>
+  </app-page-container>
+</app-side-form>

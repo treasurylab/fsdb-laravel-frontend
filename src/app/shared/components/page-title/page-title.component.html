@@ -1,0 +1,32 @@
+<div class="flex flex-row items-center pb-3 font-poppins">
+  <div
+    class="flex flex-col {{
+      position === 'start' ? 'items-start' : 'items-end'
+    }} justify-center"
+  >
+    <div class="flex flex-row items-center">
+      <span
+        class="{{
+          isCardTitle
+            ? 'font-poppins text-base'
+            : 'font-semibold text-gray-900 text-2xl select-none'
+        }}"
+      >
+        <ng-content></ng-content>
+      </span>
+      <fa-icon
+        *ngIf="pageInfo !== undefined"
+        matTooltip="{{ tooltip ?? '' }}"
+        class="ml-2 fa-lg text-[#03045e]"
+        [icon]="infoIcon"
+        (click)="openModal()"
+      ></fa-icon>
+    </div>
+    <span
+      *ngIf="subHeading !== undefined"
+      class="font-light text-gray-600 text-sm mt-1 select-none"
+    >
+      {{ subHeading }}
+    </span>
+  </div>
+</div>

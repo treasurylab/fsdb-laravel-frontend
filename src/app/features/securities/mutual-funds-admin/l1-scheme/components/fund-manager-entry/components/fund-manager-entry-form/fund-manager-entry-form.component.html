@@ -1,0 +1,31 @@
+<div class="px-3">
+  <app-page-title> {{ sideNavTitle }} </app-page-title>
+  <form [formGroup]="fundMngForm" (ngSubmit)="createFundManagerDetails()">
+    <div class="grid grid-cols-1 w-full">
+      <app-text-field
+        label="Fund Manager Name"
+        placeholder="Enter Manager Name"
+        [control]="getFormControllers('name')"
+      >
+      </app-text-field>
+    </div>
+    <div class="flex flex-row w-full justify-end gap-3 mt-[15px]">
+      <app-app-button
+        class="flex-1"
+        [expanded]="true"
+        btnClass="primary"
+        type="submit"
+      >
+        Submit
+      </app-app-button>
+      <app-app-button
+        class="flex-1"
+        [expanded]="true"
+        btnClass="secondary"
+        (click)="closeNav()"
+      >
+        Close
+      </app-app-button>
+    </div>
+  </form>
+</div>

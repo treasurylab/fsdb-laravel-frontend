@@ -1,0 +1,171 @@
+@use "@angular/material" as mat;
+@use "./media-queries.scss" as *;
+
+@include mat.core();
+
+body {
+  margin: 0;
+  font-family: Poppins, "Helvetica Neue", sans-serif;
+}
+h4 {
+  font-size: 21px;
+  line-height: 2rem;
+  color: rgb(54 56 58);
+  font-family: Poppins;
+  // font-family: Poppins, "Helvetica Neue", sans-serif;
+  font-weight: 900;
+  padding: 1.25rem;
+  min-width: max-content;
+}
+/*Fs colors*/
+$fs-red: #b61f24;
+$fs-yellow: #e7a423;
+$fs-green: #0b8241;
+$fs-gray: #808285;
+$fs-white: #ffffff;
+
+/*Other Colors*/
+$primary: #ffffff;
+$background: #f6f8fc;
+$accent: #ffffff;
+$text-primary: #494f58;
+$text-secondary: #545d67;
+$text-focused: #5998db;
+$background-focused: #eff7fe;
+$button-primary: #3d47e7;
+
+/*Table Colors*/
+$row-focused: #f9faff;
+
+/*Variables*/
+$card-radius: 1rem;
+
+/*Responsiveness Breakpoints*/
+$breakpoint-phones: 640px;
+$breakpoint-tablet: 768px;
+$breakpoint-pc: 1024px;
+
+/* Text Styles */
+.content-heading {
+  font-size: 1.5rem;
+  /* 24px */
+  line-height: 2rem;
+  /* 32px */
+  color: rgb(107 114 128);
+  font-family: Poppins;
+  // font-family: Poppins, "Helvetica Neue", sans-serif;
+  font-weight: 600;
+  padding: 1.25rem;
+  /* 20px */
+  min-width: max-content;
+}
+
+/* Button Styles */
+.submenu-button {
+  background-color: $button-primary;
+  color: white;
+  font-family: Poppins;
+  // font-family: Poppins, "Helvetica Neue", sans-serif;
+  border-radius: 7px;
+  padding: 10px 30px;
+}
+
+/* Table Styles */
+.full-width {
+  width: 100% !important;
+}
+
+.card-style {
+  @include mat.elevation(5);
+  border-radius: $card-radius;
+  /* 16px */
+  padding: 1rem;
+  @media (min-width: $breakpoint-pc) {
+    .card-style {
+      /* 16px */
+      padding: 1rem;
+      margin: 12px;
+    }
+  }
+}
+
+.mini-card-style {
+  @include mat.elevation(5);
+  border-radius: $card-radius; /* 16px */
+  margin: 12px;
+}
+
+.round-elevated {
+  @include mat.elevation(5);
+  border-radius: 10px;
+}
+
+.card-header {
+  @include mat.elevation(5);
+  border-radius: $card-radius;
+  /* 16px */
+}
+
+.cta-button {
+  color: black !important;
+  background-color: #bcc3cc !important;
+  margin-bottom: 2rem !important;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: $text-focused;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.vertical {
+  border-left: 2px solid $text-primary;
+  height: 8px;
+  left: 50%;
+}
+.spherical {
+  border: 2px solid $text-primary; /* Border properties */
+  border-radius: 50%; /* Make the border appear as a circle */
+  width: 4px; /* Set width */
+  height: 4px; /* Set height */
+  background-color: $text-primary; /* Fill color */
+  left: 50%; /* Positioning */
+}
+
+a {
+  color: mediumblue;
+  text-decoration: underline;
+}
+
+.cell-green {
+  background-color: rgb(86, 230, 86) !important;
+}
+
+.cell-red {
+  background-color: rgb(230, 88, 88) !important;
+}
+
+.qualified-text {
+  text-decoration: none;
+  color: #f4f4f4 !important;
+}
+
+.scheme-a {
+  line-height: 0 !important;
+  word-wrap: break-word;
+  color: #428bca;
+  text-decoration: none;
+}
+
+.center {
+  text-align: center;
+}
+
+.pull-right {
+  float: right;
+}
+.text-center {
+  text-align: center;
+}

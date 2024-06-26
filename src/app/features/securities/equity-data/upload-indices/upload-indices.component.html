@@ -1,0 +1,43 @@
+<app-page-container>
+  <app-page-title> Upload Index Data </app-page-title>
+  <app-content-card>
+    <form
+      class="example-form"
+      [formGroup]="indexrateForm"
+      (ngSubmit)="uploadindexrate()"
+    >
+      <div class="flex flex-col items-center w-full gap-3">
+        <div class="flex flex-row w-1/2 justify-center items-end gap-3">
+          <app-select-field
+            label="Select Index"
+            class="flex-1"
+            [control]="getFormControllers('niftyoption')"
+          >
+            <option *ngFor="let option of niftyOption" [value]="option.id">
+              {{ option.value }}
+            </option>
+          </app-select-field>
+          <app-text-field
+            class="flex-1"
+            label="Select file"
+            type="file"
+            (onInputChanged)="onFileSelected($event)"
+          ></app-text-field>
+        </div>
+        <div class="flex flex-row gap-3 w-fit">
+          <app-app-button class="flex-1" type="submit" [expanded]="true">
+            Upload
+          </app-app-button>
+          <app-app-button
+            btnClass="secondary"
+            class="flex-1"
+            type="reset"
+            [expanded]="true"
+          >
+            Clear
+          </app-app-button>
+        </div>
+      </div>
+    </form>
+  </app-content-card>
+</app-page-container>

@@ -1,0 +1,112 @@
+/*
+    ONLY ANGULAR MATERIAL CUSTOM SCSS MUST BE DEFINED HERE
+*/
+
+$primary-color: #1e3a8a;
+$expansion-panel-height: 40px;
+$expansion-panel-indicator-color: rgb(143, 137, 137);
+$list-tile-height: $expansion-panel-height;
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 0.75rem !important;
+}
+
+//Mat Expansion Panel
+::ng-deep .mat-expansion-panel {
+  box-shadow: none !important;
+  margin-bottom: 0.45rem !important;
+  overflow: visible !important;
+  margin-top: 0px !important;
+}
+
+::ng-deep .mat-expansion-panel-header {
+  padding: 0px 18px !important;
+  height: $expansion-panel-height !important;
+  border-radius: 0.375rem !important;
+}
+
+::ng-deep .mat-expansion-panel-header.mat-expanded {
+  height: $expansion-panel-height !important;
+}
+
+//Mat Expansion Panel List Items
+::ng-deep .mat-mdc-list-item {
+  border-radius: 10px !important;
+  height: $list-tile-height !important;
+  overflow: visible !important;
+}
+
+//Mat Expansion Panel List Body
+::ng-deep .mat-expansion-panel-body {
+  padding: 0px !important;
+}
+
+//For Active Expansion Panel Item
+::ng-deep .sub-active {
+  background-color: #0077b6 !important;
+}
+//For Expansion Panel Indicators
+::ng-deep .mat-expansion-indicator::after {
+  border-color: $expansion-panel-indicator-color !important;
+}
+
+//Mat Nav List
+::ng-deep .mat-mdc-nav-list {
+  padding: 0px !important;
+}
+
+// Mat Multiselect
+::ng-deep .mat-mdc-select {
+  --tw-bg-opacity: 1;
+  --tw-border-opacity: 1;
+  --tw-text-opacity: 1;
+  background-color: rgb(250 250 250 / var(--tw-bg-opacity)) !important;
+  border-width: 2px !important;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity)) !important;
+  color: rgb(17 24 39 / var(--tw-text-opacity)) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  border-radius: 0.5rem !important;
+  width: 100% !important;
+  padding: 0.5rem 0.75rem !important;
+  margin-top: 0.25rem !important;
+  height: 2.5rem !important;
+}
+
+::ng-deep div.mat-mdc-select-panel .mat-mdc-option {
+  font-size: 0.875rem !important;
+  color: black !important;
+}
+
+::ng-deep .mat-mdc-option .mdc-list-item__primary-text {
+  color: black !important;
+}
+
+::ng-deep .mat-pseudo-checkbox-full.mat-pseudo-checkbox-checked {
+  background-color: $primary-color !important;
+}
+
+//Mat Drawer
+::ng-deep .mat-drawer {
+  overflow: visible !important;
+}
+
+//Mat Drawer Inner Container
+::ng-deep .mat-drawer-inner-container {
+  overflow: visible !important;
+}
+
+::ng-deep .mat-drawer-transition .mat-drawer-content {
+  padding: 0px !important;
+}
+
+//Mat Paginator
+::ng-deep .mdc-notched-outline {
+  opacity: 0 !important;
+  display: none;
+}
+
+// Hide Paginator
+.hide-paginator {
+  display: none !important;
+}

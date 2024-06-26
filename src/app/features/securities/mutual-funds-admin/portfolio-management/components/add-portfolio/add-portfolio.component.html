@@ -1,0 +1,120 @@
+<body>
+  <mat-card tabindex="0" class="card-style">
+    <div id="main-container" class="flex flex-col w-full h-full">
+      <form
+        class="example-form"
+        [formGroup]="pfinfoForm"
+        (ngSubmit)="pfinfoentry()"
+      >
+        <div class="row d-flex">
+          <div class="row" id="table-header">
+            <span class="font-poppins px-5 font-bold text-gray-900 text-lg"
+              >ADD Portfolio Data</span
+            >
+            <span class="pull-right">
+              <button
+                mat-raised-button
+                class="cta-button"
+                type="submit"
+                title="Save"
+              >
+                <mat-icon>save</mat-icon></button
+              >&nbsp;&nbsp;
+              <button
+                mat-raised-button
+                class="cta-button"
+                type="reset"
+                title="Reset"
+              >
+                Reset
+              </button>
+            </span>
+          </div>
+        </div>
+        <br />
+        <hr />
+        <div id="tableContainer" class="row d-flex">
+          <table>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-label> ISIN No. </mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="isin_no"
+                    placeholder="Enter Value"
+                  />
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-label> Market Value </mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="market_value"
+                    placeholder="Enter Description"
+                  />
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-label> Rating </mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="rating"
+                    placeholder="Enter Description"
+                  />
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-label> Sec Type </mat-label>
+                  <mat-select
+                    placeholder="Select Months"
+                    formControlName="sec_type"
+                  >
+                    <mat-option
+                      *ngFor="let prd of prodcodedata"
+                      [value]="prd.prod_code"
+                    >
+                      {{ prd.prod_code }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill">
+                  <mat-label> ISIN Name </mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="isin_name"
+                    placeholder="Enter Description"
+                  />
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <hr />
+        <br />
+      </form>
+      <span class="pull-right">
+        <button mat-raised-button class="cta-button" (click)="closeMe()">
+          Close
+        </button>
+      </span>
+    </div>
+  </mat-card>
+</body>

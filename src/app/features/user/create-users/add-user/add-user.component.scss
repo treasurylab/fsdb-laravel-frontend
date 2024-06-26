@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: 1.25em;
+  background: #fff;
+}
+
+mat-dialog-content {
+  max-height: 500px !important;
+}
+
+mat-tab-group {
+  max-height: 460px !important;
+}
+
+.table-parent-container {
+  max-height: 95%;
+  overflow-y: auto;
+}
+
+table {
+  color: #000;
+}
+
+h4 {
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  color: #494f58 !important;
+}
+
+tbody {
+  overflow-x: hidden;
+}
+
+th {
+  background-color: #f7fafc;
+}
+
+tr:nth-child(even) {
+  background: #ededed;
+}

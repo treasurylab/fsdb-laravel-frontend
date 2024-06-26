@@ -1,0 +1,231 @@
+<app-page-container>
+  <app-page-title> GSEC : Class ID Mapping</app-page-title>
+  <div class="flex flex-row">
+    <div class="w-[30%]">
+      <app-text-field
+        [control]="getFormControllers('id')"
+        placeholder="Search GSEC by ISIN..."
+      ></app-text-field>
+    </div>
+    <div class="m-3">
+      <app-app-button
+        (click)="searchGsecInfo()"
+        (click)="showTable()"
+        type="submit"
+        btnClass="primary"
+      >
+        <div icon>
+          <fa-icon [icon]="searchIcon"></fa-icon>
+        </div>
+        Search
+      </app-app-button>
+    </div>
+  </div>
+
+  <div class="flex flex-row">
+    <!-- Table with add class id button -->
+    <div class="w-full md:w-1/2 p-4">
+      <div *ngIf="isTableVisible1">
+        <!-- Content of the second card -->
+        <app-content-card [noPad]="true">
+          <app-app-button
+            class="p-4"
+            (click)="addClassForGSEC('I')"
+            type="submit"
+            btnClass="primary"
+          >
+            <div icon>
+              <fa-icon [icon]="addIcon"></fa-icon>
+            </div>
+            Add Class Id
+          </app-app-button>
+          <div class="bg-[#efeff4]">
+            <table mat-table [dataSource]="schemeClassInfo">
+              <!-- Table Content -->
+              <ng-container matColumnDef="ci_no">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element; let i = index"
+                  style="text-align: center"
+                >
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="class_id">
+                <th mat-header-cell *matHeaderCellDef>Class ID</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  style="text-align: center"
+                >
+                  <button
+                    (click)="
+                      addClassForGSEC('U', element.isin_no, element.class_id)
+                    "
+                    class="scheme-a"
+                  >
+                    {{ element.class_id }}
+                  </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="isin">
+                <th mat-header-cell *matHeaderCellDef>ISIN</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  style="text-align: center"
+                >
+                  {{ element.isin_no }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="date_on">
+                <th mat-header-cell *matHeaderCellDef>Dated On</th>
+                <td
+                  mat-cell
+                  *matCellDef="let element"
+                  style="text-align: center"
+                >
+                  {{ element.recdate }}
+                </td>
+              </ng-container>
+              <tr class="mat-row center" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No Data Found</td>
+              </tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+            </table>
+          </div>
+        </app-content-card>
+      </div>
+
+      <ng-template #noDataFound>
+        <div class="h-full w-full flex flex-row items-center no-data">
+          No Data Found
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Third Card -->
+    <div class="w-full md:w-1/2 p-4">
+      <div *ngIf="showEditForm">
+        <!-- <form [formGroup]="editClassForm" (ngSubmit)="addClassForGSEC('I')"> -->
+        <app-content-card>
+          <table>
+            <app-page-title-small>Class Id Mapping</app-page-title-small>
+            <tr>
+              <td>
+                <div class="flex flex-row">
+                  <app-text-field
+                    class="mr-2"
+                    label="Class Id:"
+                    [control]="getClassFormControllers('class_id')"
+                    placeholder="{{ classidread }}"
+                  ></app-text-field>
+
+                  <app-text-field
+                    class="mr-2"
+                    label="ISIN:"
+                    [control]="getClassFormControllers('class_map_isin')"
+                    placeholder="{{ isinread }}"
+                  ></app-text-field>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="m-3 flex flex-row">
+                  <app-app-button
+                    class="pr-2"
+                    (click)="MapCompToBank('I')"
+                    type="submit"
+                    btnClass="tertiary"
+                  >
+                    Submit
+                  </app-app-button>
+                  <app-app-button (click)="HideForm()" btnClass="secondary">
+                    Back
+                  </app-app-button>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <!-- </form> -->
+        </app-content-card>
+      </div>
+      <div *ngIf="showupdateForm">
+        <!-- Update Form -->
+        <app-content-card>
+          <table>
+            <app-page-title-small>Class Id Mapping</app-page-title-small>
+            <tr>
+              <td>
+                <div class="flex flex-row">
+                  <app-text-field
+                    class="mr-2"
+                    label="Class Id:"
+                    [control]="updateClassFormControllers('class_id')"
+                    placeholder="{{ classidread }}"
+                  ></app-text-field>
+
+                  <app-text-field
+                    class="mr-2"
+                    label="ISIN:"
+                    [control]="updateClassFormControllers('class_map_isin')"
+                    placeholder="{{ isinread }}"
+                  ></app-text-field>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="m-3 flex flex-row">
+                  <app-app-button
+                    class="pr-2"
+                    (click)="MapCompToBank('U')"
+                    btnClass="tertiary"
+                  >
+                    Update
+                  </app-app-button>
+                  <app-app-button (click)="HideForm()" btnClass="secondary">
+                    Back
+                  </app-app-button>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <!-- </form> -->
+        </app-content-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fourth Card -->
+  <div *ngIf="isTableVisible" class="w-full p-4">
+    <table mat-table [dataSource]="sergsecdata">
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td
+          mat-cell
+          *matCellDef="let map; let i = index"
+          style="text-align: center"
+        >
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="isin">
+        <th mat-header-cell *matHeaderCellDef>ISIN</th>
+        <td mat-cell *matCellDef="let element" style="text-align: center">
+          <a (click)="findGsecClassinfo(element.isin, 'GSEC')" class="scheme-a">
+            {{ element.isin }}
+          </a>
+        </td>
+      </ng-container>
+      <tr class="mat-row center" *matNoDataRow>
+        <td class="mat-cell" colspan="2">No Data Found</td>
+      </tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</app-page-container>

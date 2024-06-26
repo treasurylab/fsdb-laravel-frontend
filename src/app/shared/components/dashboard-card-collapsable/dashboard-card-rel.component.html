@@ -1,0 +1,54 @@
+<mat-card class="dashboard-card p-2">
+    <mat-card-header (click)="collapseContent()">
+        <div class="container p-0 h-full w-full">
+            <div class="grid grid-cols-12">
+                <div class="{{ buttonArgs !== undefined ? 'col-span-8' : collapsable ? 'col-span-10' : 'col-span-full' }} flex flex-col my-1">
+                    <mat-card-title class="card-title">{{ title }}</mat-card-title>
+                    <mat-card-subtitle *ngIf="subtitle !== null">{{ subtitle }}</mat-card-subtitle>
+                </div>
+
+                <div
+                    class="col-span-2 flex items-center justify-end my-1"
+                    *ngIf="
+                        buttonArgs !== undefined &&
+                        (buttonArgs.isExternalUrl === undefined ||
+                        buttonArgs.isExternalUrl === false)
+                    "
+                >
+                    <button
+                        class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full float-right"
+                        routerLink="{{ buttonArgs.link }}"
+                    >
+                        {{ buttonArgs.label }}
+                    </button>
+                </div>
+
+                <div
+                    class="col-span-2 flex items-center justify-end my-1"
+                    *ngIf="
+                        buttonArgs !== undefined &&
+                        buttonArgs.isExternalUrl !== undefined &&
+                        buttonArgs.isExternalUrl === true
+                    "
+                >
+                    <button
+                        class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full float-right"
+                        target="_blank"
+                        rel="noopener"
+                        [attr.href]="buttonArgs.link"
+                    >
+                        {{ buttonArgs.label }}
+                    </button>
+                </div>
+
+                <div class="col-span-2 flex items-center justify-end my-1" *ngIf="collapsable">
+                    <fa-icon *ngIf="displayContent === 'none'" class="fa-lg float-end" [icon]="collapsedIcon"></fa-icon>
+                    <fa-icon *ngIf="displayContent === 'block'" class="fa-lg float-end" [icon]="expandedIcon"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content class="dashboard-card-content" #cardContent [style.display]="displayContent">
+        <ng-content></ng-content>
+    </mat-card-content>
+</mat-card>

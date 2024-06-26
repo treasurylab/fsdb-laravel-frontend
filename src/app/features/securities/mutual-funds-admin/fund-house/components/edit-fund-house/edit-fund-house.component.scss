@@ -1,0 +1,43 @@
+@import "../../../../../../styles/global-styles.scss";
+@import "../../../../../../styles/media-queries.scss";
+// @import '../../../../../../styles/theme.scss';
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+.pull-right {
+  float: right;
+}
+
+#hdatatable {
+  border-collapse: collapse;
+  width: auto;
+  margin-left: 20px;
+}
+
+#hdatatable td,
+#hdatatable th {
+  border: 1px solid #ddd;
+}
+
+#hdatatable tr:nth-child(even) {
+  background-color: #ededed;
+}
+
+#hdatatable tr:hover {
+  background-color: #f9f9f9;
+}
+
+#hdatatable th {
+  text-align: left !important;
+  margin-left: 5px !important;
+  background-color: #f7fafc;
+  width: 200px;
+}
+
+#hdatatable td {
+  width: 200px;
+  margin-left: 5px !important;
+}
+
+.example-form {
+  width: 500px;
+}

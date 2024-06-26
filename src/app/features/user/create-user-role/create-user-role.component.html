@@ -1,0 +1,169 @@
+<!-- <body>
+  <mat-card tabindex="0" class="card-style">
+    <div id="main-container" class="flex flex-col w-full h-full">
+      <div id="table-header" class="flex flex-row py-4">
+        <span class="font-poppins px-5 font-bold text-gray-900 text-lg"
+          >User Master</span
+        >
+      </div>
+      <div id="table-container w-full h-full" class="mini-card-style bg-white">
+        <div class="row d-flex" *ngIf="showCgrpList">
+          <div
+            id="table"
+            class="max-w-full max-h-full pb-3 overflow-scroll lg:overflow-hidden btnpad"
+          >
+            <table
+              mat-table
+              [dataSource]="cgrpList"
+              class="mat-elevation-z8 !rounded-md min-w-max mclrpading"
+            >
+              <ng-container matColumnDef="id" class="px-8">
+                <th
+                  style="text-align: center"
+                  mat-header-cell
+                  *matHeaderCellDef
+                >
+                  #
+                </th>
+                <td
+                  style="text-align: center"
+                  mat-cell
+                  *matCellDef="let element; let i = index"
+                >
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="cgrpid" class="px-8">
+                <th
+                  style="text-align: center"
+                  mat-header-cell
+                  *matHeaderCellDef
+                >
+                  Company Group ID
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.cgrp_id }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="cgrpname" class="px-8">
+                <th
+                  style="text-align: center"
+                  mat-header-cell
+                  *matHeaderCellDef
+                >
+                  Company Name
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <a href="javascript:;" (click)="getModuleList()">
+                    {{ element.cgrp_name }}
+                  </a>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        </div>
+        <div class="row d-flex" *ngIf="showMenuList">
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="moduleList">
+              <ng-container matColumnDef="parentName">
+                <th mat-header-cell *matHeaderCellDef>Module Name</th>
+                <td mat-cell *matCellDef="let row">{{ row.parentName }}</td>
+              </ng-container>
+              <ng-container matColumnDef="childMenus">
+                <th mat-header-cell *matHeaderCellDef>Menu List</th>
+                <td mat-cell *matCellDef="let row">
+                  <ul>
+                    <li *ngFor="let childMenu of row.childMenus">
+                      <a
+                        class="scheme-a"
+                        href="javascript:;"
+                        (click)="updateMenuPermission(childMenu)"
+                        >{{ childMenu }}</a
+                      >
+                    </li>
+                  </ul>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsm"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsm"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</body> -->
+
+<div class="px-3">
+  <app-page-title>User Master</app-page-title>
+
+  <div class="row d-flex" *ngIf="showCgrpList">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="id" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>#</th>
+        <td
+          style="text-align: center"
+          mat-cell
+          *matCellDef="let element; let i = index"
+        >
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cgrpid" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Company Group ID
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.cgrp_id }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cgrpname" class="px-8">
+        <th style="text-align: center" mat-header-cell *matHeaderCellDef>
+          Company Name
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <a href="javascript:;" (click)="getModuleList()">
+            {{ element.cgrp_name }}
+          </a>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+</div>
+<div class="row d-flex" *ngIf="showMenuList">
+  <table mat-table [dataSource]="moduleList">
+    <ng-container matColumnDef="parentName">
+      <th mat-header-cell *matHeaderCellDef>Module Name</th>
+      <td mat-cell *matCellDef="let row">{{ row.parentName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="childMenus">
+      <th mat-header-cell *matHeaderCellDef>Menu List</th>
+      <td mat-cell *matCellDef="let row">
+        <ul>
+          <li *ngFor="let childMenu of row.childMenus">
+            <a
+              class="scheme-a"
+              href="javascript:;"
+              (click)="updateMenuPermission(childMenu)"
+              >{{ childMenu }}</a
+            >
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsm"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsm"></tr>
+  </table>
+</div>
+<div>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

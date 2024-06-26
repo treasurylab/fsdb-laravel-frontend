@@ -1,0 +1,64 @@
+<app-side-form #sideForm [isOpened]="false">
+  <div nav>
+    <app-add-edit-lone-sch-form
+      *ngIf="activeTab === tabs[0]"
+      [sideNavObj]="sideForm"
+      [sideNavTitle]="sideNavTitle"
+      [formPayload]="sideFormPayload"
+      (formCallback)="addEditLoneFormCallback()"
+    >
+    </app-add-edit-lone-sch-form>
+    <app-fund-manager-entry-form
+      *ngIf="activeTab === tabs[1]"
+      [sideNavTitle]="sideNavTitle"
+      [sideNavObj]="sideForm"
+      [formPayload]="sideFormPayload"
+    ></app-fund-manager-entry-form>
+    <app-fund-manager-mapping-form
+      *ngIf="activeTab === tabs[2]"
+      [sideNavTitle]="sideNavTitle"
+      [formPayload]="sideFormPayload"
+      (formCallback)="fundManagerMappingCallback($event)"
+      (formDataCallback)="fundManagerMappingDataCallback($event)"
+    ></app-fund-manager-mapping-form>
+    <app-factsheet-form
+      *ngIf="activeTab === tabs[3]"
+      [sideNavObj]="sideForm"
+      (formCallback)="factsheetCallback($event)"
+    ></app-factsheet-form>
+  </div>
+  <app-page-container navContent>
+    <app-page-title>L1 Scheme</app-page-title>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChanged($event)">
+      <!-- Tab 1 -->
+      <div *ngIf="activeTab === tabs[0]">
+        <app-add-edit-lone-scheme
+          #addEditLoneSchemeView
+          [sideNavObj]="sideForm"
+          (sideFormController)="addEditLoneFormController($event)"
+        ></app-add-edit-lone-scheme>
+      </div>
+
+      <!-- Tab 2 -->
+      <div *ngIf="activeTab === tabs[1]">
+        <app-fund-manager-entry
+          [sideNavObj]="sideForm"
+          (sideFormController)="fundManagerEntryController($event)"
+        ></app-fund-manager-entry>
+      </div>
+
+      <!-- Tab 3 -->
+      <div *ngIf="activeTab === tabs[2]">
+        <app-fund-manager-mapping
+          #fundManagerMappingView
+          (sideFormController)="fundManagerMappingController($event)"
+        ></app-fund-manager-mapping>
+      </div>
+
+      <!-- Tab 4 -->
+      <div *ngIf="activeTab === tabs[3]">
+        <app-factsheet #factsheetView [sideNavObj]="sideForm"></app-factsheet>
+      </div>
+    </app-tab-view>
+  </app-page-container>
+</app-side-form>

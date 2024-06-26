@@ -1,0 +1,18 @@
+mat-slider {
+  width: 450px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.custom-table mat-table {
+  border: 1px solid black;
+}
+
+.custom-table-container {
+  width: 100%;
+  border: 1px solid #e5e7eb; /* Adjust the border width and color as needed */
+  border-radius: 10px; /* Adjust the border radius as needed */
+  overflow: hidden; /* Ensure rounded corners are visible */
+}

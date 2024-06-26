@@ -1,0 +1,63 @@
+<div class="flex flex-row items-center justify-between mb-3">
+  <app-text-field
+    type="search"
+    (keyup)="applyFilter($event)"
+    placeholder="Search..."
+  ></app-text-field>
+</div>
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="srno" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="id" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Fund House ID</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.id }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Fund House Name</th>
+    <td mat-cell *matCellDef="let element">
+      <a
+        class="scheme-a"
+        href="javascript:;"
+        (click)="addEditFundHouseModel('edit', element)"
+      >
+        {{ element?.name }}</a
+      >
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="symbol" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Symbol</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.symbol }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="sname" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Short Name</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.sname }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="cdate" class="px-8">
+    <th mat-header-cell *matHeaderCellDef>Created Date</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.cdate | date : "dd-MM-yyyy" }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  class="{{ dataSource.data.length !== 0 ? '!block' : '!hidden' }}"
+  [pageSizeOptions]="[10, 20, 30]"
+  showFirstLastButtons
+></mat-paginator>

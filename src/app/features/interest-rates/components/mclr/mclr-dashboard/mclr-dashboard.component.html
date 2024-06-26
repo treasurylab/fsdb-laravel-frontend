@@ -1,0 +1,141 @@
+<app-page-container>
+  <app-page-title
+    subHeading="Minimum Lending Rates published by Banks"
+    tooltip="MCLR is the minimum interest rate charged by a bank"
+    [pageInfo]="pageInfo"
+    >MCLR Dashboard
+  </app-page-title>
+
+  <div class="flex flex-col gap-3 w-full h-full">
+    <div id="info-container" class="flex flex-row w-full">
+      <app-dashboard-block-container
+        routerLink="../tenor-wise"
+        class="flex-1 mr-2"
+        heading="{{ bestMclrRate }}%"
+        subHeading="BEST MCLR ({{ tenor6M }})"
+        icon="trending_up"
+        bgColor="#1C326B"
+      ></app-dashboard-block-container>
+      <app-dashboard-block-container
+        routerLink="../../benchmark-rates/in/rbi-reporate"
+        class="flex-1 mr-2"
+        heading="{{ rbiRepoRate }}%"
+        subHeading="RBI Repo Rate"
+        icon="graphic_eq"
+        bgColor="#0466c8"
+      ></app-dashboard-block-container>
+      <app-dashboard-block-container
+        routerLink="../latest"
+        class="flex-1 mr-2"
+        heading="{{ noOfBanks }}"
+        subHeading="No Of Banks"
+        icon="account_balance"
+        bgColor="#37C2CE"
+      ></app-dashboard-block-container>
+      <app-dashboard-block-container
+        class="flex-1"
+        heading="{{ lastUpdated }}"
+        subHeading="Last Updated"
+        icon="today"
+        bgColor="#64b5f6"
+      ></app-dashboard-block-container>
+    </div>
+
+    <!-- Row 1: 6M Comparison | Best MCLR Rate Tenor Wise -->
+    <div class="flex flex-row items-stretch justify-center gap-3">
+      <app-content-card class="w-1/2" [noPad]="true">
+        <!-- 6M Comparison: Card Header -->
+        <div class="flex flex-row justify-between items-center py-3 px-3">
+          <div id="name" class="card-heading">Past 6M Comparison</div>
+          <app-tenor-chips
+            [buttonNameList]="['ON', '1M', '3M', '6M', '1Y', '2Y', '3Y']"
+            [selectedTenor]="selectedCompTenor"
+            (clickedButton)="getMclrChartInfo($event, '6M')"
+          >
+          </app-tenor-chips>
+        </div>
+        <hr class="mb-3" />
+        <!-- 6M Comparison: Graph Container -->
+        <div class="flex flex-row justify-between px-3">
+          <app-page-title subHeading="Best Bank ({{ tenor6M }})"
+            >{{ bestMclrBank !== "" ? bestMclrBank : "Loading..." }}
+          </app-page-title>
+          <app-page-title subHeading="Lowest Rate" position="end"
+            >{{ bestMclrRate !== "" ? bestMclrRate : "-.--" }}%
+          </app-page-title>
+        </div>
+        <!-- 6M Comparison: Graph -->
+        <div class="p-3 w-full min-h-[19rem]">
+          <app-line-graph
+            *ngIf="sixMonthChart"
+            [chartOptions]="sixMonthChart"
+          ></app-line-graph>
+        </div>
+      </app-content-card>
+
+      <app-content-card class="w-1/2" [noPad]="true">
+        <div class="card-heading py-3 px-3">Best MCLR Rate Tenor Wise</div>
+        <hr />
+        <div class="bg-[#EFEFF5]">
+          <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="bank_name">
+              <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="frequency_type" class="column-15">
+              <th mat-header-cell *matHeaderCellDef>Tenor</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.frequency_type }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mclr_rate" class="column-15">
+              <th mat-header-cell *matHeaderCellDef>Rate %</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.mclr_rate }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total_asset" class="column-30">
+              <th mat-header-cell *matHeaderCellDef>
+                Asset Size <br />
+                (In Crores)
+              </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center">
+                {{ element.total_asset }}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </app-content-card>
+    </div>
+
+    <!-- Row 2: Top 5 Banks MCLR Rate (Overnight) -->
+    <app-content-card [noPad]="true">
+      <div class="min-h-[24rem]">
+        <div class="flex flex-row justify-between items-center py-3 px-3">
+          <div class="card-heading">Top 5 Banks MCLR Rate ({{ tenor1Y }})</div>
+          <app-tenor-chips
+            [buttonNameList]="['ON', '1M', '3M', '6M', '1Y', '2Y', '3Y']"
+            [selectedTenor]="selectedCompTenor"
+            (clickedButton)="getMclrChartInfo($event, '1Y')"
+          >
+          </app-tenor-chips>
+        </div>
+        <hr class="mb-3" />
+        <div class="min-h-[19rem] p-3">
+          <app-line-graph
+            *ngIf="oneYearChart"
+            canvasHeight="19rem"
+            [chartOptions]="oneYearChart"
+          ></app-line-graph>
+        </div>
+      </div>
+    </app-content-card>
+  </div>
+</app-page-container>

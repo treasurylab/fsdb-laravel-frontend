@@ -1,0 +1,59 @@
+<app-page-container>
+  <app-page-title>MCLR Bank Master</app-page-title>
+  <!-- Table Header -->
+  <div class="flex flex-row items-end gap-3 mb-3 w-full">
+    <app-select-field
+      label="Select Bank"
+      [control]="bankTypeController"
+      (selectionChanged)="applyCategoryFilter()"
+    >
+      <option *ngFor="let bnkType of bnkTypes" [value]="bnkType.value">
+        {{ bnkType.viewValue }}
+      </option>
+    </app-select-field>
+    <app-text-field
+      type="search"
+      [control]="searchController"
+      (onKeyUp)="applyFilter()"
+      placeholder="Search for a Bank..."
+    ></app-text-field>
+  </div>
+  <!-- Table -->
+
+  <table mat-table [dataSource]="mclrBankList">
+    <ng-container matColumnDef="srno" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bank_code" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Bank Code</th>
+      <td mat-cell *matCellDef="let element">{{ element.bank_code }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bank_name" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Bank Name</th>
+      <td mat-cell *matCellDef="let element" style="text-align: left">
+        {{ element.bank_name }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="skey_code" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Bank Type Code</th>
+      <td mat-cell *matCellDef="let element">{{ element.skey_code }}</td>
+    </ng-container>
+    <ng-container matColumnDef="bank_type" class="px-8">
+      <th mat-header-cell *matHeaderCellDef>Bank Type</th>
+      <td mat-cell *matCellDef="let element">{{ element.bank_type }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <tr class="mat-row center" *matNoDataRow>
+      <td class="mat-cell !py-5" colspan="9">No Data Found</td>
+    </tr>
+  </table>
+  <mat-paginator
+    class="{{ mclrBankList.data.length !== 0 ? '!block' : '!hidden' }}"
+    [pageSizeOptions]="[10, 20, 30]"
+    showFirstLastButtons
+  ></mat-paginator>
+</app-page-container>

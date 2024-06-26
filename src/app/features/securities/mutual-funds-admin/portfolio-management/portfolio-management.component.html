@@ -1,0 +1,546 @@
+<app-side-form #sideForm [isOpened]="false">
+  <div nav>
+    <app-page-container>
+      <app-page-title [subHeading]="sideFormSubTitle">
+        {{ sideFormTitle }}
+      </app-page-title>
+      @switch (currentComponent) { @case ('setAssetAddAssetComponent') {
+      <app-add-asset-type (closeEvent)="closeSideForm()"></app-add-asset-type>
+      } @case ('setAssetAddAssetComponent') {
+      <app-add-asset-type (closeEvent)="closeSideForm()"></app-add-asset-type>
+      } @case ('setAssetEditAssetComponent') {
+      <app-edit-asset-type
+        (closeEvent)="closeSideForm()"
+        [data]="componentData"
+      ></app-edit-asset-type>
+      } @case ( 'setTemplateAddTemplateComponent') {
+      <app-add-template (closeEvent)="closeSideForm()"></app-add-template>
+      } @case ( 'setTemplateEditTemplateComponent') {
+      <app-edit-template
+        (closeEvent)="closeSideForm()"
+        [data]="componentData"
+      ></app-edit-template>
+      } @case ( 'uploadPortfolioComponent') {
+      <ng-container *ngTemplateOutlet="uploadPortfolioComponent"></ng-container>
+      } @case ( 'editPortfolioComponent') {
+      <ng-container *ngTemplateOutlet="editPortfolioComponent"></ng-container>
+      }}
+    </app-page-container>
+  </div>
+  <app-page-container navContent>
+    <app-page-title>Manage Portfolio</app-page-title>
+    <app-tab-view [tabs]="tabs" (tabSelected)="onTabChanged($event)">
+      <div *ngIf="activeTab === tabs[0]">
+        <div
+          label="SET Asset Type"
+          title="Facility to set-up the asset type labels from the funds portfolio excel. Variants of labels such as Bond, Equity, GSEC, CP, CD, etc are set up here"
+        >
+          <div class="flex flex-row mb-3">
+            <app-text-field
+              type="search"
+              #filterField
+              (keyup)="applyFilter1($event)"
+              placeholder="Search..."
+            ></app-text-field>
+            <app-app-button
+              btnClass="primary"
+              (click)="addAssetType()"
+              class="mt-3 ml-auto mr-3"
+            >
+              <div icon>
+                <fa-icon [icon]="addIcon"></fa-icon>
+              </div>
+              Add Asset Type
+            </app-app-button>
+          </div>
+
+          <table mat-table [dataSource]="portfolioAssetConfigDatasource">
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>Value</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.code }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="des">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon class="iconS1" (click)="editAssetRecord(element)"
+                  >edit</mat-icon
+                >
+                <sup>&nbsp;|&nbsp;</sup>
+                <mat-icon class="iconS1" (click)="deleteAssetRecord(element)"
+                  >delete</mat-icon
+                >
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+          </table>
+          <mat-paginator
+            #paginator1
+            class="{{
+              portfolioAssetConfigDatasource.data.length !== 0
+                ? '!block'
+                : '!hidden'
+            }}"
+            [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </div>
+      <div *ngIf="activeTab === tabs[1]">
+        <div
+          label="SET Template"
+          title="Facility to set-up the column header labels from the funds portfolio excel. Variants of labels such as Name of the instrument, ISIN, Coupon, Market Value, etc are set up here"
+        >
+          <div class="flex flex-row mb-3">
+            <app-text-field
+              type="search"
+              #filterField
+              (keyup)="applyFilter2($event)"
+              placeholder="Search..."
+            ></app-text-field>
+            <app-app-button
+              btnClass="primary"
+              (click)="addTemplate()"
+              class="mt-3 ml-auto mr-3"
+            >
+              <div icon>
+                <fa-icon [icon]="addIcon"></fa-icon>
+              </div>
+              Add Template
+            </app-app-button>
+          </div>
+
+          <table mat-table [dataSource]="portfolioTemplateConfigDatasource">
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>Value</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.code }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="des">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-icon class="iconS1" (click)="editTemplate(element)"
+                  >edit</mat-icon
+                >
+                <sup>&nbsp;|&nbsp;</sup>
+                <mat-icon class="iconS1" (click)="deleteTemplateRecord(element)"
+                  >delete</mat-icon
+                >
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+          </table>
+          <mat-paginator
+            #paginator2
+            class="{{
+              portfolioTemplateConfigDatasource.data.length !== 0
+                ? '!block'
+                : '!hidden'
+            }}"
+            [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </div>
+      <div *ngIf="activeTab === tabs[2]">
+        <div
+          label="Upload Portfolio"
+          title="Upload program for mutual fund portfolio data"
+        >
+          <div class="flex flex-row mb-3">
+            <app-text-field
+              class="pb-3"
+              type="search"
+              #filterField
+              (keyup)="applyFilter4($event)"
+              placeholder="Search..."
+            ></app-text-field>
+            <app-app-button
+              btnClass="primary"
+              (click)="uploadPortflioNav()"
+              class="mt-3 ml-auto mr-3"
+            >
+              <div icon>
+                <fa-icon [icon]="addIcon"></fa-icon>
+              </div>
+              Upload Portfolio
+            </app-app-button>
+          </div>
+          <table mat-table [dataSource]="searchDataSource">
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                {{ i + 1 }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="fh_id">
+              <th mat-header-cell *matHeaderCellDef>Fund House ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.fundhsg_id }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amfi_code">
+              <th mat-header-cell *matHeaderCellDef>AMFI Code</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.sid }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef>Symbol</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.symbol }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.name }}
+              </td>
+            </ng-container>
+            <tr class="mat-row center" *matNoDataRow>
+              <td class="mat-cell !py-5" colspan="5">No Data Found</td>
+            </tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns4"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns4"></tr>
+          </table>
+          <mat-paginator
+            #paginator3
+            class="{{
+              searchDataSource.data.length !== 0 ? '!block' : '!hidden'
+            }}"
+            [pageSizeOptions]="[10, 20, 30]"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div></div
+    ></app-tab-view>
+    <div *ngIf="activeTab === tabs[3]">
+      <div
+        label="Edit Portfolio"
+        title="This allows user to view, add and delete line items of a portfolio in order to tally it with the portfolio excel"
+      >
+        <div class="flex flex-row justify-between mb-3">
+          <app-text-field
+            type="search"
+            #filterField
+            (keyup)="applyFilter5($event)"
+            placeholder="Search..."
+          ></app-text-field>
+          <div class="flex flex-row items-center">
+            <app-app-button
+              *ngIf="pfdatalist.length > 0"
+              (click)="exportToCsv(pfdatalist, 'Portfolio_Data')"
+              btnClass="tertiary"
+              class="mt-3 ml-auto mr-3"
+            >
+              <div icon>
+                <fa-icon [icon]="exportIcon"></fa-icon>
+              </div>
+              Download
+            </app-app-button>
+            <app-app-button
+              (click)="editPortfolio()"
+              btnClass="secondary"
+              class="mt-3 ml-auto mr-3"
+            >
+              <div icon>
+                <fa-icon [icon]="exportIcon"></fa-icon>
+              </div>
+              Filter
+            </app-app-button>
+          </div>
+        </div>
+
+        <table mat-table [dataSource]="portfolioViewDatasource">
+          <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="isin_no">
+            <th mat-header-cell *matHeaderCellDef>ISIN No.</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.isin }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="market_value">
+            <th mat-header-cell *matHeaderCellDef>Market Value</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.market_value }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="ratings">
+            <th mat-header-cell *matHeaderCellDef>Rating</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.ratting }} - {{ element.ratting1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="prod_code">
+            <th mat-header-cell *matHeaderCellDef>Sec Type</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.prod_code }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="isin_name">
+            <th mat-header-cell *matHeaderCellDef>ISIN Name</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.name }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action" class="px-8">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+              <a href="javascript:;" (click)="portfolioDeleteData(element)"
+                ><mat-icon>delete</mat-icon></a
+              >
+            </td>
+          </ng-container>
+          <tr class="mat-row text-center" *matNoDataRow>
+            <td class="mat-cell !py-5" colspan="7">No Data Found</td>
+          </tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns5"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns5"></tr>
+        </table>
+        <mat-paginator
+          #paginator4
+          class="{{
+            portfolioViewDatasource.data.length !== 0 ? '!block' : '!hidden'
+          }}"
+          [pageSizeOptions]="[10, 20, 30]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+    <div *ngIf="activeTab === tabs[4]">
+      <div
+        label="Delete Portfolio"
+        title="Provision to delete portfolio of a fund for a month"
+      >
+        <ng-container
+          *ngTemplateOutlet="deletePortfolioComponent"
+        ></ng-container>
+        <table mat-table [dataSource]="portfolioDatasource">
+          <ng-container matColumnDef="#">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ i + 1 }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="month">
+            <th mat-header-cell *matHeaderCellDef>Month</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.month }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef>Symbol</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.symbol }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon class="iconS1" (click)="deletePortfolio(element)"
+                >delete</mat-icon
+              >
+            </td>
+          </ng-container>
+          <tr class="mat-row center" *matNoDataRow>
+            <td class="mat-cell !py-5" colspan="4">No Data Found</td>
+          </tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns3"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns3"></tr>
+        </table>
+        <mat-paginator
+          #paginator5
+          class="{{
+            portfolioDatasource.data.length !== 0 ? '!block' : '!hidden'
+          }}"
+          [pageSizeOptions]="[10, 20, 30]"
+          showFirstLastButtons
+        ></mat-paginator>
+      </div>
+    </div>
+  </app-page-container>
+</app-side-form>
+
+<ng-template #uploadPortfolioComponent>
+  <div class="row d-flex">
+    <div class="row" matInputContainer>
+      <form [formGroup]="uploadpfForm" (ngSubmit)="uploadPortfolio()">
+        <app-select-field
+          label="Fund House"
+          placeholder="Select Fund House"
+          [control]="getUploadPortfolioControllers('fundId')"
+        >
+          <option *ngFor="let list of listFund" [value]="list.id">
+            {{ list.id }}: {{ list.name }}
+          </option>
+        </app-select-field>
+        <app-select-field
+          label="Year"
+          placeholder="Select Year"
+          [control]="getUploadPortfolioControllers('year')"
+        >
+          <option *ngFor="let yr of allyears" [value]="yr.id">
+            {{ yr.name }}
+          </option>
+        </app-select-field>
+
+        <app-select-field
+          label="Month"
+          placeholder="Select Month"
+          [control]="getUploadPortfolioControllers('month')"
+        >
+          <option *ngFor="let mnt of allmonths" [value]="mnt.id">
+            {{ mnt.name }}
+          </option>
+        </app-select-field>
+        <app-text-field
+          class="flex-1"
+          label="Select file"
+          type="file"
+          (change)="onFileSelected($event)"
+        ></app-text-field>
+        <div id="action-buttons" class="flex flex-row gap-2 mt-4">
+          <app-app-button
+            class="flex-1"
+            btnClass="primary"
+            [expanded]="true"
+            type="submit"
+          >
+            Upload
+          </app-app-button>
+
+          <app-app-button
+            class="flex-1"
+            btnClass="secondary"
+            [expanded]="true"
+            (onTap)="closeSideForm()"
+          >
+            Close
+          </app-app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deletePortfolioComponent>
+  <div class="flex flex-row justify-between items-end">
+    <div class="mb-4">
+      <app-text-field
+        type="search"
+        #filterField
+        (keyup)="applyFilter3($event)"
+        placeholder="Search..."
+      ></app-text-field>
+    </div>
+    <form
+      id="cffrm"
+      class="example-form flex flex-row gap-2 items-end mb-4"
+      [formGroup]="deletepfForm"
+      (ngSubmit)="getPortfolioPfLst()"
+    >
+      <app-select-field
+        label="Year"
+        placeholder="Select Year"
+        [control]="getDeletePortfolioControllers('month')"
+      >
+        <option *ngFor="let month of allpfmonth" [value]="month.id">
+          {{ month.name }}
+        </option>
+      </app-select-field>
+      <app-app-button
+        class="flex-1"
+        btnClass="primary"
+        [expanded]="true"
+        type="submit"
+      >
+        Search
+      </app-app-button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #editPortfolioComponent>
+  <form [formGroup]="editpfForm" (ngSubmit)="portfolioDataView()">
+    <app-select-field
+      label="Fund House"
+      placeholder="Select Fund House"
+      (selectionChanged)="onFundHouseSelected()"
+      [control]="getEditPortfolioControllers('pfbplist')"
+    >
+      <option *ngFor="let pfbp of portfoliobp" [value]="pfbp.id">
+        {{ pfbp.id }}: {{ pfbp.name }}
+      </option>
+    </app-select-field>
+    <app-select-field
+      label="Scheme"
+      placeholder="Select Scheme"
+      [control]="getEditPortfolioControllers('symbol')"
+    >
+      <option *ngFor="let sch of pfhsdata" [value]="sch.symbol">
+        {{ sch.sid }} - {{ sch.symbol }} - {{ sch.name }}
+      </option>
+    </app-select-field>
+    <app-select-field
+      label="Month"
+      placeholder="Select Month"
+      [control]="getEditPortfolioControllers('monthYear')"
+    >
+      <option *ngFor="let mtyr of allmonthsdata" [value]="mtyr.id">
+        {{ mtyr.name }}
+      </option>
+    </app-select-field>
+
+    <div id="action-buttons" class="flex flex-row gap-2 mt-4">
+      <app-app-button
+        class="flex-1"
+        btnClass="primary"
+        [expanded]="true"
+        type="submit"
+      >
+        Search
+      </app-app-button>
+      <app-app-button
+        class="flex-1"
+        btnClass="secondary"
+        [expanded]="true"
+        *ngIf="pfaddbtnshow"
+        (click)="addpfinfo()"
+      >
+        Add
+      </app-app-button>
+    </div>
+  </form>
+</ng-template>

@@ -1,0 +1,65 @@
+<div class="flex flex-col items-center justify-center w-full h-full">
+  <div
+    id="main-container"
+    class="flex flex-row h-full w-full px-10 mb-12 justify-center items-center"
+  >
+    <app-phone-slider
+      class="mr-10 w-[30%]"
+      style="z-index: 10000"
+    ></app-phone-slider>
+    <div
+      id="loginContainer"
+      class="w-fit min-w-[25rem] min-h-[35rem] h-fit px-10 pb-10 rounded-2xl bg-white flex flex-col items-center border border-gray-200"
+    >
+      <!-- Logo -->
+      <img
+        class="w-[7%] mt-10"
+        src="assets/images/FSlogo.png"
+        alt="FsDataBridge Logo"
+      />
+      <span class="font-inter font-semibold text-xl mt-6"
+        >Sign in to your account</span
+      >
+      <!-- Sign in with google -->
+      <div
+        class="flex flex-row items-center justify-center w-fit bg-gray-100 hover:bg-gray-200 px-3 py-[0.6rem] rounded-lg mt-[1.1rem] cursor-pointer transition duration-150"
+        (click)="loginWithGoogle()"
+      >
+        <img src="assets/images/google.png" class="h-5 mr-3" />
+        <span class="font-inter text-sm">Sign in with Google</span>
+      </div>
+      <!-- Divider -->
+      <div class="relative flex py-5 items-center w-full">
+        <div class="flex-grow border-t border-gray-400"></div>
+        <span class="flex-shrink mx-4 text-gray-800 font-poppins text-xs"
+          >Or use Email</span
+        >
+        <div class="flex-grow border-t border-gray-400"></div>
+      </div>
+      <!-- Login Fields -->
+      <app-text-field
+        class="w-full"
+        label="Email"
+        type="email"
+        placeholder="Email address"
+        [control]="getFormControllers('email')"
+      ></app-text-field>
+      <app-text-field
+        class="w-full mt-4"
+        label="Password"
+        type="password"
+        placeholder="Password"
+        [control]="getFormControllers('password')"
+      ></app-text-field>
+      <!-- Remember me and Forgot Password -->
+      <!-- Login Button  -->
+      <button
+        class="w-full mt-6 bg-black hover:bg-gray-800 text-white rounded-2xl py-3 px-2"
+        (click)="login()"
+      >
+        Sign In
+      </button>
+      <a routerLink="/" class="mt-4 font-inter text-gray-400">Go Back Home</a>
+    </div>
+  </div>
+</div>

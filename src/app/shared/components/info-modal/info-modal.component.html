@@ -1,0 +1,11 @@
+<div class="flex flex-col bg-white border rounded-xl">
+  <div class="flex flex-row justify-between items-center py-3 px-4 border-b">
+    <span class="font-semibold text-lg">{{ cardContent.title }}</span>
+    <fa-icon [icon]="closeIcon" (click)="closeModal()"></fa-icon>
+  </div>
+  <div class="overflow-y-auto p-4">
+    <p class="text-gray-800">
+      {{ cardContent.content }}
+    </p>
+  </div>
+</div>
