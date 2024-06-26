@@ -4,7 +4,7 @@ name: CI-QA
 # events but only for the master branch
 # on:
 #   push:
-#     branches: [qa]
+#     branches: [quality]
 on: workflow_dispatch
 
 jobs:
