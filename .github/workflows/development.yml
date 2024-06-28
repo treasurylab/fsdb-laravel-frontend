@@ -2,9 +2,10 @@ name: CI-DEV
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the dev branch
-on:
-  push:
-    branches: [development]
+# on:
+#   push:
+#     branches: [development]
+on: workflow_dispatch
 
 jobs:
   build:

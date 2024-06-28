@@ -1,9 +1,7 @@
 import { ExportService } from 'src/app/core/services/export.service';
 import { ApiService } from 'src/app/shared/services/api/api.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FeatureList } from 'src/features';
 import { first } from 'rxjs';
-import { GenericResponse } from 'src/app/shared/models/generic-response';
 import { ICurrentRate } from '../models/current-rate';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IRateRecord } from '../models/rate-record';
@@ -98,10 +96,7 @@ export class FxDashboardComponent implements OnInit {
 
   private getCurrentData(): void {
     this.apiService
-      .getRequestLegacy<GenericResponse<ICurrentRate>>(
-        FeatureList.fxrate,
-        'currentRate'
-      )
+      .getRequest('fx/latest-rate')
       .pipe(first())
       .subscribe({
         next: (response) => {
@@ -115,11 +110,7 @@ export class FxDashboardComponent implements OnInit {
 
   private getTopData(currency: string): void {
     this.apiService
-      .postRequestLegacy<GenericResponse<IRateRecord[]>>(
-        FeatureList.fxrate,
-        'getTopRates',
-        { currency: currency }
-      )
+      .getRequest(`fx/top-rates/${currency.toLowerCase()}`)
       .pipe(first())
       .subscribe({
         next: (response) => {
@@ -134,11 +125,7 @@ export class FxDashboardComponent implements OnInit {
 
   private getAllData(currency: string): void {
     this.apiService
-      .postRequestLegacy<GenericResponse<IRateRecord[]>>(
-        FeatureList.fxrate,
-        'getAllCurrencyRates',
-        { currency: currency }
-      )
+      .getRequest(`fx/currency-rates/${currency.toLowerCase()}`)
       .pipe(first())
       .subscribe({
         next: (response) => {
@@ -179,11 +166,7 @@ export class FxDashboardComponent implements OnInit {
         };
 
     this.apiService
-      .postRequestLegacy<GenericResponse<IRateRecord[]>>(
-        FeatureList.fxrate,
-        'getCurrencyRates',
-        requestPayload
-      )
+      .postRequest('fx/currency-rates', requestPayload)
       .pipe(first())
       .subscribe({
         next: (response) => {

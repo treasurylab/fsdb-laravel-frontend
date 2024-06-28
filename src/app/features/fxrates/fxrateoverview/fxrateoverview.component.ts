@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { first } from 'rxjs';
-import { GenericResponse } from 'src/app/shared/models/generic-response';
 import { ApiService } from 'src/app/shared/services/api/api.service';
-import { ICurrentRate } from '../models/current-rate';
-import { FeatureList } from 'src/features';
 
 @Component({
   selector: 'app-fxrateoverview',
@@ -28,10 +25,7 @@ export class FxrateoverviewComponent implements OnInit {
 
   loadData() {
     this.apiService
-      .getRequestLegacy<GenericResponse<ICurrentRate>>(
-        FeatureList.fxrate,
-        'currentRate'
-      )
+      .getRequest('fx/latest-rate')
       .pipe(first())
       .subscribe({
         next: (data) => {
