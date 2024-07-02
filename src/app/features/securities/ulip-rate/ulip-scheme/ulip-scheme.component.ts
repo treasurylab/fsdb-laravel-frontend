@@ -80,14 +80,10 @@ export class UlipSchemeComponent implements OnInit {
   protected getUlipRatesList(initial: boolean = false) {
     let apiCall: Observable<unknown>;
     if (initial) {
-      apiCall = this.apiService.getRequestLegacy(
-        FeatureList.ulip,
-        'getUlipRatesList'
-      );
+      apiCall = this.apiService.postRequest('ulip-rates/rate-list');
     } else {
-      apiCall = this.apiService.postRequestLegacy(
-        FeatureList.ulip,
-        'getUlipRatesList',
+      apiCall = this.apiService.postRequest(
+        'ulip-rates/rate-list',
         this.uliprate.value
       );
     }
